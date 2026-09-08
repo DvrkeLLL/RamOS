@@ -51,7 +51,7 @@
   .add-frame.compact .plus{font-size:18px; margin-right:2px;}
   .add-frame.compact .label{font-family:var(--font-body); font-size:13px; font-weight:700;}
 
-  .ramo-card{background:var(--surface); border-radius:18px; margin-bottom:14px; box-shadow:0 4px 16px rgba(36,52,74,.08); overflow:hidden;}
+  .ramo-card{background:var(--surface); border-radius:18px; margin-bottom:14px; box-shadow:0 4px 16px rgba(36,52,74,.08); overflow:hidden; cursor:pointer;}
   .ramo-card-header{padding:16px 16px 12px;}
   .ramo-card h3{font-family:var(--font-display); font-size:17px; font-weight:600; margin:0;}
   .ramo-card .codigo{font-size:12px; color:var(--text-muted); margin-top:2px;}
@@ -123,6 +123,19 @@
   .checkline{display:flex; align-items:center; gap:9px; padding:9px 0; cursor:pointer;}
   .checkline input{width:18px; height:18px; accent-color:var(--primary);}
   .checkline span{font-size:13.5px;}
+
+  /* interruptor tipo píldora */
+  .switch{position:relative; display:inline-block; width:38px; height:22px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0; position:absolute;}
+  .switch .track{position:absolute; inset:0; background:var(--border); border-radius:999px; transition:background .2s ease; cursor:pointer;}
+  .switch .thumb{position:absolute; left:2px; top:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .switch input:checked + .track{background:var(--primary);}
+  .switch input:checked + .track .thumb{transform:translateX(16px);}
+  .switch.mini{width:30px; height:18px;}
+  .switch.mini .thumb{width:14px; height:14px;}
+  .switch.mini input:checked + .track .thumb{transform:translateX(12px);}
+  .switch-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0; cursor:pointer;}
+  .switch-row .switch-text{font-size:13.5px;}
   .subcard{background:var(--bg); border-radius:12px; padding:12px; margin-bottom:10px;}
   .subcard-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
   .subcard-head strong{font-size:13px;}
@@ -146,11 +159,15 @@
   .grupo-block.active{border-color:var(--primary); border-style:solid; background:rgba(92,134,176,.05);}
   .grupo-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
   .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted);}
-  .grupo-mini-check{display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-muted); cursor:pointer;}
-  .grupo-mini-check input{width:14px; height:14px; accent-color:var(--primary);}
+  .grupo-mini-check{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); cursor:pointer;}
+  .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted); outline:none; cursor:text; display:inline-block; min-width:16px;}
+  .grupo-title:empty:before{content:attr(data-placeholder);}
   .grupo-pond{display:flex; align-items:center; gap:3px; margin-left:auto;}
   .grupo-pond input{width:46px; font-size:12px; padding:5px 6px; border:1.5px solid var(--border); border-radius:6px;}
   .grupo-pond span{font-size:11px; color:var(--text-muted);}
+  .mini-btn{border:none; background:var(--bg); color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:10.5px; padding:6px 9px; border-radius:8px; cursor:pointer;}
+  .discarded-row{opacity:.5;}
+  .discarded-row input{text-decoration:line-through;}
 </style>
 </head>
 <body>
@@ -218,12 +235,24 @@ const ICON_INFO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejo
 const ICON_HORARIO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
 const ICON_EVAL = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 7 21l5-2.5 5 2.5-2-7.5"/></svg>';
 
-let ramos = [];
+let ramos = loadRamos();
 let draft = null;
+let editingId = null;
 let modalTab = 'evaluaciones';
 let activeGroupIndex = null;
 let pendingUploadMode = null;
 let toastTimer = null;
+
+function loadRamos(){
+  try{
+    const raw = localStorage.getItem('ramos_v1');
+    return raw ? JSON.parse(raw) : [];
+  }catch(err){ return []; }
+}
+function saveRamos(){
+  try{ localStorage.setItem('ramos_v1', JSON.stringify(ramos)); }
+  catch(err){ showToast('No se pudo guardar en este navegador.'); }
+}
 
 document.querySelectorAll('.nav-item').forEach(btn=>{
   btn.onclick = ()=>{
@@ -252,11 +281,49 @@ function nuevoRamo(){
 }
 function nuevaEvaluacion(){ return { nombre:'', notaRaw:'', ponderacion:0, fecha:'', hora:'', sala:'' }; }
 function nuevoHorario(){ return { dia:'L', bloque:1, sala:'', tipo:'teoria', dividir:false, pondTeoria:0, pondLab:0 }; }
-function nuevoGrupo(){ return { ponderacionGrupo:0, eliminarPeorNota:false, evaluaciones:[] }; }
+function nuevoGrupo(){ return { nombre:'', ponderacionGrupo:0, eliminarPeorNota:false, evaluaciones:[] }; }
+
+function normalizarNota(raw){
+  if(!raw) return null;
+  let s = raw.trim().replace(',', '.');
+  if(!s) return null;
+  if(!s.includes('.') && s.length >= 2) s = s[0] + '.' + s.slice(1);
+  const n = parseFloat(s);
+  return isNaN(n) ? null : n;
+}
+function getDiscardedIndex(g){
+  if(!g.eliminarPeorNota || g.evaluaciones.length===0) return -1;
+  let lastEmptyIdx = -1;
+  g.evaluaciones.forEach((e,i)=>{ if(!e.notaRaw || !e.notaRaw.trim()) lastEmptyIdx = i; });
+  if(lastEmptyIdx !== -1) return lastEmptyIdx;
+  let worstIdx = -1, worstVal = Infinity;
+  g.evaluaciones.forEach((e,i)=>{
+    const val = normalizarNota(e.notaRaw);
+    if(val !== null && val < worstVal){ worstVal = val; worstIdx = i; }
+  });
+  return worstIdx;
+}
+function dividirPonderacionIgual(g){
+  const n = g.evaluaciones.length;
+  if(n===0) return;
+  const discardedIdx = g.eliminarPeorNota ? getDiscardedIndex(g) : -1;
+  const effectiveN = (g.eliminarPeorNota && discardedIdx !== -1) ? Math.max(n-1,1) : n;
+  const each = Math.round((g.ponderacionGrupo / effectiveN) * 10) / 10;
+  g.evaluaciones.forEach((e,i)=>{
+    e.ponderacion = (g.eliminarPeorNota && i===discardedIdx) ? 0 : each;
+  });
+}
+function nombreSiguiente(nombreAnterior){
+  if(!nombreAnterior) return '';
+  const m = nombreAnterior.match(/^(.*?)(\d+)\s*$/);
+  if(!m) return '';
+  return m[1] + (parseInt(m[2],10) + 1);
+}
 
 /* ---------- abrir / cerrar modal de ramo ---------- */
 document.getElementById('addFrame').onclick = ()=>{
   draft = nuevoRamo();
+  editingId = null;
   modalTab = 'evaluaciones';
   activeGroupIndex = null;
   document.getElementById('modalTitle').textContent = 'Nuevo ramo';
@@ -264,6 +331,18 @@ document.getElementById('addFrame').onclick = ()=>{
   document.getElementById('modalBackdrop').classList.add('active');
   document.getElementById('ramoModal').classList.add('active');
 };
+function openEditRamo(id){
+  const r = ramos.find(x=>x.id===id);
+  if(!r) return;
+  draft = JSON.parse(JSON.stringify(r));
+  editingId = id;
+  modalTab = 'evaluaciones';
+  activeGroupIndex = null;
+  document.getElementById('modalTitle').textContent = draft.nombre || 'Editar ramo';
+  renderModal();
+  document.getElementById('modalBackdrop').classList.add('active');
+  document.getElementById('ramoModal').classList.add('active');
+}
 function closeRamoModal(){
   document.getElementById('modalBackdrop').classList.remove('active');
   document.getElementById('ramoModal').classList.remove('active');
@@ -310,9 +389,10 @@ function evalTabHTML(){
     <p class="hint">Toca el borde de un grupo ya creado para volver a editarlo y agregar más pruebas.</p>
   `;
 }
-function evalRowHTML(e, i, grupoIdx){
+function evalRowHTML(e, i, grupoIdx, isDiscarded){
   const g = grupoIdx!==undefined ? ` data-egroup="${grupoIdx}"` : '';
-  return `<tr>
+  const trClass = isDiscarded ? ' class="discarded-row"' : '';
+  return `<tr${trClass}>
     <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1" style="min-width:110px;"></td>
     <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2" style="width:56px;"></td>
     <td><input type="number" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion}" placeholder="10" style="width:52px;"></td>
@@ -324,15 +404,20 @@ function evalRowHTML(e, i, grupoIdx){
 }
 function grupoBlockHTML(g, gi){
   const active = activeGroupIndex === gi;
+  const discardedIdx = g.eliminarPeorNota ? getDiscardedIndex(g) : -1;
   return `
   <div class="grupo-block${active?' active':''}" data-grupoborder="${gi}">
     <div class="grupo-head">
-      <span class="grupo-title">Grupo ${gi+1}</span>
-      <label class="grupo-mini-check"><input type="checkbox" data-g="${gi}" data-gfield="eliminarPeorNota" ${g.eliminarPeorNota?'checked':''}><span>Eliminar peor nota</span></label>
+      <span class="grupo-title" contenteditable="true" data-g="${gi}" data-gfield="nombre" data-placeholder="Grupo ${gi+1}">${g.nombre||''}</span>
+      <label class="grupo-mini-check">
+        <span class="switch mini"><input type="checkbox" data-g="${gi}" data-gfield="eliminarPeorNota" ${g.eliminarPeorNota?'checked':''}><span class="track"><span class="thumb"></span></span></span>
+        <span>Eliminar peor nota</span>
+      </label>
+      <button type="button" class="mini-btn" data-dividepond="${gi}">Dividir ponderación igual</button>
       <div class="grupo-pond"><input type="number" data-g="${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo}" placeholder="0"><span>%</span></div>
     </div>
     <div class="table-scroll">
-      <table class="eval-table mini"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi)).join('')}</tbody></table>
+      <table class="eval-table mini"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi,ei===discardedIdx)).join('')}</tbody></table>
     </div>
   </div>`;
 }
@@ -371,9 +456,9 @@ function horarioRowHTML(h, i){
       </select>
     </div>
     ${h.tipo==='laboratorio' ? `
-    <label class="checkline">
-      <input type="checkbox" data-h="${i}" data-hfield="dividirBool" ${h.dividir?'checked':''}>
-      <span>Dividir notas de lab y teoría</span>
+    <label class="switch-row">
+      <span class="switch-text">Dividir notas de lab y teoría</span>
+      <span class="switch"><input type="checkbox" data-h="${i}" data-hfield="dividirBool" ${h.dividir?'checked':''}><span class="track"><span class="thumb"></span></span></span>
     </label>
     ${h.dividir ? `
     <div class="field-row">
@@ -411,7 +496,14 @@ function attachModalListeners(){
     renderModal();
   };
   const addGrupoRowBtn = document.getElementById('addGrupoRowBtn');
-  if(addGrupoRowBtn) addGrupoRowBtn.onclick = ()=>{ draft.poolCompartido.grupos[activeGroupIndex].evaluaciones.push(nuevaEvaluacion()); renderModal(); };
+  if(addGrupoRowBtn) addGrupoRowBtn.onclick = ()=>{
+    const grupo = draft.poolCompartido.grupos[activeGroupIndex];
+    const last = grupo.evaluaciones[grupo.evaluaciones.length-1];
+    const nueva = nuevaEvaluacion();
+    if(last) nueva.nombre = nombreSiguiente(last.nombre);
+    grupo.evaluaciones.push(nueva);
+    renderModal();
+  };
   const terminarGrupoBtn = document.getElementById('terminarGrupoBtn');
   if(terminarGrupoBtn) terminarGrupoBtn.onclick = ()=>{ activeGroupIndex = null; renderModal(); };
 
@@ -429,18 +521,31 @@ function attachModalListeners(){
         : draft.poolCompartido.sueltas[el.dataset.erow];
       target[el.dataset.efield] = el.value;
     };
+    if(el.dataset.efield==='notaRaw' && el.dataset.egroup !== undefined){
+      el.onblur = ()=> renderModal();
+    }
+  });
+  body.querySelectorAll('[data-dividepond]').forEach(btn=>{
+    btn.onclick = ()=>{
+      dividirPonderacionIgual(draft.poolCompartido.grupos[btn.dataset.dividepond]);
+      renderModal();
+    };
   });
   body.querySelectorAll('[data-g]').forEach(el=>{
     const handler = ()=>{
       const g = draft.poolCompartido.grupos[el.dataset.g];
       if(el.dataset.gfield==='eliminarPeorNota') g.eliminarPeorNota = el.checked;
+      else if(el.dataset.gfield==='nombre') g.nombre = el.textContent.trim();
       else g.ponderacionGrupo = Number(el.value);
     };
     el.type==='checkbox' ? el.onchange = handler : el.oninput = handler;
+    if(el.dataset.gfield==='nombre'){
+      el.onkeydown = (ev)=>{ if(ev.key==='Enter'){ ev.preventDefault(); el.blur(); } };
+    }
   });
   body.querySelectorAll('[data-grupoborder]').forEach(block=>{
     block.addEventListener('click', (ev)=>{
-      if(ev.target.closest('input, table, button')) return;
+      if(ev.target.closest('input, table, button, .grupo-title')) return;
       activeGroupIndex = Number(block.dataset.grupoborder);
       renderModal();
     });
@@ -471,6 +576,7 @@ function attachModalListeners(){
       draft.profesorNombre = document.getElementById('f-profNombre').value;
       draft.profesorCorreo = document.getElementById('f-profCorreo').value;
       draft.coordinacion = document.getElementById('f-coordinacion').value;
+      document.getElementById('modalTitle').textContent = draft.nombre.trim() || (editingId!==null ? 'Editar ramo' : 'Nuevo ramo');
     };
   });
 }
@@ -482,7 +588,14 @@ document.getElementById('saveRamoBtn').onclick = ()=>{
     showToast('Ponle un nombre al ramo antes de guardar.');
     return;
   }
-  ramos.push(draft);
+  if(editingId !== null){
+    const idx = ramos.findIndex(r=>r.id===editingId);
+    if(idx > -1) ramos[idx] = draft; else ramos.push(draft);
+  } else {
+    ramos.push(draft);
+  }
+  editingId = null;
+  saveRamos();
   renderRamosList();
   closeRamoModal();
 };
@@ -512,7 +625,7 @@ function renderRamosList(){
   const list = document.getElementById('ramosList');
   const frame = document.getElementById('addFrame');
   list.innerHTML = ramos.map(r=>`
-    <div class="ramo-card">
+    <div class="ramo-card" data-ramoid="${r.id}">
       <div class="ramo-card-header"><h3>${r.nombre}</h3><div class="codigo">${r.codigo || 'sin código'}</div></div>
       <div class="ramo-row"><div class="ramo-row-icon icon-info">${ICON_INFO}</div><div class="ramo-row-text">${summarizeInfo(r)}</div></div>
       <div class="ramo-row"><div class="ramo-row-icon icon-horario">${ICON_HORARIO}</div><div class="ramo-row-text">${summarizeHorario(r)}</div></div>
@@ -520,8 +633,19 @@ function renderRamosList(){
       <div class="ramo-card-actions"><button class="icon-btn danger" data-delramo="${r.id}">Eliminar</button></div>
     </div>
   `).join('');
+  list.querySelectorAll('.ramo-card').forEach(card=>{
+    card.addEventListener('click', (ev)=>{
+      if(ev.target.closest('.ramo-card-actions')) return;
+      openEditRamo(Number(card.dataset.ramoid));
+    });
+  });
   list.querySelectorAll('[data-delramo]').forEach(btn=>{
-    btn.onclick = ()=>{ ramos = ramos.filter(r=>r.id != btn.dataset.delramo); renderRamosList(); };
+    btn.onclick = (ev)=>{
+      ev.stopPropagation();
+      ramos = ramos.filter(r=>r.id != btn.dataset.delramo);
+      saveRamos();
+      renderRamosList();
+    };
   });
   frame.className = ramos.length===0 ? 'add-frame big' : 'add-frame compact';
   frame.innerHTML = `<div class="plus">+</div><div class="label">Añadir ramo</div>`;
