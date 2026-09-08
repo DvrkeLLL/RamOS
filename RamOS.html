@@ -109,7 +109,7 @@
   .tab-switch button.active{background:var(--surface); color:var(--text); box-shadow:0 2px 6px rgba(0,0,0,.08);}
   .tab-switch button.active svg{stroke:var(--primary);}
 
-  .modal-body{flex:1; overflow-y:auto; padding:4px 18px 30px; -webkit-overflow-scrolling:touch;}
+  .modal-body{flex:1; overflow-y:auto; overflow-x:hidden; padding:4px 18px 30px; -webkit-overflow-scrolling:touch;}
   .modal-footer{padding:12px 18px calc(12px + env(safe-area-inset-bottom)); border-top:1px solid var(--border); flex-shrink:0;}
 
   .field-group{margin-bottom:12px;}
@@ -146,14 +146,29 @@
 
   /* tabla de evaluaciones */
   .eval-card .subcard-head{margin-bottom:10px;}
-  .eval-name-input{flex:1; border:none; background:transparent; font-family:var(--font-body); font-weight:800; font-size:13.5px; color:var(--text); padding:0; outline:none; min-width:0;}
   .eval-card.discarded{opacity:.5;}
   .eval-card.discarded input{text-decoration:line-through;}
+
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:4px 0 0; max-width:100%;}
+  .eval-table{border-collapse:collapse; width:100%; min-width:520px; table-layout:fixed;}
+  .eval-table th:nth-child(1), .eval-table td:nth-child(1){width:112px;}
+  .eval-table th:nth-child(2), .eval-table td:nth-child(2){width:60px;}
+  .eval-table th:nth-child(3), .eval-table td:nth-child(3){width:50px;}
+  .eval-table th:nth-child(4), .eval-table td:nth-child(4){width:116px;}
+  .eval-table th:nth-child(5), .eval-table td:nth-child(5){width:84px;}
+  .eval-table th:nth-child(6), .eval-table td:nth-child(6){width:70px;}
+  .eval-table th:nth-child(7), .eval-table td:nth-child(7){width:28px;}
+  .eval-table th{font-family:var(--font-body); font-weight:800; font-size:10px; color:var(--text-muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--border); white-space:nowrap;}
+  .eval-table td{padding:4px 3px; border-bottom:1px solid var(--border); vertical-align:middle; overflow:hidden;}
+  .eval-table input{width:100%; font-family:var(--font-body); font-size:12.5px; padding:7px 5px; border:1.5px solid var(--border); border-radius:7px; color:var(--text); background:var(--surface); box-sizing:border-box;}
+  .eval-table .rm-row{background:none; border:none; color:var(--danger); font-size:16px; cursor:pointer; padding:0 4px;}
+  .discarded-row{opacity:.5;}
+  .discarded-row input{text-decoration:line-through;}
 
   /* grupos de evaluaciones */
   .eval-actions-row{display:flex; gap:8px; margin-top:12px;}
   .eval-actions-row .add-link{flex:1; margin-top:0;}
-  .grupo-block{border:1.5px dashed var(--border); border-radius:12px; padding:10px; margin-top:10px; cursor:pointer;}
+  .grupo-block{border:1.5px dashed var(--border); border-radius:12px; padding:10px; margin-top:10px; cursor:pointer; overflow:hidden;}
   .grupo-block.active{border-color:var(--primary); border-style:solid; background:rgba(92,134,176,.05);}
   .grupo-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
   .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted); outline:none; cursor:text; display:inline-block; min-width:44px; padding:3px 2px;}
@@ -426,30 +441,29 @@ function evalTabHTML(){
     ? `<button type="button" class="add-link" id="addEvalRowBtn">+ Fila</button><button type="button" class="add-link" id="crearGrupoBtn">Crear grupo</button>`
     : `<button type="button" class="add-link" id="addGrupoRowBtn">+ Fila grupo</button><button type="button" class="add-link" id="terminarGrupoBtn">Terminar grupo</button>`;
   return `
-    <div id="sueltasWrap">${draft.poolCompartido.sueltas.map((e,i)=>evalCardHTML(e,i)).join('')}</div>
+    <div class="table-scroll">
+      <table class="eval-table">
+        <thead><tr><th>Evaluación</th><th>Nota</th><th>%</th><th>Fecha</th><th>Hora</th><th>Sala</th><th></th></tr></thead>
+        <tbody>${draft.poolCompartido.sueltas.map((e,i)=>evalRowHTML(e,i)).join('')}</tbody>
+      </table>
+    </div>
     <div id="gruposWrap">${draft.poolCompartido.grupos.map((g,gi)=>grupoBlockHTML(g,gi)).join('')}</div>
     <div class="eval-actions-row">${actionsHTML}</div>
     <p class="hint">Toca el borde de un grupo ya creado para volver a editarlo y agregar más pruebas.</p>
   `;
 }
-function evalCardHTML(e, i, grupoIdx, isDiscarded, lockedPond){
+function evalRowHTML(e, i, grupoIdx, isDiscarded, lockedPond){
   const g = grupoIdx!==undefined ? ` data-egroup="${grupoIdx}"` : '';
-  return `
-  <div class="subcard eval-card${isDiscarded?' discarded':''}">
-    <div class="subcard-head">
-      <input type="text" class="eval-name-input" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Nombre de la evaluación">
-      <button type="button" class="remove-x" data-rmrow="${i}"${g}>Quitar</button>
-    </div>
-    <div class="field-row">
-      <div class="field-group"><label class="field-label">Nota</label><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2"></div>
-      <div class="field-group" style="max-width:80px;"><label class="field-label">%</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion||''}" placeholder="0"${lockedPond?' disabled':''}></div>
-    </div>
-    <div class="field-row">
-      <div class="field-group"><label class="field-label">Fecha</label><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}"></div>
-      <div class="field-group"><label class="field-label">Hora</label><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}"></div>
-    </div>
-    <div class="field-group"><label class="field-label">Sala</label><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421"></div>
-  </div>`;
+  const trClass = isDiscarded ? ' class="discarded-row"' : '';
+  return `<tr${trClass}>
+    <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2"></td>
+    <td><input type="text" inputmode="numeric" pattern="[0-9]*" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion||''}" placeholder="0"${lockedPond?' disabled':''}></td>
+    <td><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}"></td>
+    <td><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421"></td>
+    <td><button type="button" class="rm-row" data-rmrow="${i}"${g}>×</button></td>
+  </tr>`;
 }
 function grupoBlockHTML(g, gi){
   const active = activeGroupIndex === gi;
@@ -462,7 +476,9 @@ function grupoBlockHTML(g, gi){
       <div class="grupo-pond"><input type="text" inputmode="numeric" pattern="[0-9]*" data-g="${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo||''}" placeholder="0"><span>%</span></div>
       <button type="button" class="mini-btn" data-personalizar="${gi}">Personalizar</button>
     </div>
-    <div class="grupo-evals">${g.evaluaciones.map((e,ei)=>evalCardHTML(e,ei,gi,ei===discardedIdx,g.dividirIgual)).join('')}</div>
+    <div class="table-scroll">
+      <table class="eval-table"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi,ei===discardedIdx,g.dividirIgual)).join('')}</tbody></table>
+    </div>
   </div>`;
 }
 
