@@ -150,13 +150,13 @@
   .eval-card.discarded input{text-decoration:line-through;}
 
   .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:4px 0 0; max-width:100%;}
-  .eval-table{border-collapse:collapse; width:100%; min-width:520px; table-layout:fixed;}
-  .eval-table th:nth-child(1), .eval-table td:nth-child(1){width:112px;}
-  .eval-table th:nth-child(2), .eval-table td:nth-child(2){width:60px;}
-  .eval-table th:nth-child(3), .eval-table td:nth-child(3){width:50px;}
-  .eval-table th:nth-child(4), .eval-table td:nth-child(4){width:116px;}
-  .eval-table th:nth-child(5), .eval-table td:nth-child(5){width:84px;}
-  .eval-table th:nth-child(6), .eval-table td:nth-child(6){width:70px;}
+  .eval-table{border-collapse:collapse; width:100%; min-width:544px; table-layout:fixed;}
+  .eval-table th:nth-child(1), .eval-table td:nth-child(1){width:110px;}
+  .eval-table th:nth-child(2), .eval-table td:nth-child(2){width:58px;}
+  .eval-table th:nth-child(3), .eval-table td:nth-child(3){width:48px;}
+  .eval-table th:nth-child(4), .eval-table td:nth-child(4){width:112px;}
+  .eval-table th:nth-child(5), .eval-table td:nth-child(5){width:102px;}
+  .eval-table th:nth-child(6), .eval-table td:nth-child(6){width:66px;}
   .eval-table th:nth-child(7), .eval-table td:nth-child(7){width:28px;}
   .eval-table th{font-family:var(--font-body); font-weight:800; font-size:10px; color:var(--text-muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--border); white-space:nowrap;}
   .eval-table td{padding:4px 3px; border-bottom:1px solid var(--border); vertical-align:middle; overflow:hidden;}
@@ -164,6 +164,42 @@
   .eval-table .rm-row{background:none; border:none; color:var(--danger); font-size:16px; cursor:pointer; padding:0 4px;}
   .discarded-row{opacity:.5;}
   .discarded-row input{text-decoration:line-through;}
+
+  /* picker de fecha/hora dentro de la tabla */
+  .picker-field-sm{display:flex; align-items:center; gap:3px; background:var(--surface); border:1.5px solid var(--border); border-radius:7px; padding:6px 5px; cursor:pointer;}
+  .picker-field-sm input{flex:1; border:none; outline:none; background:transparent; font-family:var(--font-body); font-size:10.5px; color:var(--text); padding:0; pointer-events:none; min-width:0;}
+  .picker-field-sm input::placeholder{color:var(--text-muted);}
+  .picker-field-sm svg{width:13px; height:13px; stroke:var(--text-muted); fill:none; stroke-width:1.8; flex-shrink:0;}
+
+  /* tarjeta compartida por calendario y hora */
+  .picker-card{background:var(--surface); border-radius:20px; padding:18px; width:100%; max-width:300px; box-shadow:0 12px 34px rgba(0,0,0,.22);}
+
+  .cal-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .cal-header button{width:32px; height:32px; border-radius:50%; border:none; background:var(--bg); color:var(--primary); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .cal-month-label{font-family:var(--font-display); font-size:15px; font-weight:700; text-transform:capitalize;}
+  .cal-weekdays{display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:6px;}
+  .cal-weekdays span{text-align:center; font-size:10.5px; font-weight:700; color:var(--text-muted);}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); height:236px;}
+  .cal-day{display:flex; align-items:center; justify-content:center; border:none; background:none; font-family:var(--font-body); padding:0; cursor:pointer; width:100%; height:100%;}
+  .cal-day-dot{width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13.5px; color:var(--text);}
+  .cal-day.other-month .cal-day-dot{color:var(--border);}
+  .cal-day.other-month{pointer-events:none;}
+  .cal-day.today .cal-day-dot{font-weight:800; color:var(--primary);}
+  .cal-day.selected .cal-day-dot{background:var(--primary); color:var(--primary-ink); font-weight:700;}
+  .cal-day:not(.other-month):not(.selected):active .cal-day-dot{background:var(--bg);}
+
+  .wheel-wrap{position:relative; display:flex; justify-content:center; gap:2px; height:210px; margin-bottom:16px;}
+  .wheel-col{height:210px; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; width:64px;}
+  .wheel-col::-webkit-scrollbar{display:none;}
+  .wheel-spacer{height:84px;}
+  .wheel-item{height:42px; display:flex; align-items:center; justify-content:center; scroll-snap-align:center; font-family:var(--font-body); font-size:19px; font-weight:600; color:var(--text-muted); transition:color .15s ease, font-size .15s ease;}
+  .wheel-item.centered{color:var(--text); font-size:21px; font-weight:800;}
+  .wheel-ampm{width:52px;}
+  .wheel-highlight{position:absolute; left:0; right:0; top:84px; height:42px; pointer-events:none; border-top:1.5px solid var(--border); border-bottom:1.5px solid var(--border);}
+  .wheel-fade-top, .wheel-fade-bottom{position:absolute; left:0; right:0; height:70px; pointer-events:none; z-index:2;}
+  .wheel-fade-top{top:0; background:linear-gradient(to bottom, var(--surface), rgba(255,255,255,0));}
+  .wheel-fade-bottom{bottom:0; background:linear-gradient(to top, var(--surface), rgba(255,255,255,0));}
+  .btn-confirm{width:100%; padding:12px; background:var(--primary); color:var(--primary-ink); border:none; border-radius:999px; font-family:var(--font-body); font-weight:700; font-size:14px; cursor:pointer;}
 
   /* grupos de evaluaciones */
   .eval-actions-row{display:flex; gap:8px; margin-top:12px;}
@@ -236,6 +272,32 @@
         <span class="switch"><input type="checkbox" id="optDividirIgual"><span class="track"><span class="thumb"></span></span></span>
       </label>
       <button class="choice-cancel" id="grupoOptionsCloseBtn">Listo</button>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="calBackdrop">
+    <div class="picker-card">
+      <div class="cal-header">
+        <button type="button" id="calPrev">‹</button>
+        <span class="cal-month-label" id="calMonthLabel"></span>
+        <button type="button" id="calNext">›</button>
+      </div>
+      <div class="cal-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="timeBackdrop">
+    <div class="picker-card">
+      <div class="wheel-wrap">
+        <div class="wheel-fade-top"></div>
+        <div class="wheel-fade-bottom"></div>
+        <div class="wheel-highlight"></div>
+        <div class="wheel-col" id="wheelHour"></div>
+        <div class="wheel-col" id="wheelMinute"></div>
+        <div class="wheel-col wheel-ampm" id="wheelAmpm"></div>
+      </div>
+      <button type="button" class="btn-confirm" id="timeConfirmBtn">Listo</button>
     </div>
   </div>
 
@@ -459,8 +521,18 @@ function evalRowHTML(e, i, grupoIdx, isDiscarded, lockedPond){
     <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1"></td>
     <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2"></td>
     <td><input type="text" inputmode="numeric" pattern="[0-9]*" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion||''}" placeholder="0"${lockedPond?' disabled':''}></td>
-    <td><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}"></td>
-    <td><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}"></td>
+    <td>
+      <div class="picker-field-sm" data-openpicker="date">
+        <input type="text" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}" placeholder="dd-mm-aa" readonly>
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>
+      </div>
+    </td>
+    <td>
+      <div class="picker-field-sm" data-openpicker="time">
+        <input type="text" data-erow="${i}"${g} data-efield="hora" value="${e.hora}" placeholder="hh:mm" readonly>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      </div>
+    </td>
     <td><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421"></td>
     <td><button type="button" class="rm-row" data-rmrow="${i}"${g}>×</button></td>
   </tr>`;
@@ -587,6 +659,12 @@ function attachModalListeners(){
   });
   body.querySelectorAll('[data-personalizar]').forEach(btn=>{
     btn.onclick = ()=> openGrupoOptions(Number(btn.dataset.personalizar));
+  });
+  body.querySelectorAll('[data-openpicker="date"]').forEach(field=>{
+    field.onclick = ()=> openCalendar(field.querySelector('input'));
+  });
+  body.querySelectorAll('[data-openpicker="time"]').forEach(field=>{
+    field.onclick = ()=> openTimePicker(field.querySelector('input'));
   });
   body.querySelectorAll('[data-g]').forEach(el=>{
     const handler = ()=>{
@@ -751,6 +829,157 @@ function procesarHorarioPDF(file, modo){
   const modoTexto = { primero:'primera carga', reemplazar:'reemplazar', actualizar:'actualizar', agregar:'agregar' }[modo] || modo;
   showToast(`"${file.name}" recibido (modo: ${modoTexto}). El parseo automático del PDF es la próxima pieza — por ahora sigue agregando los ramos con "+ Añadir ramo".`);
 }
+
+/* ============ CALENDARIO PERSONALIZADO ============ */
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+let calTargetInput = null;
+let calViewYear, calViewMonth;
+let calSelected = null;
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+
+function openCalendar(inputEl){
+  calTargetInput = inputEl;
+  const today = new Date();
+  if(inputEl.dataset.y){
+    calViewYear = Number(inputEl.dataset.y);
+    calViewMonth = Number(inputEl.dataset.m);
+    calSelected = { y:Number(inputEl.dataset.y), m:Number(inputEl.dataset.m), d:Number(inputEl.dataset.d) };
+  } else {
+    calViewYear = today.getFullYear();
+    calViewMonth = today.getMonth();
+    calSelected = null;
+  }
+  renderCalendar();
+  document.getElementById('calBackdrop').classList.add('active');
+}
+function closeCalendar(){ document.getElementById('calBackdrop').classList.remove('active'); }
+
+function renderCalendar(){
+  document.getElementById('calMonthLabel').textContent = `${MESES[calViewMonth]} ${calViewYear}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  const firstOfMonth = new Date(calViewYear, calViewMonth, 1);
+  let startOffset = firstOfMonth.getDay() - 1;
+  if(startOffset < 0) startOffset = 6;
+  const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
+  const daysInPrevMonth = new Date(calViewYear, calViewMonth, 0).getDate();
+  const today = new Date();
+
+  const cells = [];
+  for(let i=startOffset; i>0; i--) cells.push({ d: daysInPrevMonth-i+1, other:true });
+  for(let d=1; d<=daysInMonth; d++) cells.push({ d, other:false });
+  let nextMonthDay = 1;
+  while(cells.length % 7 !== 0) cells.push({ d: nextMonthDay++, other:true });
+  grid.style.gridTemplateRows = `repeat(${cells.length/7}, 1fr)`;
+
+  cells.forEach(c=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cal-day' + (c.other ? ' other-month' : '');
+    const dot = document.createElement('span');
+    dot.className = 'cal-day-dot';
+    dot.textContent = c.d;
+    btn.appendChild(dot);
+    if(!c.other){
+      const isToday = calViewYear===today.getFullYear() && calViewMonth===today.getMonth() && c.d===today.getDate();
+      const isSelected = calSelected && calSelected.y===calViewYear && calSelected.m===calViewMonth && calSelected.d===c.d;
+      if(isToday) btn.classList.add('today');
+      if(isSelected) btn.classList.add('selected');
+      btn.onclick = ()=> selectDay(c.d);
+    }
+    grid.appendChild(btn);
+  });
+}
+function selectDay(d){
+  calSelected = { y:calViewYear, m:calViewMonth, d };
+  calTargetInput.value = `${pad2(d)}-${pad2(calViewMonth+1)}-${String(calViewYear).slice(2)}`;
+  calTargetInput.dataset.y = calViewYear;
+  calTargetInput.dataset.m = calViewMonth;
+  calTargetInput.dataset.d = d;
+  calTargetInput.dispatchEvent(new Event('input', {bubbles:true}));
+  closeCalendar();
+}
+document.getElementById('calPrev').onclick = ()=>{
+  calViewMonth--; if(calViewMonth<0){ calViewMonth=11; calViewYear--; }
+  renderCalendar();
+};
+document.getElementById('calNext').onclick = ()=>{
+  calViewMonth++; if(calViewMonth>11){ calViewMonth=0; calViewYear++; }
+  renderCalendar();
+};
+document.getElementById('calBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='calBackdrop') closeCalendar(); });
+
+/* ============ HORA PERSONALIZADA (ruedas) ============ */
+const HOURS = Array.from({length:12}, (_,i)=> i+1);
+const MINUTES = Array.from({length:60}, (_,i)=> i);
+const AMPM = ['AM','PM'];
+const ITEM_H = 42;
+let timeTargetInput = null;
+
+function buildWheel(el, items, formatFn){
+  el.innerHTML = '';
+  const spacerTop = document.createElement('div'); spacerTop.className='wheel-spacer';
+  const spacerBot = document.createElement('div'); spacerBot.className='wheel-spacer';
+  el.appendChild(spacerTop);
+  items.forEach(v=>{
+    const div = document.createElement('div');
+    div.className = 'wheel-item';
+    div.textContent = formatFn(v);
+    el.appendChild(div);
+  });
+  el.appendChild(spacerBot);
+}
+function scrollWheelToIndex(el, idx, smooth){ el.scrollTo({ top: idx*ITEM_H, behavior: smooth ? 'smooth' : 'auto' }); }
+function centeredIndex(el){ return Math.round(el.scrollTop / ITEM_H); }
+function updateCenteredStyles(el){
+  const idx = centeredIndex(el);
+  el.querySelectorAll('.wheel-item').forEach((it,i)=> it.classList.toggle('centered', i===idx));
+}
+function attachWheelScroll(el){
+  let t;
+  el.addEventListener('scroll', ()=>{
+    updateCenteredStyles(el);
+    clearTimeout(t);
+    t = setTimeout(()=>{
+      scrollWheelToIndex(el, centeredIndex(el), true);
+      updateCenteredStyles(el);
+    }, 120);
+  }, { passive:true });
+}
+const wheelHourEl = document.getElementById('wheelHour');
+const wheelMinuteEl = document.getElementById('wheelMinute');
+const wheelAmpmEl = document.getElementById('wheelAmpm');
+buildWheel(wheelHourEl, HOURS, v=>v);
+buildWheel(wheelMinuteEl, MINUTES, v=>pad2(v));
+buildWheel(wheelAmpmEl, AMPM, v=>v);
+attachWheelScroll(wheelHourEl);
+attachWheelScroll(wheelMinuteEl);
+attachWheelScroll(wheelAmpmEl);
+
+function openTimePicker(inputEl){
+  timeTargetInput = inputEl;
+  document.getElementById('timeBackdrop').classList.add('active');
+  requestAnimationFrame(()=>{
+    scrollWheelToIndex(wheelHourEl, HOURS.indexOf(12), false);
+    scrollWheelToIndex(wheelMinuteEl, MINUTES.indexOf(0), false);
+    scrollWheelToIndex(wheelAmpmEl, AMPM.indexOf('PM'), false);
+    updateCenteredStyles(wheelHourEl);
+    updateCenteredStyles(wheelMinuteEl);
+    updateCenteredStyles(wheelAmpmEl);
+  });
+}
+function closeTimePicker(){ document.getElementById('timeBackdrop').classList.remove('active'); }
+document.getElementById('timeConfirmBtn').onclick = ()=>{
+  const h = HOURS[centeredIndex(wheelHourEl)];
+  const m = MINUTES[centeredIndex(wheelMinuteEl)];
+  const ap = AMPM[centeredIndex(wheelAmpmEl)];
+  timeTargetInput.value = `${pad2(h)}:${pad2(m)} ${ap}`;
+  timeTargetInput.dispatchEvent(new Event('input', {bubbles:true}));
+  closeTimePicker();
+};
+document.getElementById('timeBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='timeBackdrop') closeTimePicker(); });
 
 renderRamosList();
 </script>
