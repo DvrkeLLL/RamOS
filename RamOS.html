@@ -34,10 +34,11 @@
   .app{position:relative; height:100vh; height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
 
   .topbar{padding:calc(20px + env(safe-area-inset-top)) 18px 12px; flex-shrink:0;}
-  .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0; display:flex; align-items:baseline;}
-  .title-sep{margin:0 7px; color:var(--border);}
-  .title-wrap{display:inline-block; overflow:hidden; vertical-align:bottom;}
-  .title-section{display:inline-block; white-space:nowrap; color:var(--primary); max-width:200px; overflow:hidden; transition:max-width .26s ease, opacity .2s ease;}
+  .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0; display:flex; align-items:center;}
+  .title-ramos{line-height:1;}
+  .title-sep{display:inline-block; width:2px; height:18px; background:var(--text); margin:0 0 0 8px; flex-shrink:0;}
+  .title-wrap{box-sizing:border-box; display:inline-block; overflow:hidden; width:44px; padding-left:8px; height:1em; line-height:1;}
+  .title-section{display:inline-block; white-space:nowrap; color:var(--primary); line-height:1;}
 
   .screens{flex:1; overflow-y:auto; padding:0 18px 110px; -webkit-overflow-scrolling:touch; position:relative;}
   .screen{display:none;}
@@ -192,6 +193,33 @@
   .cal-day.selected .cal-day-dot{background:var(--primary); color:var(--primary-ink); font-weight:700;}
   .cal-day:not(.other-month):not(.selected):active .cal-day-dot{background:var(--bg);}
 
+  /* pantalla Inicio */
+  .inicio-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); padding:18px; margin-bottom:14px; touch-action:pan-y;}
+  .inicio-card-label{font-size:10.5px; font-weight:800; color:var(--text-muted); letter-spacing:.3px; margin-bottom:10px;}
+  .clase-nombre{font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px;}
+  .clase-sala{font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--primary); line-height:1.1;}
+  .clase-bloque{font-size:12px; color:var(--text-muted); font-weight:700; margin-top:6px;}
+  .eval-ramo{font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--text);}
+  .eval-fecha{font-size:12.5px; color:var(--text-muted); margin-top:4px; text-transform:capitalize;}
+  .eval-nombre-pct{font-size:14px; font-weight:700; color:var(--primary); margin-top:10px;}
+  .eval-sala{font-size:12px; color:var(--text-muted); margin-top:4px;}
+
+  .mini-cal-weekdays{display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:4px;}
+  .mini-cal-weekdays span{text-align:center; font-size:9.5px; font-weight:700; color:var(--text-muted);}
+  .mini-cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:2px;}
+  .mini-cal-day{display:flex; align-items:center; justify-content:center; height:32px; font-size:11.5px; color:var(--text); font-family:var(--font-body);}
+  .mini-cal-day.other{color:transparent;}
+  .mini-cal-marker{width:25px; height:25px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:700; color:#fff; font-size:11px; position:relative;}
+  .mini-cal-marker.pasada{background:#35597D;}
+  .mini-cal-marker.futura{background:#9DBAD8;}
+  .mini-cal-marker.combo{width:29px; height:29px;}
+  .mini-cal-today-dot{width:19px; height:19px; border-radius:50%; background:#20262A; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;}
+  .mini-cal-legend{display:flex; gap:14px; margin-top:12px; font-size:10.5px; color:var(--text-muted);}
+  .mini-cal-legend .dot{display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:4px; vertical-align:middle;}
+  .mini-cal-legend .dot.pasada{background:#35597D;}
+  .mini-cal-legend .dot.futura{background:#9DBAD8; border-radius:3px;}
+  .mini-cal-legend .dot.hoy{background:#20262A; border-radius:50%;}
+
   .wheel-wrap{position:relative; display:flex; justify-content:center; gap:2px; height:210px; margin-bottom:16px;}
   .wheel-col{height:210px; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; width:64px;}
   .wheel-col::-webkit-scrollbar{display:none;}
@@ -227,14 +255,19 @@
   .horario-grid{display:grid; gap:5px 4px; grid-auto-rows:44px;}
   .grid-head{display:contents;}
   .grid-head .cell{color:var(--text-muted); font-family:var(--font-body); font-weight:800; font-size:9.5px; text-align:center; padding:0 0 6px;}
-  .hora-cell{display:flex; align-items:center; justify-content:center; font-family:var(--font-body); font-size:8px; font-weight:700; color:var(--text-muted); text-align:center; line-height:1.2;}
   .slot{position:relative; height:100%;}
   .slot-fill{height:100%; border-radius:10px; display:flex; flex-direction:column; padding:2px 3px; overflow:hidden; cursor:pointer; border:none; width:100%; font-family:inherit;}
-  .slot-nombre{flex:1; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-body); font-weight:700; font-size:6.6px; line-height:1.1; color:#fff; overflow:hidden;}
-  .slot-sala{flex:2; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-display); font-weight:700; font-size:10.5px; color:#fff;}
-  .horario-legend{margin-top:18px; display:flex; flex-direction:column; gap:6px;}
+  .slot-nombre{position:relative; flex:1; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-body); font-weight:700; font-size:6.6px; line-height:1.1; color:#fff; overflow:hidden;}
+  .slot-nombre::after{content:''; position:absolute; left:14%; right:14%; bottom:0; height:1px; background:rgba(255,255,255,.55);}
+  .slot-sala{flex:1; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-display); font-weight:700; font-size:10.5px; color:#fff;}
+  .almuerzo-row{grid-column:1/-1; display:flex; align-items:center; gap:8px; padding:0 2px;}
+  .almuerzo-line{flex:1; height:1px; background:var(--border);}
+  .almuerzo-label{font-family:var(--font-body); font-weight:800; font-size:9px; color:var(--text-muted); white-space:nowrap;}
+  .horario-legend{max-height:0; overflow:hidden; opacity:0; display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; transition:max-height .32s ease, opacity .25s ease;}
+  .horario-legend.expanded{max-height:400px; opacity:1; margin-top:12px;}
   .horario-legend .legend-item{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-muted);}
   .legend-dot{width:10px; height:10px; border-radius:3px; flex-shrink:0;}
+  .ramos-divider{display:flex; align-items:center; gap:8px; padding:2px; margin-top:32px; cursor:pointer;}
 
   /* detalle de un bloque del horario */
   .hd-row{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:12.5px;}
@@ -246,12 +279,14 @@
 <body>
 <div class="app">
 
-  <div class="topbar"><h1>RamOS <span class="title-sep">|</span> <span class="title-wrap"><span class="title-section" id="titleSection">Info</span></span></h1></div>
+  <div class="topbar"><h1><span class="title-ramos">RamOS</span><span class="title-sep"></span><span class="title-wrap" id="titleWrap"><span class="title-section" id="titleSection">Info</span></span></h1></div>
 
   <div class="screens">
     <div class="toast" id="toast"></div>
 
-    <div class="screen" id="screen-inicio"><div class="empty-state"><p>Inicio — próximamente.</p></div></div>
+    <div class="screen" id="screen-inicio">
+      <div id="inicioWrap"></div>
+    </div>
     <div class="screen" id="screen-horario">
       <div id="horarioWrap"></div>
     </div>
@@ -354,9 +389,9 @@
 
 <script>
 const BLOQUES = [
-  {n:1, r:'08:15–09:35'}, {n:2, r:'09:50–11:10'}, {n:3, r:'11:25–12:45'},
-  {n:4, r:'13:45–15:05'}, {n:5, r:'15:20–16:40'}, {n:6, r:'16:55–18:15'},
-  {n:7, r:'18:45–20:05'}, {n:8, r:'20:05–21:25'}, {n:9, r:'21:25–22:45'}
+  {n:1, r:'08:15–09:35', sh:8, sm:15, eh:9, em:35}, {n:2, r:'09:50–11:10', sh:9, sm:50, eh:11, em:10}, {n:3, r:'11:25–12:45', sh:11, sm:25, eh:12, em:45},
+  {n:4, r:'13:45–15:05', sh:13, sm:45, eh:15, em:5}, {n:5, r:'15:20–16:40', sh:15, sm:20, eh:16, em:40}, {n:6, r:'16:55–18:15', sh:16, sm:55, eh:18, em:15},
+  {n:7, r:'18:45–20:05', sh:18, sm:45, eh:20, em:5}, {n:8, r:'20:05–21:25', sh:20, sm:5, eh:21, em:25}, {n:9, r:'21:25–22:45', sh:21, sm:25, eh:22, em:45}
 ];
 const DIAS = [{v:'L',l:'Lunes'},{v:'M',l:'Martes'},{v:'W',l:'Miércoles'},{v:'J',l:'Jueves'},{v:'V',l:'Viernes'},{v:'S',l:'Sábado'}];
 
@@ -387,25 +422,49 @@ function saveRamos(){
 }
 
 const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Info', promedio:'Promedio', calendario:'Calendario' };
+const titleMeasureCanvas = document.createElement('canvas');
+const titleMeasureCtx = titleMeasureCanvas.getContext('2d');
+function medirAnchoTitulo(text){
+  const cs = getComputedStyle(document.getElementById('titleSection'));
+  titleMeasureCtx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  return Math.ceil(titleMeasureCtx.measureText(text).width);
+}
+function medirAltoMayuscula(){
+  const cs = getComputedStyle(document.getElementById('titleSection'));
+  titleMeasureCtx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const m = titleMeasureCtx.measureText('H');
+  return Math.ceil(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent);
+}
+let titleAnimTimer = null;
+const TITLE_EXTRA_TRAVEL = 40;
 function setTitleSection(text){
   const el = document.getElementById('titleSection');
-  el.style.maxWidth = '0px';
-  el.style.opacity = '0';
-  setTimeout(()=>{
+  const wrap = document.getElementById('titleWrap');
+  clearTimeout(titleAnimTimer);
+  el.style.transition = 'transform .28s ease';
+  el.style.transform = `translateX(calc(-100% - ${TITLE_EXTRA_TRAVEL}px))`;
+  titleAnimTimer = setTimeout(()=>{
     el.textContent = text;
-    el.style.maxWidth = '200px';
-    el.style.opacity = '1';
-  }, 260);
+    wrap.style.width = (medirAnchoTitulo(text) + 8 + 3) + 'px';
+    el.style.transition = 'none';
+    el.style.transform = `translateX(calc(-100% - ${TITLE_EXTRA_TRAVEL}px))`;
+    void el.offsetWidth;
+    el.style.transition = 'transform .28s ease';
+    el.style.transform = 'translateX(0)';
+  }, 280);
 }
 
 document.querySelectorAll('.nav-item').forEach(btn=>{
   btn.onclick = ()=>{
+    if(btn.classList.contains('active')) return;
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('screen-'+btn.dataset.tab).classList.add('active');
+    document.getElementById('uploadFabBtn').style.display = btn.dataset.tab==='info' ? '' : 'none';
     setTitleSection(TAB_LABELS[btn.dataset.tab]);
     if(btn.dataset.tab==='horario') renderHorarioTab();
+    if(btn.dataset.tab==='inicio') renderInicioTab();
   };
 });
 
@@ -1222,13 +1281,15 @@ function renderHorarioTab(){
   const dias = hayS ? ['L','M','W','J','V','S'] : ['L','M','W','J','V'];
   const bloquesUsados = BLOQUES.filter(b=> dias.some(d=> mapa[`${d}-${b.n}`]));
 
-  let html = `<div class="horario-grid" style="grid-template-columns:26px repeat(${dias.length}, 1fr);">`;
-  html += `<div class="grid-head"><div class="cell"></div>`;
+  let html = `<div class="horario-grid" style="grid-template-columns:repeat(${dias.length}, 1fr);">`;
+  html += `<div class="grid-head">`;
   dias.forEach(d=> html += `<div class="cell">${DIA_LABEL_FULL[d]}</div>`);
   html += `</div>`;
 
-  bloquesUsados.forEach(b=>{
-    html += `<div class="hora-cell">${b.n}</div>`;
+  bloquesUsados.forEach((b, i)=>{
+    if(i>0 && bloquesUsados[i-1].n<=3 && b.n>=4){
+      html += `<div class="almuerzo-row"><span class="almuerzo-line"></span><span class="almuerzo-label">Almuerzo</span><span class="almuerzo-line"></span></div>`;
+    }
     dias.forEach(d=>{
       const item = mapa[`${d}-${b.n}`];
       if(item){
@@ -1241,9 +1302,13 @@ function renderHorarioTab(){
   });
   html += `</div>`;
 
-  html += `<div class="horario-legend">${ramos.map((r,idx)=>`<div class="legend-item"><span class="legend-dot" style="background:${HORARIO_COLORS[idx % HORARIO_COLORS.length]}"></span>${r.nombre}</div>`).join('')}</div>`;
+  html += `<div class="ramos-divider" id="ramosDividerBtn"><span class="almuerzo-line"></span><span class="almuerzo-label">Ramos</span><span class="almuerzo-line"></span></div>`;
+  html += `<div class="horario-legend" id="horarioLegend">${ramos.map((r,idx)=>`<div class="legend-item"><span class="legend-dot" style="background:${HORARIO_COLORS[idx % HORARIO_COLORS.length]}"></span>${r.nombre}</div>`).join('')}</div>`;
 
   wrap.innerHTML = html;
+  document.getElementById('ramosDividerBtn').onclick = ()=>{
+    document.getElementById('horarioLegend').classList.toggle('expanded');
+  };
   wrap.querySelectorAll('[data-hdramo]').forEach(btn=>{
     btn.onclick = ()=> openHorarioDetalle(btn.dataset.hdramo, btn.dataset.hddia, Number(btn.dataset.hdbloque));
   });
@@ -1269,6 +1334,171 @@ function openHorarioDetalle(ramoId, dia, bloque){
 document.getElementById('hdCloseBtn').onclick = ()=>{ document.getElementById('horarioDetalleBackdrop').classList.remove('active'); };
 document.getElementById('horarioDetalleBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='horarioDetalleBackdrop') e.currentTarget.classList.remove('active'); });
 
+/* ---------- pestaña Inicio ---------- */
+const DIA_NUM = {L:1, M:2, W:3, J:4, V:5, S:6};
+const MESES_LARGO = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function getBloqueStartDate(baseDate, dia, bloqueNum){
+  const target = DIA_NUM[dia];
+  if(!target) return null;
+  const cur = baseDate.getDay()===0 ? 7 : baseDate.getDay();
+  const d = new Date(baseDate);
+  d.setDate(d.getDate() + (target - cur));
+  const b = BLOQUES.find(x=>x.n===bloqueNum);
+  if(!b) return null;
+  d.setHours(b.sh, b.sm, 0, 0);
+  return d;
+}
+function getProximasClases(){
+  const now = new Date();
+  const candidatos = [];
+  ramos.forEach(r=>{
+    r.horarios.forEach(h=>{
+      let start = getBloqueStartDate(now, h.dia, h.bloque);
+      if(!start) return;
+      if(start.getTime() + 40*60000 <= now.getTime()) start = new Date(start.getTime() + 7*24*60*60000);
+      candidatos.push({ ramo:r, h, start });
+    });
+  });
+  candidatos.sort((a,b)=> a.start - b.start);
+  return candidatos;
+}
+function parseFechaDDMMYY(str){
+  if(!str) return null;
+  const m = str.match(/^(\d{2})-(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  return new Date(2000+Number(m[3]), Number(m[2])-1, Number(m[1]));
+}
+function getProximaEvaluacion(){
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const candidatos = [];
+  ramos.forEach(r=>{
+    const evals = [...r.poolCompartido.sueltas, ...r.poolCompartido.grupos.flatMap(g=>g.evaluaciones)];
+    evals.forEach(e=>{
+      const f = parseFechaDDMMYY(e.fecha);
+      if(f && f.getTime() >= hoy.getTime()) candidatos.push({ ramo:r, e, fecha:f });
+    });
+  });
+  candidatos.sort((a,b)=> a.fecha - b.fecha);
+  return candidatos[0] || null;
+}
+function getEvaluacionesDelMes(year, month){
+  const map = {};
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  ramos.forEach(r=>{
+    const evals = [...r.poolCompartido.sueltas, ...r.poolCompartido.grupos.flatMap(g=>g.evaluaciones)];
+    evals.forEach(e=>{
+      const f = parseFechaDDMMYY(e.fecha);
+      if(!f || f.getFullYear()!==year || f.getMonth()!==month) return;
+      const fSinHora = new Date(f); fSinHora.setHours(0,0,0,0);
+      let estado;
+      if(fSinHora.getTime() < hoy.getTime()) estado = 'pasada';
+      else if(fSinHora.getTime() > hoy.getTime()) estado = 'futura';
+      else estado = (e.notaRaw && e.notaRaw.trim()) ? 'pasada' : 'futura';
+      const day = f.getDate();
+      if(!map[day] || estado==='pasada') map[day] = estado;
+    });
+  });
+  return map;
+}
+
+let proxClaseIndex = 0;
+function attachSwipe(el, onNext, onPrev){
+  let startX = null;
+  el.ontouchstart = (e)=>{ startX = e.touches[0].clientX; };
+  el.ontouchend = (e)=>{
+    if(startX===null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if(dx < -40) onNext();
+    else if(dx > 40) onPrev();
+    startX = null;
+  };
+}
+function renderProximaClaseCard(){
+  const card = document.getElementById('cardProximaClase');
+  const lista = getProximasClases();
+  if(lista.length===0){
+    card.innerHTML = `<div class="inicio-card-label">Próxima clase</div><p style="font-size:13px;color:var(--text-muted);margin:0;">No hay horarios cargados.</p>`;
+    return;
+  }
+  if(proxClaseIndex >= lista.length) proxClaseIndex = lista.length-1;
+  if(proxClaseIndex < 0) proxClaseIndex = 0;
+  const item = lista[proxClaseIndex];
+  const nombreMostrado = item.h.tipo==='teoria' ? item.ramo.nombre : `${item.ramo.nombre} - ${item.h.tipo==='laboratorio'?'L':'E'}`;
+  card.innerHTML = `
+    <div class="inicio-card-label">Próxima clase</div>
+    <div class="clase-nombre">${nombreMostrado}</div>
+    <div class="clase-sala">${item.h.sala || '—'}</div>
+    <div class="clase-bloque">${item.h.dia}${item.h.bloque}</div>
+  `;
+  attachSwipe(card,
+    ()=>{ proxClaseIndex++; renderProximaClaseCard(); },
+    ()=>{ proxClaseIndex--; renderProximaClaseCard(); });
+}
+function renderProximaEvalCard(){
+  const card = document.getElementById('cardProximaEval');
+  const item = getProximaEvaluacion();
+  if(!item){
+    card.innerHTML = `<div class="inicio-card-label">Próxima evaluación</div><p style="font-size:13px;color:var(--text-muted);margin:0;">No hay evaluaciones con fecha cargada.</p>`;
+    return;
+  }
+  const fechaTxt = item.fecha.toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'long' });
+  card.innerHTML = `
+    <div class="inicio-card-label">Próxima evaluación</div>
+    <div class="eval-ramo">${item.ramo.nombre}</div>
+    <div class="eval-fecha">${fechaTxt}</div>
+    <div class="eval-nombre-pct">${item.e.nombre || 'Evaluación'} · ${item.e.ponderacion||0}%</div>
+    <div class="eval-sala">${item.e.sala || '—'}</div>
+  `;
+}
+function renderMiniCalCard(){
+  const card = document.getElementById('cardMiniCal');
+  const hoy = new Date();
+  const year = hoy.getFullYear(), month = hoy.getMonth();
+  const evalMap = getEvaluacionesDelMes(year, month);
+
+  const firstOfMonth = new Date(year, month, 1);
+  let startOffset = firstOfMonth.getDay() - 1;
+  if(startOffset < 0) startOffset = 6;
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  let cellsHtml = '';
+  for(let i=0; i<startOffset; i++) cellsHtml += `<div class="mini-cal-day other"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const isToday = d===hoy.getDate();
+    const estado = evalMap[d];
+    let inner = `${d}`;
+    if(estado && isToday) inner = `<div class="mini-cal-marker ${estado} combo"><div class="mini-cal-today-dot">${d}</div></div>`;
+    else if(estado) inner = `<div class="mini-cal-marker ${estado}">${d}</div>`;
+    else if(isToday) inner = `<div class="mini-cal-today-dot">${d}</div>`;
+    cellsHtml += `<div class="mini-cal-day">${inner}</div>`;
+  }
+  card.innerHTML = `
+    <div class="inicio-card-label">${MESES_LARGO[month]} ${year}</div>
+    <div class="mini-cal-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+    <div class="mini-cal-grid">${cellsHtml}</div>
+    <div class="mini-cal-legend">
+      <span><i class="dot pasada"></i>Rendida</span>
+      <span><i class="dot futura"></i>Pendiente</span>
+      <span><i class="dot hoy"></i>Hoy</span>
+    </div>
+  `;
+}
+function renderInicioTab(){
+  proxClaseIndex = 0;
+  const wrap = document.getElementById('inicioWrap');
+  wrap.innerHTML = `
+    <div class="inicio-card" id="cardProximaClase"></div>
+    <div class="inicio-card" id="cardProximaEval"></div>
+    <div class="inicio-card" id="cardMiniCal"></div>
+  `;
+  renderProximaClaseCard();
+  renderProximaEvalCard();
+  renderMiniCalCard();
+}
+
+document.getElementById('titleWrap').style.width = (medirAnchoTitulo('Info') + 8 + 3) + 'px';
+document.querySelector('.title-sep').style.height = medirAltoMayuscula() + 'px';
 renderRamosList();
 </script>
 </body>
