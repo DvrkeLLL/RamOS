@@ -196,13 +196,13 @@
   /* pantalla Inicio */
   .inicio-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); padding:18px; margin-bottom:14px; touch-action:pan-y;}
   .inicio-card-label{font-size:10.5px; font-weight:800; color:var(--text-muted); letter-spacing:.3px; margin-bottom:10px;}
-  .clase-nombre{font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px;}
-  .clase-sala{font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--primary); line-height:1.1;}
-  .clase-bloque{font-size:12px; color:var(--text-muted); font-weight:700; margin-top:6px;}
-  .eval-ramo{font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--text);}
-  .eval-fecha{font-size:12.5px; color:var(--text-muted); margin-top:4px; text-transform:capitalize;}
-  .eval-nombre-pct{font-size:14px; font-weight:700; color:var(--primary); margin-top:10px;}
-  .eval-sala{font-size:12px; color:var(--text-muted); margin-top:4px;}
+  .clase-nombre{font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px; text-align:center;}
+  .clase-sala{font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--primary); line-height:1.1; text-align:center;}
+  .clase-bloque{font-size:12px; color:var(--text-muted); font-weight:700; margin-top:6px; text-align:center;}
+  .eval-ramo{font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--text); text-align:center;}
+  .eval-fecha{font-size:12.5px; color:var(--text-muted); margin-top:4px; text-transform:capitalize; text-align:center;}
+  .eval-nombre-pct{font-size:14px; font-weight:700; color:var(--primary); margin-top:10px; text-align:center;}
+  .eval-sala{font-size:12px; color:var(--text-muted); margin-top:4px; text-align:center;}
 
   .mini-cal-weekdays{display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:4px;}
   .mini-cal-weekdays span{text-align:center; font-size:9.5px; font-weight:700; color:var(--text-muted);}
@@ -219,6 +219,63 @@
   .mini-cal-legend .dot.pasada{background:#35597D;}
   .mini-cal-legend .dot.futura{background:#9DBAD8; border-radius:3px;}
   .mini-cal-legend .dot.hoy{background:#20262A; border-radius:50%;}
+
+  /* pantalla Calendario */
+  .calvista-toggle{margin:0 0 16px;}
+  .calvista-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); padding:18px; margin-bottom:14px;}
+  .cal-day.clickable{cursor:pointer;}
+  .calvista-detalle{margin-top:18px;}
+  .calvista-detalle-card{background:var(--surface); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 3px 12px rgba(36,52,74,.07);}
+  .calvista-detalle-titulo{font-family:var(--font-display); font-size:14px; font-weight:700; margin-bottom:6px; color:var(--text);}
+  .calendario-tabla{min-width:560px; table-layout:fixed;}
+  .calendario-tabla th:nth-child(1), .calendario-tabla td:nth-child(1){width:26px;}
+  .calendario-tabla th:nth-child(2), .calendario-tabla td:nth-child(2){width:104px;}
+  .calendario-tabla th:nth-child(3), .calendario-tabla td:nth-child(3){width:96px;}
+  .calendario-tabla th:nth-child(4), .calendario-tabla td:nth-child(4){width:78px;}
+  .calendario-tabla th:nth-child(5), .calendario-tabla td:nth-child(5){width:60px;}
+  .calendario-tabla th:nth-child(6), .calendario-tabla td:nth-child(6){width:48px;}
+  .calendario-tabla th:nth-child(7), .calendario-tabla td:nth-child(7){width:42px;}
+  .calendario-tabla th:nth-child(8), .calendario-tabla td:nth-child(8){width:66px;}
+  .calendario-tabla td{padding:8px 5px; font-size:11.5px; color:var(--text); border-bottom:1px solid var(--border); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .calendario-tabla tbody tr{background:var(--surface);}
+  .calendario-tabla tbody tr:nth-child(even){background:var(--bg);}
+
+  /* pantalla Promedio */
+  .promedio-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); margin-bottom:14px; overflow:hidden;}
+  .promedio-header{display:flex; justify-content:space-between; align-items:center; padding:16px 18px; cursor:pointer; gap:10px;}
+  .promedio-nombre{font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--text);}
+  .promedio-nombre .sub{display:block; font-size:11px; font-weight:600; color:var(--text-muted); margin-top:2px; transition:opacity .3s ease;}
+  .promedio-card.expanded .promedio-nombre .sub{opacity:0;}
+  .promedio-num-wrap{text-align:right; flex-shrink:0;}
+  .promedio-num{font-family:var(--font-display); font-size:24px; font-weight:800;}
+  .promedio-num.pasa{color:var(--primary);}
+  .promedio-num.no-pasa{color:var(--danger);}
+  .promedio-num-label{font-size:9.5px; color:var(--text-muted); font-weight:700;}
+
+  .promedio-detail{display:grid; grid-template-rows:0fr; opacity:0; transform:translateX(-26px); transition:grid-template-rows .38s cubic-bezier(.4,0,.2,1), opacity .3s ease, transform .38s cubic-bezier(.4,0,.2,1);}
+  .promedio-detail.expanded{grid-template-rows:1fr; opacity:1; transform:translateX(0);}
+  .promedio-detail-inner{overflow:hidden; padding:0 18px 18px;}
+
+  .promedio-grupo-label{font-family:var(--font-body); font-weight:800; font-size:10.5px; color:var(--text-muted); margin:12px 0 6px; padding-top:10px; border-top:1px dashed var(--border);}
+  .promedio-grupo-label.sin-borde{border-top:none; padding-top:0; margin-top:0;}
+  .promedio-grupo-label:first-child{border-top:none; padding-top:0; margin-top:0;}
+  .promedio-eval-row{display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:13px;}
+  .promedio-eval-nombre{color:var(--text); flex:1;}
+  .promedio-eval-nota{font-weight:700; color:var(--text); flex-shrink:0; margin-left:10px;}
+  .promedio-eval-row.tachada .promedio-eval-nombre, .promedio-eval-row.tachada .promedio-eval-nota{text-decoration:line-through; color:var(--text-muted); opacity:.6;}
+  .promedio-eval-row.cubierta .promedio-eval-nota{
+    background:var(--bg); border:1px dashed var(--border); border-radius:6px; padding:2px 8px; font-size:10.5px; color:var(--text-muted); font-weight:700;
+  }
+
+  .promedio-stats{display:flex; gap:10px; margin-top:14px;}
+  .promedio-stat{flex:1; background:var(--bg); border-radius:12px; padding:10px; text-align:center;}
+  .promedio-stat-num{font-family:var(--font-display); font-size:17px; font-weight:800; color:var(--text);}
+  .promedio-stat-label{font-size:9.5px; color:var(--text-muted); font-weight:700; margin-top:2px;}
+
+  .promedio-resultado{margin-top:14px; padding:12px; border-radius:12px; text-align:center; font-family:var(--font-body); font-weight:700; font-size:13px;}
+  .promedio-resultado.aprobado{background:rgba(92,134,176,.12); color:var(--primary);}
+  .promedio-resultado.necesita{background:rgba(181,69,58,.1); color:var(--danger);}
+  .promedio-resultado .num{font-family:var(--font-display); font-size:17px;}
 
   .wheel-wrap{position:relative; display:flex; justify-content:center; gap:2px; height:210px; margin-bottom:16px;}
   .wheel-col{height:210px; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; width:64px;}
@@ -246,6 +303,12 @@
   .grupo-pond input:focus{border-bottom-color:var(--primary);}
   .grupo-pond span{font-size:11px; color:var(--text-muted);}
   .mini-btn{border:1.5px solid var(--primary); background:transparent; color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:10.5px; padding:6px 12px; border-radius:999px; cursor:pointer;}
+  .pool-toggle-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; padding-bottom:12px; border-bottom:1px dashed var(--border);}
+  .pool-toggle-label{font-family:var(--font-body); font-weight:700; font-size:11.5px; color:var(--text-muted);}
+  .pool-toggle{display:inline-flex; align-items:center; gap:5px; padding:7px 14px; flex-shrink:0;}
+  .lab-dividir-box{border:1.5px dashed var(--border); border-radius:12px; padding:10px 12px; margin-top:4px;}
+  .pool-toggle svg{width:15px; height:15px; stroke:var(--primary); fill:none; stroke-width:1.8;}
+  .pool-toggle span{font-family:var(--font-display); font-weight:800; font-size:13px;}
   .discarded-row{opacity:.5;}
   .discarded-row input{text-decoration:line-through;}
 
@@ -279,34 +342,38 @@
 <body>
 <div class="app">
 
-  <div class="topbar"><h1><span class="title-ramos">RamOS</span><span class="title-sep"></span><span class="title-wrap" id="titleWrap"><span class="title-section" id="titleSection">Info</span></span></h1></div>
+  <div class="topbar"><h1><span class="title-ramos">RamOS</span><span class="title-sep"></span><span class="title-wrap" id="titleWrap"><span class="title-section" id="titleSection">Inicio</span></span></h1></div>
 
   <div class="screens">
     <div class="toast" id="toast"></div>
 
-    <div class="screen" id="screen-inicio">
+    <div class="screen active" id="screen-inicio">
       <div id="inicioWrap"></div>
     </div>
     <div class="screen" id="screen-horario">
       <div id="horarioWrap"></div>
     </div>
 
-    <div class="screen active" id="screen-info">
+    <div class="screen" id="screen-info">
       <div id="ramosList"></div>
       <div class="add-frame big" id="addFrame"><div class="plus">+</div><div class="label">Añadir ramo</div></div>
     </div>
 
-    <div class="screen" id="screen-promedio"><div class="empty-state"><p>Promedio — próximamente.</p></div></div>
-    <div class="screen" id="screen-calendario"><div class="empty-state"><p>Calendario — próximamente.</p></div></div>
+    <div class="screen" id="screen-promedio">
+      <div id="promedioWrap"></div>
+    </div>
+    <div class="screen" id="screen-calendario">
+      <div id="calendarioWrap"></div>
+    </div>
   </div>
 
-  <button class="btn btn-primary fab" id="uploadFabBtn">Subir horario</button>
+  <button class="btn btn-primary fab" id="uploadFabBtn" style="display:none;">Subir horario</button>
   <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
 
   <nav class="bottom-nav">
-    <button class="nav-item" data-tab="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span>Inicio</span></button>
+    <button class="nav-item active" data-tab="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span>Inicio</span></button>
     <button class="nav-item" data-tab="horario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span>Horario</span></button>
-    <button class="nav-item active" data-tab="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/></svg><span>Info</span></button>
+    <button class="nav-item" data-tab="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/></svg><span>Info</span></button>
     <button class="nav-item" data-tab="promedio"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg><span>Promedio</span></button>
     <button class="nav-item" data-tab="calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg><span>Calendario</span></button>
   </nav>
@@ -363,6 +430,10 @@
     </div>
   </div>
 
+  <div class="choice-backdrop" id="calVistaDetalleBackdrop">
+    <div class="picker-card" id="calVistaDetalleCard" style="max-height:78vh; overflow-y:auto;"></div>
+  </div>
+
   <div class="choice-backdrop" id="horarioDetalleBackdrop">
     <div class="choice-card">
       <h3 id="hdNombre">Ramo</h3>
@@ -398,22 +469,69 @@ const DIAS = [{v:'L',l:'Lunes'},{v:'M',l:'Martes'},{v:'W',l:'Miércoles'},{v:'J'
 const ICON_INFO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9.5 12.5h5M9.5 16h5"/></svg>';
 const ICON_HORARIO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
 const ICON_EVAL = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 7 21l5-2.5 5 2.5-2-7.5"/></svg>';
+const ICON_MATRAZ = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.3 15h9.4"/></svg>';
+const ICON_CUADERNO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3" width="15" height="18" rx="2"/><path d="M9 3v18M13 8h4M13 12h4M13 16h2.5"/></svg>';
+const ICON_FLAG = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h13l-3 4 3 4H5"/></svg>';
 
-let ramos = loadRamos();
 let idCounter = Date.now();
 function generarId(){ return idCounter++; }
+let ramos = loadRamos();
 let draft = null;
 let editingId = null;
 let modalTab = 'evaluaciones';
 let activeGroupIndex = null;
+let evalPoolActivo = 'teoria';
+function getActivePool(){ return evalPoolActivo==='laboratorio' ? draft.poolLaboratorio : draft.poolCompartido; }
+function draftTieneLabDividido(){ return draft.horarios.some(h=> h.tipo==='laboratorio' && h.dividir); }
 let grupoOptionsIndex = null;
 let pendingUploadMode = null;
 let toastTimer = null;
 
+function normalizarRamoCargado(r){
+  r.nombre = r.nombre || '';
+  r.codigo = r.codigo || '';
+  r.profesorNombre = r.profesorNombre || '';
+  r.profesorCorreo = r.profesorCorreo || '';
+  r.coordinacion = r.coordinacion || '';
+  r.horarios = Array.isArray(r.horarios) ? r.horarios : [];
+  r.horarios.forEach(h=>{
+    h.dia = h.dia || 'L';
+    h.bloque = h.bloque || 1;
+    h.sala = h.sala || '';
+    h.tipo = h.tipo || 'teoria';
+    h.dividir = !!h.dividir;
+    h.pondTeoria = h.pondTeoria || 0;
+    h.pondLab = h.pondLab || 0;
+  });
+  if(!r.poolCompartido || typeof r.poolCompartido !== 'object') r.poolCompartido = { grupos:[], sueltas:[] };
+  if(!r.poolLaboratorio || typeof r.poolLaboratorio !== 'object') r.poolLaboratorio = { grupos:[], sueltas:[] };
+  [r.poolCompartido, r.poolLaboratorio].forEach(pool=>{
+    pool.sueltas = Array.isArray(pool.sueltas) ? pool.sueltas : [];
+    pool.sueltas.forEach(e=>{
+      e.nombre = e.nombre || ''; e.notaRaw = e.notaRaw || ''; e.ponderacion = e.ponderacion || 0;
+      e.fecha = e.fecha || ''; e.hora = e.hora || ''; e.sala = e.sala || '';
+    });
+    pool.grupos = Array.isArray(pool.grupos) ? pool.grupos : [];
+    pool.grupos.forEach(g=>{
+      g.nombre = g.nombre || '';
+      g.ponderacionGrupo = g.ponderacionGrupo || 0;
+      g.eliminarPeorNota = !!g.eliminarPeorNota;
+      g.dividirIgual = !!g.dividirIgual;
+      g.evaluaciones = Array.isArray(g.evaluaciones) ? g.evaluaciones : [];
+      g.evaluaciones.forEach(e=>{
+        e.nombre = e.nombre || ''; e.notaRaw = e.notaRaw || ''; e.ponderacion = e.ponderacion || 0;
+        e.fecha = e.fecha || ''; e.hora = e.hora || ''; e.sala = e.sala || '';
+      });
+    });
+  });
+  if(!r.id) r.id = generarId();
+  return r;
+}
 function loadRamos(){
   try{
     const raw = localStorage.getItem('ramos_v1');
-    return raw ? JSON.parse(raw) : [];
+    const lista = raw ? JSON.parse(raw) : [];
+    return Array.isArray(lista) ? lista.map(normalizarRamoCargado) : [];
   }catch(err){ return []; }
 }
 function saveRamos(){
@@ -465,6 +583,8 @@ document.querySelectorAll('.nav-item').forEach(btn=>{
     setTitleSection(TAB_LABELS[btn.dataset.tab]);
     if(btn.dataset.tab==='horario') renderHorarioTab();
     if(btn.dataset.tab==='inicio') renderInicioTab();
+    if(btn.dataset.tab==='promedio') renderPromedioTab();
+    if(btn.dataset.tab==='calendario') initCalendarioTab();
   };
 });
 
@@ -481,7 +601,8 @@ function nuevoRamo(){
     id: generarId(),
     nombre:'', codigo:'', profesorNombre:'', profesorCorreo:'', coordinacion:'',
     horarios: [],
-    poolCompartido: { grupos:[], sueltas:[] }
+    poolCompartido: { grupos:[], sueltas:[] },
+    poolLaboratorio: { grupos:[], sueltas:[] }
   };
 }
 function nuevaEvaluacion(){ return { nombre:'', notaRaw:'', ponderacion:0, fecha:'', hora:'', sala:'' }; }
@@ -497,7 +618,7 @@ function normalizarNota(raw){
   return isNaN(n) ? null : n;
 }
 function getDiscardedIndex(g){
-  if(!g.eliminarPeorNota || g.evaluaciones.length===0) return -1;
+  if(!g.eliminarPeorNota || g.evaluaciones.length<=1) return -1;
   let lastEmptyIdx = -1;
   g.evaluaciones.forEach((e,i)=>{ if(!e.notaRaw || !e.notaRaw.trim()) lastEmptyIdx = i; });
   if(lastEmptyIdx !== -1) return lastEmptyIdx;
@@ -537,6 +658,7 @@ document.getElementById('addFrame').onclick = ()=>{
   editingId = null;
   modalTab = 'evaluaciones';
   activeGroupIndex = null;
+  evalPoolActivo = 'teoria';
   document.getElementById('modalTitle').textContent = 'Nuevo ramo';
   renderModal();
   openRamoModal();
@@ -548,6 +670,7 @@ function openEditRamo(id){
   editingId = id;
   modalTab = 'evaluaciones';
   activeGroupIndex = null;
+  evalPoolActivo = 'teoria';
   document.getElementById('modalTitle').textContent = draft.nombre || 'Editar ramo';
   renderModal();
   openRamoModal();
@@ -617,14 +740,19 @@ function evalTabHTML(){
   const actionsHTML = activeGroupIndex === null
     ? `<button type="button" class="add-link" id="addEvalRowBtn">+ Fila</button><button type="button" class="add-link" id="crearGrupoBtn">Crear grupo</button>`
     : `<button type="button" class="add-link" id="addGrupoRowBtn">+ Fila grupo</button><button type="button" class="add-link" id="terminarGrupoBtn">Terminar grupo</button>`;
+  const pool = getActivePool();
+  const toggleHTML = draftTieneLabDividido()
+    ? `<div class="pool-toggle-row"><span class="pool-toggle-label">${evalPoolActivo==='teoria' ? 'Teoría' : 'Laboratorio'}</span><button type="button" class="mini-btn pool-toggle" id="evalPoolToggleBtn">${evalPoolActivo==='teoria' ? ICON_MATRAZ+'<span>L</span>' : ICON_CUADERNO+'<span>T</span>'}</button></div>`
+    : '';
   return `
+    ${toggleHTML}
     <div class="table-scroll">
       <table class="eval-table">
         <thead><tr><th>Evaluación</th><th>Nota</th><th>%</th><th>Fecha</th><th>Hora</th><th>Sala</th><th></th></tr></thead>
-        <tbody>${draft.poolCompartido.sueltas.map((e,i)=>evalRowHTML(e,i)).join('')}</tbody>
+        <tbody>${pool.sueltas.map((e,i)=>evalRowHTML(e,i)).join('')}</tbody>
       </table>
     </div>
-    <div id="gruposWrap">${draft.poolCompartido.grupos.map((g,gi)=>grupoBlockHTML(g,gi)).join('')}</div>
+    <div id="gruposWrap">${pool.grupos.map((g,gi)=>grupoBlockHTML(g,gi)).join('')}</div>
     <div class="eval-actions-row">${actionsHTML}</div>
     <p class="hint">Toca el borde de un grupo ya creado para volver a editarlo y agregar más pruebas.</p>
   `;
@@ -703,15 +831,17 @@ function horarioRowHTML(h, i){
       </select>
     </div>
     ${h.tipo==='laboratorio' ? `
-    <label class="switch-row">
-      <span class="switch-text">Dividir notas de lab y teoría</span>
-      <span class="switch"><input type="checkbox" data-h="${i}" data-hfield="dividirBool" ${h.dividir?'checked':''}><span class="track"><span class="thumb"></span></span></span>
-    </label>
-    ${h.dividir ? `
-    <div class="field-row">
-      <div class="field-group"><label class="field-label">% Teoría</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondTeoria" value="${h.pondTeoria||''}" placeholder="0"></div>
-      <div class="field-group"><label class="field-label">% Laboratorio</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondLab" value="${h.pondLab||''}" placeholder="0"></div>
-    </div>` : ''}
+    <div class="lab-dividir-box">
+      <label class="switch-row">
+        <span class="switch-text">Dividir notas de lab y teoría</span>
+        <span class="switch"><input type="checkbox" data-h="${i}" data-hfield="dividirBool" ${h.dividir?'checked':''}><span class="track"><span class="thumb"></span></span></span>
+      </label>
+      ${h.dividir ? `
+      <div class="field-row">
+        <div class="field-group"><label class="field-label">% Teoría</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondTeoria" value="${h.pondTeoria||''}" placeholder="50"></div>
+        <div class="field-group"><label class="field-label">% Laboratorio</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondLab" value="${h.pondLab||''}" placeholder="50"></div>
+      </div>` : ''}
+    </div>
     ` : ''}
   </div>`;
 }
@@ -736,17 +866,24 @@ function attachModalListeners(){
   const body = document.getElementById('modalBody');
 
   // Evaluaciones — filas sueltas / grupo activo
+  const evalPoolToggleBtn = document.getElementById('evalPoolToggleBtn');
+  if(evalPoolToggleBtn) evalPoolToggleBtn.onclick = ()=>{
+    evalPoolActivo = evalPoolActivo==='teoria' ? 'laboratorio' : 'teoria';
+    activeGroupIndex = null;
+    renderModal();
+  };
   const addEvalBtn = document.getElementById('addEvalRowBtn');
-  if(addEvalBtn) addEvalBtn.onclick = ()=>{ draft.poolCompartido.sueltas.push(nuevaEvaluacion()); renderModal(); };
+  if(addEvalBtn) addEvalBtn.onclick = ()=>{ getActivePool().sueltas.push(nuevaEvaluacion()); renderModal(); };
   const crearGrupoBtn = document.getElementById('crearGrupoBtn');
   if(crearGrupoBtn) crearGrupoBtn.onclick = ()=>{
-    draft.poolCompartido.grupos.push(nuevoGrupo());
-    activeGroupIndex = draft.poolCompartido.grupos.length - 1;
+    const pool = getActivePool();
+    pool.grupos.push(nuevoGrupo());
+    activeGroupIndex = pool.grupos.length - 1;
     renderModal();
   };
   const addGrupoRowBtn = document.getElementById('addGrupoRowBtn');
   if(addGrupoRowBtn) addGrupoRowBtn.onclick = ()=>{
-    const grupo = draft.poolCompartido.grupos[activeGroupIndex];
+    const grupo = getActivePool().grupos[activeGroupIndex];
     const last = grupo.evaluaciones[grupo.evaluaciones.length-1];
     const nueva = nuevaEvaluacion();
     if(last) nueva.nombre = nombreSiguiente(last.nombre);
@@ -758,16 +895,16 @@ function attachModalListeners(){
 
   body.querySelectorAll('[data-rmrow]').forEach(btn=>{
     btn.onclick = ()=>{
-      if(btn.dataset.egroup !== undefined) draft.poolCompartido.grupos[btn.dataset.egroup].evaluaciones.splice(btn.dataset.rmrow,1);
-      else draft.poolCompartido.sueltas.splice(btn.dataset.rmrow,1);
+      if(btn.dataset.egroup !== undefined) getActivePool().grupos[btn.dataset.egroup].evaluaciones.splice(btn.dataset.rmrow,1);
+      else getActivePool().sueltas.splice(btn.dataset.rmrow,1);
       renderModal();
     };
   });
   body.querySelectorAll('[data-erow]').forEach(el=>{
     el.oninput = ()=>{
       const target = el.dataset.egroup !== undefined
-        ? draft.poolCompartido.grupos[el.dataset.egroup].evaluaciones[el.dataset.erow]
-        : draft.poolCompartido.sueltas[el.dataset.erow];
+        ? getActivePool().grupos[el.dataset.egroup].evaluaciones[el.dataset.erow]
+        : getActivePool().sueltas[el.dataset.erow];
       target[el.dataset.efield] = el.value;
     };
     if(el.dataset.efield==='notaRaw' && el.dataset.egroup !== undefined){
@@ -785,7 +922,7 @@ function attachModalListeners(){
   });
   body.querySelectorAll('[data-g]').forEach(el=>{
     const handler = ()=>{
-      const g = draft.poolCompartido.grupos[el.dataset.g];
+      const g = getActivePool().grupos[el.dataset.g];
       if(el.dataset.gfield==='eliminarPeorNota'){ g.eliminarPeorNota = el.checked; renderModal(); return; }
       if(el.dataset.gfield==='nombre'){ g.nombre = el.textContent.trim(); return; }
       g.ponderacionGrupo = Number(el.value);
@@ -920,16 +1057,16 @@ document.getElementById('choiceCancelBtn').onclick = ()=>{ document.getElementBy
 /* ---------- popup "Personalizar" de un grupo ---------- */
 function openGrupoOptions(gi){
   grupoOptionsIndex = gi;
-  const g = draft.poolCompartido.grupos[gi];
+  const g = getActivePool().grupos[gi];
   document.getElementById('optElimPeor').checked = g.eliminarPeorNota;
   document.getElementById('optDividirIgual').checked = g.dividirIgual;
   document.getElementById('grupoOptionsBackdrop').classList.add('active');
 }
 document.getElementById('optElimPeor').onchange = (ev)=>{
-  draft.poolCompartido.grupos[grupoOptionsIndex].eliminarPeorNota = ev.target.checked;
+  getActivePool().grupos[grupoOptionsIndex].eliminarPeorNota = ev.target.checked;
 };
 document.getElementById('optDividirIgual').onchange = (ev)=>{
-  draft.poolCompartido.grupos[grupoOptionsIndex].dividirIgual = ev.target.checked;
+  getActivePool().grupos[grupoOptionsIndex].dividirIgual = ev.target.checked;
 };
 document.getElementById('grupoOptionsCloseBtn').onclick = ()=>{
   document.getElementById('grupoOptionsBackdrop').classList.remove('active');
@@ -1369,7 +1506,7 @@ function parseFechaDDMMYY(str){
   if(!m) return null;
   return new Date(2000+Number(m[3]), Number(m[2])-1, Number(m[1]));
 }
-function getProximaEvaluacion(){
+function getProximasEvaluaciones(){
   const hoy = new Date(); hoy.setHours(0,0,0,0);
   const candidatos = [];
   ramos.forEach(r=>{
@@ -1380,7 +1517,7 @@ function getProximaEvaluacion(){
     });
   });
   candidatos.sort((a,b)=> a.fecha - b.fecha);
-  return candidatos[0] || null;
+  return candidatos;
 }
 function getEvaluacionesDelMes(year, month){
   const map = {};
@@ -1403,6 +1540,7 @@ function getEvaluacionesDelMes(year, month){
 }
 
 let proxClaseIndex = 0;
+let proxEvalIndex = 0;
 function attachSwipe(el, onNext, onPrev){
   let startX = null;
   el.ontouchstart = (e)=>{ startX = e.touches[0].clientX; };
@@ -1437,11 +1575,14 @@ function renderProximaClaseCard(){
 }
 function renderProximaEvalCard(){
   const card = document.getElementById('cardProximaEval');
-  const item = getProximaEvaluacion();
-  if(!item){
+  const lista = getProximasEvaluaciones();
+  if(lista.length===0){
     card.innerHTML = `<div class="inicio-card-label">Próxima evaluación</div><p style="font-size:13px;color:var(--text-muted);margin:0;">No hay evaluaciones con fecha cargada.</p>`;
     return;
   }
+  if(proxEvalIndex >= lista.length) proxEvalIndex = lista.length-1;
+  if(proxEvalIndex < 0) proxEvalIndex = 0;
+  const item = lista[proxEvalIndex];
   const fechaTxt = item.fecha.toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'long' });
   card.innerHTML = `
     <div class="inicio-card-label">Próxima evaluación</div>
@@ -1450,6 +1591,9 @@ function renderProximaEvalCard(){
     <div class="eval-nombre-pct">${item.e.nombre || 'Evaluación'} · ${item.e.ponderacion||0}%</div>
     <div class="eval-sala">${item.e.sala || '—'}</div>
   `;
+  attachSwipe(card,
+    ()=>{ proxEvalIndex++; renderProximaEvalCard(); },
+    ()=>{ proxEvalIndex--; renderProximaEvalCard(); });
 }
 function renderMiniCalCard(){
   const card = document.getElementById('cardMiniCal');
@@ -1486,6 +1630,7 @@ function renderMiniCalCard(){
 }
 function renderInicioTab(){
   proxClaseIndex = 0;
+  proxEvalIndex = 0;
   const wrap = document.getElementById('inicioWrap');
   wrap.innerHTML = `
     <div class="inicio-card" id="cardProximaClase"></div>
@@ -1497,9 +1642,331 @@ function renderInicioTab(){
   renderMiniCalCard();
 }
 
-document.getElementById('titleWrap').style.width = (medirAnchoTitulo('Info') + 8 + 3) + 'px';
+/* ---------- pestaña Promedio ---------- */
+const NOTA_APROBACION = 3.95;
+
+function getEvaluacionesEfectivas(ramo, pool){
+  pool = pool || ramo.poolCompartido;
+  const lista = [];
+  pool.sueltas.forEach(e=>{
+    lista.push({ nombre:e.nombre||'Evaluación', notaRaw:e.notaRaw, pond:Number(e.ponderacion)||0, grupo:null, excluida:false, pendienteCubierta:false });
+  });
+  pool.grupos.forEach(g=>{
+    const discardedIdx = g.eliminarPeorNota ? getDiscardedIndex(g) : -1;
+    g.evaluaciones.forEach((e,i)=>{
+      const esDescartada = g.eliminarPeorNota && i===discardedIdx;
+      const tieneNota = e.notaRaw && e.notaRaw.trim();
+      lista.push({
+        nombre: e.nombre || 'Evaluación',
+        notaRaw: e.notaRaw,
+        pond: esDescartada ? 0 : (Number(e.ponderacion)||0),
+        grupo: g.nombre || 'Grupo',
+        excluida: esDescartada,
+        pendienteCubierta: esDescartada && !tieneNota
+      });
+    });
+  });
+  return lista;
+}
+function calcularPromediosDesdeLista(evals){
+  evals = evals.filter(e=> !e.excluida);
+  let sumaEntregadas = 0, pondEntregadas = 0, pondFaltante = 0, pondTotal = 0;
+  evals.forEach(e=>{
+    const nota = normalizarNota(e.notaRaw);
+    const p = (e.pond||0) / 100;
+    pondTotal += p;
+    if(nota !== null){ sumaEntregadas += nota * p; pondEntregadas += p; }
+    else pondFaltante += p;
+  });
+  const ponderado = pondEntregadas > 0 ? sumaEntregadas / pondEntregadas : null;
+  const acumulado = sumaEntregadas;
+  const real = sumaEntregadas + 1.0 * pondFaltante;
+  let notaNecesaria = null;
+  if(pondFaltante > 0 && pondTotal > 0){
+    notaNecesaria = (NOTA_APROBACION * pondTotal - sumaEntregadas) / pondFaltante;
+  }
+  return { ponderado, acumulado, real, pondFaltante, pondTotal, notaNecesaria };
+}
+function calcularPromedios(ramo, pool){
+  return calcularPromediosDesdeLista(getEvaluacionesEfectivas(ramo, pool));
+}
+function getPonderacionLabTeoria(ramo){
+  const h = ramo.horarios.find(x=> x.tipo==='laboratorio' && x.dividir);
+  if(!h) return { teoria:50, lab:50 };
+  const t = Number(h.pondTeoria) || 0;
+  const l = Number(h.pondLab) || 0;
+  if(t===0 && l===0) return { teoria:50, lab:50 };
+  return { teoria:t, lab:l };
+}
+function getEvaluacionesCombinadasPF(ramo){
+  const { teoria, lab } = getPonderacionLabTeoria(ramo);
+  const evT = getEvaluacionesEfectivas(ramo, ramo.poolCompartido).map(e=>({ ...e, pond: e.pond*(teoria/100), origen:'Teoría' }));
+  const evL = getEvaluacionesEfectivas(ramo, ramo.poolLaboratorio).map(e=>({ ...e, pond: e.pond*(lab/100), origen:'Laboratorio' }));
+  return [...evT, ...evL];
+}
+
+const POOL_STATES = ['teoria','laboratorio','pf'];
+const POOL_STATE_ICONS = { teoria: ICON_CUADERNO+'<span>T</span>', laboratorio: ICON_MATRAZ+'<span>L</span>', pf: ICON_FLAG+'<span>PF</span>' };
+const POOL_STATE_LABELS = { teoria:'Teoría', laboratorio:'Laboratorio', pf:'Promedio Final' };
+
+let promedioExpandido = {};
+let promedioPoolActivo = {};
+function ramoTieneLabDividido(ramo){ return ramo.horarios.some(h=> h.tipo==='laboratorio' && h.dividir); }
+function redondearArriba1Decimal(n){ return Math.ceil(n * 10 - 1e-9) / 10; }
+function renderPromedioTab(){
+  const wrap = document.getElementById('promedioWrap');
+  if(ramos.length===0){
+    wrap.innerHTML = `<div class="horario-empty"><p>Todavía no hay ramos cargados.<br>Agrégalos en Info para ver tus promedios.</p></div>`;
+    return;
+  }
+  wrap.innerHTML = ramos.map(r=> promedioCardHTML(r)).join('');
+  wrap.querySelectorAll('[data-promedioramo]').forEach(header=>{
+    header.onclick = ()=>{
+      const id = header.dataset.promedioramo;
+      promedioExpandido[id] = !promedioExpandido[id];
+      const expandido = promedioExpandido[id];
+      document.getElementById('promDetail-'+id).classList.toggle('expanded', expandido);
+      header.closest('.promedio-card').classList.toggle('expanded', expandido);
+    };
+  });
+  wrap.querySelectorAll('[data-promedlabtoggle]').forEach(btn=>{
+    btn.onclick = (ev)=>{
+      ev.stopPropagation();
+      const id = btn.dataset.promedlabtoggle;
+      const actual = promedioPoolActivo[id] || 'teoria';
+      const idx = POOL_STATES.indexOf(actual);
+      promedioPoolActivo[id] = POOL_STATES[(idx+1) % POOL_STATES.length];
+      renderPromedioTab();
+    };
+  });
+}
+function promedioCardHTML(ramo){
+  const poolKey = promedioPoolActivo[ramo.id] || 'teoria';
+  const esPF = poolKey==='pf';
+  const evals = esPF ? getEvaluacionesCombinadasPF(ramo) : getEvaluacionesEfectivas(ramo, poolKey==='laboratorio' ? ramo.poolLaboratorio : ramo.poolCompartido);
+  const stats = calcularPromediosDesdeLista(evals);
+  const pasa = stats.ponderado !== null && stats.ponderado >= NOTA_APROBACION;
+  const expandido = !!promedioExpandido[ramo.id];
+  const tieneLab = ramoTieneLabDividido(ramo);
+  const nextState = POOL_STATES[(POOL_STATES.indexOf(poolKey)+1) % POOL_STATES.length];
+  const toggleHTML = tieneLab
+    ? `<button type="button" class="mini-btn pool-toggle" data-promedlabtoggle="${ramo.id}">${POOL_STATE_ICONS[nextState]}</button>`
+    : '';
+
+  // agrupar filas por grupo (null = sueltas); en PF se distingue el origen (teoría/laboratorio)
+  const grupos = {};
+  evals.forEach(e=>{
+    const key = esPF ? `${e.origen} · ${e.grupo || 'Sueltas'}` : (e.grupo || '__sueltas__');
+    (grupos[key] = grupos[key] || []).push(e);
+  });
+  let filasHtml = '';
+  let primeraEtiqueta = true;
+  Object.keys(grupos).forEach(key=>{
+    if(key!=='__sueltas__'){
+      filasHtml += `<div class="promedio-grupo-label${primeraEtiqueta?' sin-borde':''}">${key}</div>`;
+      primeraEtiqueta = false;
+    }
+    grupos[key].forEach(e=>{
+      let notaTxt = e.notaRaw && e.notaRaw.trim() ? normalizarNota(e.notaRaw).toFixed(1) : '—';
+      let rowClass = '';
+      if(e.pendienteCubierta){ rowClass = 'cubierta'; notaTxt = 'En espera'; }
+      else if(e.excluida){ rowClass = 'tachada'; }
+      filasHtml += `<div class="promedio-eval-row ${rowClass}"><span class="promedio-eval-nombre">${e.nombre}</span><span class="promedio-eval-nota">${notaTxt}</span></div>`;
+    });
+  });
+
+  let resultadoHtml;
+  if(stats.ponderado === null){
+    resultadoHtml = `<div class="promedio-resultado necesita">Sin notas suficientes para calcular.</div>`;
+  } else if(stats.pondFaltante <= 0){
+    resultadoHtml = pasa
+      ? `<div class="promedio-resultado aprobado">Aprobado con <span class="num">${stats.ponderado.toFixed(1)}</span></div>`
+      : `<div class="promedio-resultado necesita">Reprobado con <span class="num">${stats.ponderado.toFixed(1)}</span></div>`;
+  } else if(stats.real >= NOTA_APROBACION){
+    resultadoHtml = `<div class="promedio-resultado aprobado">Aprobado — asegurado con las notas que lleva</div>`;
+  } else if(stats.notaNecesaria !== null && stats.notaNecesaria <= 7){
+    resultadoHtml = `<div class="promedio-resultado necesita">Necesita <span class="num">${redondearArriba1Decimal(stats.notaNecesaria).toFixed(1)}</span> en lo que falta</div>`;
+  } else {
+    resultadoHtml = `<div class="promedio-resultado necesita">No es posible aprobar con lo que falta</div>`;
+  }
+
+  return `
+  <div class="promedio-card${expandido?' expanded':''}">
+    <div class="promedio-header" data-promedioramo="${ramo.id}">
+      <div class="promedio-nombre">${ramo.nombre}<span class="sub">Toca para ver el detalle</span></div>
+      <div class="promedio-num-wrap">
+        <div class="promedio-num ${pasa?'pasa':'no-pasa'}">${stats.ponderado!==null ? stats.ponderado.toFixed(1) : '—'}</div>
+        <div class="promedio-num-label">ponderado</div>
+      </div>
+    </div>
+    <div class="promedio-detail${expandido?' expanded':''}" id="promDetail-${ramo.id}">
+      <div class="promedio-detail-inner">
+      ${toggleHTML ? `<div class="pool-toggle-row"><span class="pool-toggle-label">${POOL_STATE_LABELS[poolKey]}</span>${toggleHTML}</div>` : ''}
+      ${filasHtml || '<p style="font-size:12.5px;color:var(--text-muted);">Sin evaluaciones cargadas.</p>'}
+      <div class="promedio-stats">
+        <div class="promedio-stat"><div class="promedio-stat-num">${stats.real.toFixed(1)}</div><div class="promedio-stat-label">Real</div></div>
+        <div class="promedio-stat"><div class="promedio-stat-num">${stats.acumulado.toFixed(1)}</div><div class="promedio-stat-label">Acumulado</div></div>
+      </div>
+      ${resultadoHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- pestaña Calendario ---------- */
+let calVistaYear, calVistaMonth, calendarioViewMode = 'calendario';
+
+function getTodasLasEvaluaciones(){
+  const lista = [];
+  ramos.forEach(r=>{
+    const evals = [...r.poolCompartido.sueltas, ...r.poolCompartido.grupos.flatMap(g=>g.evaluaciones)];
+    evals.forEach(e=>{
+      const f = parseFechaDDMMYY(e.fecha);
+      lista.push({ ramo:r, e, fecha:f });
+    });
+  });
+  lista.sort((a,b)=>{
+    if(!a.fecha && !b.fecha) return 0;
+    if(!a.fecha) return 1;
+    if(!b.fecha) return -1;
+    return a.fecha - b.fecha;
+  });
+  return lista;
+}
+function initCalendarioTab(){
+  const hoy = new Date();
+  calVistaYear = hoy.getFullYear();
+  calVistaMonth = hoy.getMonth();
+  calendarioViewMode = 'calendario';
+  renderCalendarioTab();
+}
+function renderCalendarioTab(){
+  const wrap = document.getElementById('calendarioWrap');
+  wrap.innerHTML = `
+    <div class="tab-switch calvista-toggle" id="calVistaToggle">
+      <button type="button" data-view="calendario" class="${calendarioViewMode==='calendario'?'active':''}">${ICON_HORARIO}Calendario</button>
+      <button type="button" data-view="tabla" class="${calendarioViewMode==='tabla'?'active':''}">${ICON_INFO}Tabla</button>
+    </div>
+    <div id="calendarioContent"></div>
+  `;
+  wrap.querySelectorAll('[data-view]').forEach(btn=>{
+    btn.onclick = ()=>{ calendarioViewMode = btn.dataset.view; renderCalendarioTab(); };
+  });
+  if(calendarioViewMode==='calendario') renderCalendarioVistaCalendario();
+  else renderCalendarioVistaTabla();
+}
+function renderCalendarioVistaCalendario(){
+  const content = document.getElementById('calendarioContent');
+  content.innerHTML = `
+    <div class="calvista-card">
+      <div class="cal-header">
+        <button type="button" id="calVistaPrev">‹</button>
+        <span class="cal-month-label" id="calVistaMonthLabel"></span>
+        <button type="button" id="calVistaNext">›</button>
+      </div>
+      <div class="cal-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+      <div class="cal-grid" id="calVistaGrid"></div>
+    </div>
+  `;
+  document.getElementById('calVistaPrev').onclick = ()=>{ calVistaMonth--; if(calVistaMonth<0){calVistaMonth=11; calVistaYear--;} renderCalVistaGrid(); };
+  document.getElementById('calVistaNext').onclick = ()=>{ calVistaMonth++; if(calVistaMonth>11){calVistaMonth=0; calVistaYear++;} renderCalVistaGrid(); };
+  renderCalVistaGrid();
+}
+function renderCalVistaGrid(){
+  document.getElementById('calVistaDetalleBackdrop').classList.remove('active');
+  document.getElementById('calVistaMonthLabel').textContent = `${MESES_LARGO[calVistaMonth]} ${calVistaYear}`;
+  const grid = document.getElementById('calVistaGrid');
+  const hoy = new Date();
+  const evalMap = getEvaluacionesDelMes(calVistaYear, calVistaMonth);
+  const todas = getTodasLasEvaluaciones();
+  const evalsPorDia = {};
+  todas.forEach(item=>{
+    if(!item.fecha || item.fecha.getFullYear()!==calVistaYear || item.fecha.getMonth()!==calVistaMonth) return;
+    (evalsPorDia[item.fecha.getDate()] = evalsPorDia[item.fecha.getDate()] || []).push(item);
+  });
+
+  const firstOfMonth = new Date(calVistaYear, calVistaMonth, 1);
+  let startOffset = firstOfMonth.getDay() - 1;
+  if(startOffset < 0) startOffset = 6;
+  const daysInMonth = new Date(calVistaYear, calVistaMonth+1, 0).getDate();
+  const daysInPrevMonth = new Date(calVistaYear, calVistaMonth, 0).getDate();
+
+  const cells = [];
+  for(let i=startOffset; i>0; i--) cells.push({ d: daysInPrevMonth-i+1, other:true });
+  for(let d=1; d<=daysInMonth; d++) cells.push({ d, other:false });
+  let nextMonthDay = 1;
+  while(cells.length % 7 !== 0) cells.push({ d: nextMonthDay++, other:true });
+  grid.style.gridTemplateRows = `repeat(${cells.length/7}, 1fr)`;
+
+  grid.innerHTML = cells.map(c=>{
+    if(c.other) return `<div class="cal-day other-month"><span class="cal-day-dot">${c.d}</span></div>`;
+    const isToday = calVistaYear===hoy.getFullYear() && calVistaMonth===hoy.getMonth() && c.d===hoy.getDate();
+    const estado = evalMap[c.d];
+    const tieneEval = !!evalsPorDia[c.d];
+    let inner;
+    if(estado && isToday) inner = `<div class="mini-cal-marker ${estado} combo"><div class="mini-cal-today-dot">${c.d}</div></div>`;
+    else if(estado) inner = `<div class="mini-cal-marker ${estado}">${c.d}</div>`;
+    else if(isToday) inner = `<div class="mini-cal-today-dot">${c.d}</div>`;
+    else inner = `<span class="cal-day-dot">${c.d}</span>`;
+    return `<div class="cal-day${tieneEval?' clickable':''}" ${tieneEval?`data-seldia="${c.d}"`:''}>${inner}</div>`;
+  }).join('');
+
+  grid.querySelectorAll('[data-seldia]').forEach(cell=>{
+    cell.onclick = ()=> mostrarDetalleDia(evalsPorDia[cell.dataset.seldia]);
+  });
+}
+function mostrarDetalleDia(items){
+  if(!items || items.length===0) return;
+  const card = document.getElementById('calVistaDetalleCard');
+  card.innerHTML = items.map((it,idx)=>`
+    <div class="calvista-detalle-card">
+      <div class="calvista-detalle-titulo">${it.ramo.nombre}</div>
+      <div class="hd-row"><span class="hd-label">N</span><span class="hd-value">${idx+1}</span></div>
+      <div class="hd-row"><span class="hd-label">Prueba</span><span class="hd-value">${it.e.nombre||'—'}</span></div>
+      <div class="hd-row"><span class="hd-label">Fecha</span><span class="hd-value">${it.e.fecha||'—'}</span></div>
+      <div class="hd-row"><span class="hd-label">Hora</span><span class="hd-value">${it.e.hora||'—'}</span></div>
+      <div class="hd-row"><span class="hd-label">Nota</span><span class="hd-value">${it.e.notaRaw && it.e.notaRaw.trim() ? normalizarNota(it.e.notaRaw).toFixed(1) : '—'}</span></div>
+      <div class="hd-row"><span class="hd-label">%</span><span class="hd-value">${it.e.ponderacion||0}%</span></div>
+      <div class="hd-row"><span class="hd-label">Sala</span><span class="hd-value">${it.e.sala||'—'}</span></div>
+    </div>
+  `).join('') + `<button type="button" class="choice-cancel" id="calVistaDetalleCloseBtn">Cerrar</button>`;
+  document.getElementById('calVistaDetalleBackdrop').classList.add('active');
+  document.getElementById('calVistaDetalleCloseBtn').onclick = ()=> document.getElementById('calVistaDetalleBackdrop').classList.remove('active');
+}
+document.getElementById('calVistaDetalleBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='calVistaDetalleBackdrop') e.currentTarget.classList.remove('active'); });
+function renderCalendarioVistaTabla(){
+  const content = document.getElementById('calendarioContent');
+  const todas = getTodasLasEvaluaciones();
+  if(todas.length===0){
+    content.innerHTML = `<div class="horario-empty"><p>No hay evaluaciones cargadas.</p></div>`;
+    return;
+  }
+  const rows = todas.map((it,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${it.ramo.nombre}</td>
+      <td>${it.e.nombre||'—'}</td>
+      <td>${it.e.fecha||'—'}</td>
+      <td>${it.e.hora||'—'}</td>
+      <td>${it.e.notaRaw && it.e.notaRaw.trim() ? normalizarNota(it.e.notaRaw).toFixed(1) : '—'}</td>
+      <td>${it.e.ponderacion||0}%</td>
+      <td>${it.e.sala||'—'}</td>
+    </tr>
+  `).join('');
+  content.innerHTML = `
+    <div class="table-scroll">
+      <table class="eval-table calendario-tabla">
+        <thead><tr><th>N</th><th>Ramo</th><th>Prueba</th><th>Fecha</th><th>Hora</th><th>Nota</th><th>%</th><th>Sala</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+document.getElementById('titleWrap').style.width = (medirAnchoTitulo('Inicio') + 8 + 3) + 'px';
 document.querySelector('.title-sep').style.height = medirAltoMayuscula() + 'px';
 renderRamosList();
+renderInicioTab();
 </script>
 </body>
 </html>
