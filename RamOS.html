@@ -82,9 +82,15 @@
   .bottom-nav{position:absolute; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:var(--surface); border-top:1px solid var(--border); display:flex; padding:8px 4px calc(8px + env(safe-area-inset-bottom));}
   .nav-item{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; cursor:pointer; color:var(--text-muted); padding:6px 0; font-family:var(--font-body);}
   .nav-item svg{width:22px; height:22px; stroke:var(--text-muted); fill:none; stroke-width:1.8;}
+  .nav-icon-slot{height:26px; display:flex; align-items:center; justify-content:center;}
+  .tiktok-badge{position:relative; width:30px; height:22px; flex-shrink:0;}
+  .tiktok-badge-shadow{position:absolute; inset:0; border-radius:7px; background:var(--secondary); transform:translate(4px,-3px);}
+  .tiktok-badge-core{position:absolute; inset:0; border-radius:7px; background:var(--primary); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(36,52,74,.25);}
+  .tiktok-badge-core svg{width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round;}
   .nav-item span{font-size:10.5px; font-weight:700;}
   .nav-item.active{color:var(--primary);}
   .nav-item.active svg{stroke:var(--primary);}
+  .nav-item-main.active .tiktok-badge-core svg{stroke:#fff;}
 
   .toast{position:absolute; top:14px; left:16px; right:16px; background:var(--text); color:#fff; padding:12px 14px; border-radius:12px; font-size:12.5px; line-height:1.4; z-index:40; opacity:0; transform:translateY(-8px); transition:all .2s ease; pointer-events:none;}
   .toast.show{opacity:1; transform:translateY(0);}
@@ -371,11 +377,19 @@
   <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
 
   <nav class="bottom-nav">
-    <button class="nav-item active" data-tab="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span>Inicio</span></button>
-    <button class="nav-item" data-tab="horario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span>Horario</span></button>
-    <button class="nav-item" data-tab="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/></svg><span>Info</span></button>
-    <button class="nav-item" data-tab="promedio"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg><span>Promedio</span></button>
-    <button class="nav-item" data-tab="calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg><span>Calendario</span></button>
+    <button class="nav-item active" data-tab="inicio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg></span><span>Inicio</span></button>
+    <button class="nav-item" data-tab="horario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></span><span>Horario</span></button>
+    <button class="nav-item nav-item-main" data-tab="info">
+      <span class="nav-icon-slot">
+        <span class="tiktok-badge">
+          <span class="tiktok-badge-shadow"></span>
+          <span class="tiktok-badge-core"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </span>
+      </span>
+      <span>Ramos</span>
+    </button>
+    <button class="nav-item" data-tab="promedio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg></span><span>Promedio</span></button>
+    <button class="nav-item" data-tab="calendario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg></span><span>Calendario</span></button>
   </nav>
 
   <div class="choice-backdrop" id="choiceBackdrop">
@@ -539,7 +553,7 @@ function saveRamos(){
   catch(err){ showToast('No se pudo guardar en este navegador.'); }
 }
 
-const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Info', promedio:'Promedio', calendario:'Calendario' };
+const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Ramos', promedio:'Promedio', calendario:'Calendario' };
 const titleMeasureCanvas = document.createElement('canvas');
 const titleMeasureCtx = titleMeasureCanvas.getContext('2d');
 function medirAnchoTitulo(text){
