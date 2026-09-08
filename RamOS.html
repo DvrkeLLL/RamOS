@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root{
     --bg:#F2F2F2; --surface:#FFFFFF; --text:#24344A; --text-muted:#68788D;
@@ -33,7 +34,10 @@
   .app{position:relative; height:100vh; height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
 
   .topbar{padding:calc(20px + env(safe-area-inset-top)) 18px 12px; flex-shrink:0;}
-  .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0;}
+  .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0; display:flex; align-items:baseline;}
+  .title-sep{margin:0 7px; color:var(--border);}
+  .title-wrap{display:inline-block; overflow:hidden; vertical-align:bottom;}
+  .title-section{display:inline-block; white-space:nowrap; color:var(--primary); max-width:200px; overflow:hidden; transition:max-width .26s ease, opacity .2s ease;}
 
   .screens{flex:1; overflow-y:auto; padding:0 18px 110px; -webkit-overflow-scrolling:touch; position:relative;}
   .screen{display:none;}
@@ -166,7 +170,7 @@
   .discarded-row input{text-decoration:line-through;}
 
   /* picker de fecha/hora dentro de la tabla */
-  .picker-field-sm{display:flex; align-items:center; gap:3px; background:var(--surface); border:1.5px solid var(--border); border-radius:7px; padding:6px 5px; cursor:pointer;}
+  .picker-field-sm{display:flex; align-items:center; gap:3px; background:var(--surface); border:1.5px solid var(--border); border-radius:7px; padding:7px 5px; cursor:pointer; box-sizing:border-box;}
   .picker-field-sm input{flex:1; border:none; outline:none; background:transparent; font-family:var(--font-body); font-size:10.5px; color:var(--text); padding:0; pointer-events:none; min-width:0;}
   .picker-field-sm input::placeholder{color:var(--text-muted);}
   .picker-field-sm svg{width:13px; height:13px; stroke:var(--text-muted); fill:none; stroke-width:1.8; flex-shrink:0;}
@@ -216,18 +220,41 @@
   .mini-btn{border:1.5px solid var(--primary); background:transparent; color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:10.5px; padding:6px 12px; border-radius:999px; cursor:pointer;}
   .discarded-row{opacity:.5;}
   .discarded-row input{text-decoration:line-through;}
+
+  /* horario semanal */
+  .horario-empty{text-align:center; padding:60px 10px 10px; color:var(--text-muted);}
+  .horario-empty p{font-size:13.5px; line-height:1.5;}
+  .horario-grid{display:grid; gap:5px 4px; grid-auto-rows:44px;}
+  .grid-head{display:contents;}
+  .grid-head .cell{color:var(--text-muted); font-family:var(--font-body); font-weight:800; font-size:9.5px; text-align:center; padding:0 0 6px;}
+  .hora-cell{display:flex; align-items:center; justify-content:center; font-family:var(--font-body); font-size:8px; font-weight:700; color:var(--text-muted); text-align:center; line-height:1.2;}
+  .slot{position:relative; height:100%;}
+  .slot-fill{height:100%; border-radius:10px; display:flex; flex-direction:column; padding:2px 3px; overflow:hidden; cursor:pointer; border:none; width:100%; font-family:inherit;}
+  .slot-nombre{flex:1; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-body); font-weight:700; font-size:6.6px; line-height:1.1; color:#fff; overflow:hidden;}
+  .slot-sala{flex:2; display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--font-display); font-weight:700; font-size:10.5px; color:#fff;}
+  .horario-legend{margin-top:18px; display:flex; flex-direction:column; gap:6px;}
+  .horario-legend .legend-item{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-muted);}
+  .legend-dot{width:10px; height:10px; border-radius:3px; flex-shrink:0;}
+
+  /* detalle de un bloque del horario */
+  .hd-row{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:12.5px;}
+  .hd-row:last-of-type{border-bottom:none;}
+  .hd-label{color:var(--text-muted); font-weight:700; flex-shrink:0;}
+  .hd-value{color:var(--text); text-align:right;}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <div class="topbar"><h1>RamOS</h1></div>
+  <div class="topbar"><h1>RamOS <span class="title-sep">|</span> <span class="title-wrap"><span class="title-section" id="titleSection">Info</span></span></h1></div>
 
   <div class="screens">
     <div class="toast" id="toast"></div>
 
     <div class="screen" id="screen-inicio"><div class="empty-state"><p>Inicio — próximamente.</p></div></div>
-    <div class="screen" id="screen-horario"><div class="empty-state"><p>Horario semanal — próximamente.</p></div></div>
+    <div class="screen" id="screen-horario">
+      <div id="horarioWrap"></div>
+    </div>
 
     <div class="screen active" id="screen-info">
       <div id="ramosList"></div>
@@ -301,6 +328,19 @@
     </div>
   </div>
 
+  <div class="choice-backdrop" id="horarioDetalleBackdrop">
+    <div class="choice-card">
+      <h3 id="hdNombre">Ramo</h3>
+      <div class="hd-row"><span class="hd-label">Horario</span><span class="hd-value" id="hdHorario">—</span></div>
+      <div class="hd-row"><span class="hd-label">Sala</span><span class="hd-value" id="hdSala">—</span></div>
+      <div class="hd-row"><span class="hd-label">Tipo</span><span class="hd-value" id="hdTipo">—</span></div>
+      <div class="hd-row"><span class="hd-label">Sección</span><span class="hd-value" id="hdSeccion">—</span></div>
+      <div class="hd-row"><span class="hd-label">Profesor</span><span class="hd-value" id="hdProfesor">—</span></div>
+      <div class="hd-row"><span class="hd-label">Correo</span><span class="hd-value" id="hdCorreo">—</span></div>
+      <button class="choice-cancel" id="hdCloseBtn" style="margin-top:6px;">Cerrar</button>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="modalBackdrop"></div>
   <div class="modal-sheet" id="ramoModal">
     <div class="modal-drag-zone" id="modalDragZone"><div class="modal-handle"></div></div>
@@ -325,6 +365,8 @@ const ICON_HORARIO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-lin
 const ICON_EVAL = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 7 21l5-2.5 5 2.5-2-7.5"/></svg>';
 
 let ramos = loadRamos();
+let idCounter = Date.now();
+function generarId(){ return idCounter++; }
 let draft = null;
 let editingId = null;
 let modalTab = 'evaluaciones';
@@ -344,12 +386,26 @@ function saveRamos(){
   catch(err){ showToast('No se pudo guardar en este navegador.'); }
 }
 
+const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Info', promedio:'Promedio', calendario:'Calendario' };
+function setTitleSection(text){
+  const el = document.getElementById('titleSection');
+  el.style.maxWidth = '0px';
+  el.style.opacity = '0';
+  setTimeout(()=>{
+    el.textContent = text;
+    el.style.maxWidth = '200px';
+    el.style.opacity = '1';
+  }, 260);
+}
+
 document.querySelectorAll('.nav-item').forEach(btn=>{
   btn.onclick = ()=>{
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('screen-'+btn.dataset.tab).classList.add('active');
+    setTitleSection(TAB_LABELS[btn.dataset.tab]);
+    if(btn.dataset.tab==='horario') renderHorarioTab();
   };
 });
 
@@ -363,7 +419,7 @@ function showToast(msg){
 /* ---------- estado ---------- */
 function nuevoRamo(){
   return {
-    id: Date.now(),
+    id: generarId(),
     nombre:'', codigo:'', profesorNombre:'', profesorCorreo:'', coordinacion:'',
     horarios: [],
     poolCompartido: { grupos:[], sueltas:[] }
@@ -605,12 +661,14 @@ function horarioRowHTML(h, i){
 function infoTabHTML(){
   return `
     <div class="field-group"><label class="field-label">Nombre del ramo</label><input type="text" id="f-nombre" value="${draft.nombre}" placeholder="Ej: Microeconomía"></div>
-    <div class="field-group"><label class="field-label">Código</label><input type="text" id="f-codigo" value="${draft.codigo}" placeholder="14137-0"></div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Código</label><input type="text" id="f-codigo" value="${draft.codigo}" placeholder="14137-0"></div>
+      <div class="field-group"><label class="field-label">Coordinación</label><input type="text" id="f-coordinacion" value="${draft.coordinacion}" placeholder="Ej: A-3"></div>
+    </div>
     <div class="field-row">
       <div class="field-group"><label class="field-label">Profesor</label><input type="text" id="f-profNombre" value="${draft.profesorNombre}" placeholder="Nombre"></div>
       <div class="field-group"><label class="field-label">Correo</label><input type="email" id="f-profCorreo" value="${draft.profesorCorreo}" placeholder="correo@usach.cl"></div>
     </div>
-    <div class="field-group"><label class="field-label">Coordinación</label><input type="text" id="f-coordinacion" value="${draft.coordinacion}" placeholder="Ej: A-3" style="max-width:140px;"></div>
   `;
 }
 
@@ -825,9 +883,168 @@ document.getElementById('pdfInput').onchange = (e)=>{
   procesarHorarioPDF(file, pendingUploadMode);
   pendingUploadMode = null;
 };
-function procesarHorarioPDF(file, modo){
-  const modoTexto = { primero:'primera carga', reemplazar:'reemplazar', actualizar:'actualizar', agregar:'agregar' }[modo] || modo;
-  showToast(`"${file.name}" recibido (modo: ${modoTexto}). El parseo automático del PDF es la próxima pieza — por ahora sigue agregando los ramos con "+ Añadir ramo".`);
+async function procesarHorarioPDF(file, modo){
+  showToast('Leyendo el PDF…');
+  try{
+    const parsedRamos = await parseHorarioPdf(file);
+    if(parsedRamos.length === 0){
+      showToast('No reconocí ningún ramo en ese PDF. Agrégalos a mano con "+ Añadir ramo".');
+      return;
+    }
+    aplicarRamosImportados(parsedRamos, modo);
+  } catch(err){
+    console.error(err);
+    showToast('Hubo un problema leyendo el PDF. Agrega los ramos a mano por ahora.');
+  }
+}
+
+function aplicarRamosImportados(parsedRamos, modo){
+  if(modo==='reemplazar' || modo==='primero'){
+    ramos = parsedRamos.map(ramoDesdeParsed);
+  } else if(modo==='agregar'){
+    parsedRamos.forEach(p=> ramos.push(ramoDesdeParsed(p)));
+  } else if(modo==='actualizar'){
+    parsedRamos.forEach(p=>{
+      const existing = ramos.find(r=> r.codigo === p.codigo);
+      if(existing){
+        existing.nombre = p.nombre;
+        existing.coordinacion = p.coordinacion;
+        existing.horarios = p.horarios;
+      } else {
+        ramos.push(ramoDesdeParsed(p));
+      }
+    });
+  }
+  saveRamos();
+  renderRamosList();
+  showToast(`Se cargaron ${parsedRamos.length} ramo${parsedRamos.length>1?'s':''} desde el PDF.`);
+}
+function ramoDesdeParsed(p){
+  const r = nuevoRamo();
+  r.nombre = p.nombre;
+  r.codigo = p.codigo;
+  r.coordinacion = p.coordinacion;
+  r.horarios = p.horarios;
+  return r;
+}
+
+/* ---------- parser del PDF de horario (USACH) ---------- */
+const BLOQUE_STARTS = ['08:15','09:50','11:25','13:45','15:20','16:55','18:45','20:05','21:25'];
+const DIA_HEADER_MAP = { LUNES:'L', MARTES:'M', 'MIÉRCOLES':'W', 'MIERCOLES':'W', JUEVES:'J', VIERNES:'V', 'SÁBADO':'S', 'SABADO':'S' };
+const STOPWORDS_NOMBRE = ['de','del','la','las','el','los','y','en','para','con','a','o','al'];
+
+function capitalizarNombre(str){
+  return str.toLowerCase().split(' ').map((w,i)=>{
+    if(!w) return w;
+    if(i>0 && STOPWORDS_NOMBRE.includes(w)) return w;
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(' ');
+}
+function clusterLines(items, tol){
+  const sorted = [...items].sort((a,b)=> b.y-a.y);
+  const lines = [];
+  sorted.forEach(it=>{
+    let line = lines.find(l=> Math.abs(l.y-it.y) <= tol);
+    if(!line){ line = { y: it.y, arr:[] }; lines.push(line); }
+    line.arr.push(it);
+  });
+  return lines.map(l=> ({ y:l.y, text: l.arr.sort((a,b)=>a.x-b.x).map(i=>i.text).join(' ').replace(/\s+/g,' ').trim() }));
+}
+
+if(window.pdfjsLib){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+async function parseHorarioPdf(file){
+  if(!window.pdfjsLib) throw new Error('pdf.js no está disponible');
+
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const page = await pdf.getPage(1);
+  const content = await page.getTextContent();
+
+  const NOISE = [/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/i, /HORARIO SUJETO A MODIFICACIONES/i];
+  const items = content.items
+    .map(it=> {
+      const fontSize = Math.hypot(it.transform[2], it.transform[3]);
+      return { text: it.str.trim(), x: it.transform[4], y: it.transform[5], fontSize };
+    })
+    .filter(it=> it.text && it.fontSize < 15 && !NOISE.some(p=>p.test(it.text)));
+
+  // tabla de asignaturas (Nº CODIGO NOMBRE COORD TIPO TEL HORARIO)
+  const lines = clusterLines(items, 3);
+  const asignaturas = [];
+  const rowRegex = /^\d+\s+(\d{3,6}-\d)\s+(.+?)\s+([A-Za-z]-?\d)\s+([TEL])\s+\d\s+\S+/;
+  lines.forEach(l=>{
+    const m = l.text.match(rowRegex);
+    if(m){
+      asignaturas.push({ codigo:m[1], nombre:m[2].trim(), coord:m[3], tipo:{T:'teoria',E:'ejercicio',L:'laboratorio'}[m[4]] });
+    }
+  });
+
+  // referencias de la grilla: x de cada día, y de cada bloque
+  const diaX = {};
+  items.forEach(it=>{
+    const key = Object.keys(DIA_HEADER_MAP).find(k=> it.text.toUpperCase() === k);
+    if(key && diaX[DIA_HEADER_MAP[key]] === undefined) diaX[DIA_HEADER_MAP[key]] = it.x;
+  });
+  const bloqueY = {};
+  items.forEach(it=>{
+    BLOQUE_STARTS.forEach((t, idx)=>{
+      if(it.text.startsWith(t) && bloqueY[idx+1] === undefined) bloqueY[idx+1] = it.y;
+    });
+  });
+
+  // celdas de la grilla: cada "codigo-coord" se empareja con la "Sala:" más cercana justo debajo
+  // (en una misma fila hay varias celdas — una por día — así que el emparejamiento tiene que ser por posición, no por orden de lectura)
+  const ccRegex = /^(\d{3,6}-\d)-([A-Za-z]-?\d)$/;
+  const salaRegex = /^Sala:\s*(.+)$/i;
+  const ccItems = items.filter(it=> ccRegex.test(it.text)).map(it=>{ const m=it.text.match(ccRegex); return {codigo:m[1], coord:m[2], x:it.x, y:it.y}; });
+  const salaItems = items.filter(it=> salaRegex.test(it.text)).map(it=>{ const m=it.text.match(salaRegex); return {sala:m[1].trim(), x:it.x, y:it.y}; });
+  const celdas = ccItems.map(cc=>{
+    let best=null, bestDist=Infinity;
+    salaItems.forEach(s=>{
+      if(s.y < cc.y && (cc.y - s.y) < 15){
+        const dist = Math.abs(s.x - cc.x);
+        if(dist < bestDist){ bestDist = dist; best = s; }
+      }
+    });
+    return { codigo:cc.codigo, coord:cc.coord, x:cc.x, y:cc.y, sala: best ? best.sala : '' };
+  });
+
+  function nearest(map, val){
+    let best=null, bestD=Infinity;
+    Object.entries(map).forEach(([k,v])=>{ const d=Math.abs(v-val); if(d<bestD){ bestD=d; best=k; } });
+    return best;
+  }
+  celdas.forEach(c=>{
+    c.dia = nearest(diaX, c.x);
+    c.bloque = Number(nearest(bloqueY, c.y));
+  });
+
+  // agrupar por código y armar los ramos
+  const porCodigo = {};
+  celdas.forEach(c=>{
+    if(!c.dia || !c.bloque) return;
+    (porCodigo[c.codigo] = porCodigo[c.codigo] || []).push(c);
+  });
+
+  const ramosParsed = [];
+  Object.keys(porCodigo).forEach(codigo=>{
+    const filasAsig = asignaturas.filter(a=> a.codigo===codigo);
+    const filaT = filasAsig.find(a=>a.tipo==='teoria') || filasAsig[0];
+    if(!filaT) return;
+    const horarios = porCodigo[codigo].map(c=>{
+      const filaCoord = filasAsig.find(a=> a.coord===c.coord);
+      return {
+        dia:c.dia, bloque:c.bloque, sala:c.sala,
+        tipo: filaCoord ? filaCoord.tipo : 'teoria',
+        dividir:false, pondTeoria:0, pondLab:0
+      };
+    });
+    ramosParsed.push({ codigo, nombre: capitalizarNombre(filaT.nombre), coordinacion: filaT.coord||'', horarios });
+  });
+  return ramosParsed;
 }
 
 /* ============ CALENDARIO PERSONALIZADO ============ */
@@ -980,6 +1197,77 @@ document.getElementById('timeConfirmBtn').onclick = ()=>{
   closeTimePicker();
 };
 document.getElementById('timeBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='timeBackdrop') closeTimePicker(); });
+
+/* ---------- pestaña Horario: grilla semanal ---------- */
+const HORARIO_COLORS = ['#233A52','#35597D','#5C86B0','#7FA0C4','#9DBAD8','#B9CFE6'];
+const DIA_LABEL_FULL = {L:'Lunes', M:'Martes', W:'Miércoles', J:'Jueves', V:'Viernes', S:'Sábado'};
+
+function renderHorarioTab(){
+  const wrap = document.getElementById('horarioWrap');
+  const todosHorarios = [];
+  ramos.forEach((r, idx)=>{
+    r.horarios.forEach(h=>{
+      todosHorarios.push({ ramo:r, h, color: HORARIO_COLORS[idx % HORARIO_COLORS.length] });
+    });
+  });
+  if(todosHorarios.length===0){
+    wrap.innerHTML = `<div class="horario-empty"><p>Todavía no hay horarios cargados.<br>Agrega ramos en Info o sube tu horario en PDF.</p></div>`;
+    return;
+  }
+
+  const mapa = {};
+  todosHorarios.forEach(item=>{ mapa[`${item.h.dia}-${item.h.bloque}`] = item; });
+
+  const hayS = todosHorarios.some(item=> item.h.dia==='S');
+  const dias = hayS ? ['L','M','W','J','V','S'] : ['L','M','W','J','V'];
+  const bloquesUsados = BLOQUES.filter(b=> dias.some(d=> mapa[`${d}-${b.n}`]));
+
+  let html = `<div class="horario-grid" style="grid-template-columns:26px repeat(${dias.length}, 1fr);">`;
+  html += `<div class="grid-head"><div class="cell"></div>`;
+  dias.forEach(d=> html += `<div class="cell">${DIA_LABEL_FULL[d]}</div>`);
+  html += `</div>`;
+
+  bloquesUsados.forEach(b=>{
+    html += `<div class="hora-cell">${b.n}</div>`;
+    dias.forEach(d=>{
+      const item = mapa[`${d}-${b.n}`];
+      if(item){
+        const nombreMostrado = item.h.tipo==='teoria' ? item.ramo.nombre : `${item.ramo.nombre} - ${item.h.tipo==='laboratorio'?'L':'E'}`;
+        html += `<div class="slot"><button type="button" class="slot-fill" style="background:${item.color}" data-hdramo="${item.ramo.id}" data-hddia="${d}" data-hdbloque="${b.n}"><div class="slot-nombre">${nombreMostrado}</div><div class="slot-sala">${item.h.sala||'—'}</div></button></div>`;
+      } else {
+        html += `<div class="slot"></div>`;
+      }
+    });
+  });
+  html += `</div>`;
+
+  html += `<div class="horario-legend">${ramos.map((r,idx)=>`<div class="legend-item"><span class="legend-dot" style="background:${HORARIO_COLORS[idx % HORARIO_COLORS.length]}"></span>${r.nombre}</div>`).join('')}</div>`;
+
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('[data-hdramo]').forEach(btn=>{
+    btn.onclick = ()=> openHorarioDetalle(btn.dataset.hdramo, btn.dataset.hddia, Number(btn.dataset.hdbloque));
+  });
+}
+
+function openHorarioDetalle(ramoId, dia, bloque){
+  const r = ramos.find(x=> x.id == ramoId);
+  if(!r) return;
+  const h = r.horarios.find(x=> x.dia===dia && x.bloque===bloque);
+  if(!h) return;
+  const tipoLabel = {teoria:'Teoría', ejercicio:'Ejercicio', laboratorio:'Laboratorio'}[h.tipo] || h.tipo;
+  const nombreMostrado = h.tipo==='teoria' ? r.nombre : `${r.nombre} - ${h.tipo==='laboratorio'?'L':'E'}`;
+  const bloqueInfo = BLOQUES.find(b=> b.n===h.bloque);
+  document.getElementById('hdNombre').textContent = nombreMostrado;
+  document.getElementById('hdHorario').textContent = `${DIA_LABEL_FULL[dia]} · ${bloqueInfo ? bloqueInfo.r : ''}`;
+  document.getElementById('hdSala').textContent = h.sala || '—';
+  document.getElementById('hdTipo').textContent = tipoLabel;
+  document.getElementById('hdSeccion').textContent = r.coordinacion || '—';
+  document.getElementById('hdProfesor').textContent = r.profesorNombre || '—';
+  document.getElementById('hdCorreo').textContent = r.profesorCorreo || '—';
+  document.getElementById('horarioDetalleBackdrop').classList.add('active');
+}
+document.getElementById('hdCloseBtn').onclick = ()=>{ document.getElementById('horarioDetalleBackdrop').classList.remove('active'); };
+document.getElementById('horarioDetalleBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='horarioDetalleBackdrop') e.currentTarget.classList.remove('active'); });
 
 renderRamosList();
 </script>
