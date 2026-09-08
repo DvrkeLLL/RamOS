@@ -5,130 +5,114 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>RamOS</title>
 
-<!-- Ícono de pestaña / marcadores (Chrome, Safari, etc.) -->
 <link rel="icon" type="image/png" href="RamOS.png">
 <link rel="shortcut icon" type="image/png" href="RamOS.png">
-
-<!-- iOS: ícono al agregar a pantalla de inicio -->
 <link rel="apple-touch-icon" href="RamOS.png">
 <meta name="apple-mobile-web-app-title" content="RamOS">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<!-- Android / Chrome: PWA -->
-<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiUmFtT1MiLCJzaG9ydF9uYW1lIjoiUmFtT1MiLCJzdGFydF91cmwiOiIuL1JhbU9TLmh0bWwiLCJzY29wZSI6Ii4vIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0U3RTNEOCIsInRoZW1lX2NvbG9yIjoiIzJDNkU3RiIsImljb25zIjpbeyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjE4MHgxODAiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiUmFtT1MiLCJzaG9ydF9uYW1lIjoiUmFtT1MiLCJzdGFydF91cmwiOiIuL1JhbU9TLmh0bWwiLCJzY29wZSI6Ii4vIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0YyRjJGMiIsInRoZW1lX2NvbG9yIjoiIzVDODZCMCIsImljb25zIjpbeyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5wbmciLCJzaXplcyI6IjE4MHgxODAiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#2C6E7F">
-
-<!-- Vista previa al compartir el link (redes, WhatsApp, etc.) -->
+<meta name="theme-color" content="#5C86B0">
 <meta property="og:title" content="RamOS">
 <meta property="og:image" content="RamOS.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#E7E3D8; --surface:#FFFFFF; --text:#26343A; --text-muted:#5C6B70;
-    --primary:#2C6E7F; --primary-ink:#FFFFFF; --secondary:#B5651D; --border:#D8D3C4;
+    --bg:#F2F2F2; --surface:#FFFFFF; --text:#24344A; --text-muted:#68788D;
+    --primary:#5C86B0; --primary-ink:#FFFFFF; --secondary:#35597D; --accent-eval:#A9C4DE; --border:#E1E4E8;
     --danger:#B5453A;
-    --font-display:'Spectral',serif; --font-body:'Source Sans 3',sans-serif;
+    --font-display:'Poppins',sans-serif; --font-body:'Nunito Sans',sans-serif;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
-  body{
-    margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body);
-    overflow:hidden;
-  }
-  .app{position:relative; height:100vh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
-  .topbar{
-    padding:20px 18px 12px; flex-shrink:0;
-  }
-  .topbar h1{font-family:var(--font-display); font-size:24px; font-weight:700; margin:0;}
-  .topbar p{font-size:13px; color:var(--text-muted); margin:4px 0 0;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); overflow:hidden;}
+  .app{position:relative; height:100vh; height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
 
-  .screens{flex:1; overflow-y:auto; padding:0 18px 100px; -webkit-overflow-scrolling:touch;}
+  .topbar{padding:20px 18px 12px; flex-shrink:0;}
+  .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0;}
+
+  .screens{flex:1; overflow-y:auto; padding:0 18px 110px; -webkit-overflow-scrolling:touch; position:relative;}
   .screen{display:none;}
   .screen.active{display:block;}
 
-  .empty-state{
-    text-align:center; padding:60px 20px; color:var(--text-muted);
-  }
-  .empty-state p{font-size:14px; line-height:1.5; margin:0 0 18px;}
+  .empty-state{text-align:center; padding:40px 10px 10px; color:var(--text-muted);}
+  .empty-state p{font-size:13.5px; line-height:1.5; margin:0 0 4px;}
 
-  /* ramo cards */
-  .ramo-card{
-    background:var(--surface); border:1px solid var(--border); border-left:5px solid var(--primary);
-    border-radius:4px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.05);
-  }
-  .ramo-card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
-  .ramo-card h3{font-family:var(--font-display); font-size:18px; font-weight:600; margin:0;}
+  .add-frame{border:2px dashed #C7CDD4; border-radius:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; color:var(--primary); background:rgba(92,134,176,.04); transition:background .15s ease;}
+  .add-frame:active{background:rgba(92,134,176,.10);}
+  .add-frame.big{flex-direction:column; min-height:220px; margin-top:14px;}
+  .add-frame.big .plus{font-size:34px; font-weight:300; line-height:1;}
+  .add-frame.big .label{font-family:var(--font-display); font-size:15px; font-weight:600;}
+  .add-frame.compact{padding:14px; margin-top:4px; margin-bottom:14px;}
+  .add-frame.compact .plus{font-size:18px; margin-right:2px;}
+  .add-frame.compact .label{font-family:var(--font-body); font-size:13px; font-weight:700;}
+
+  .ramo-card{background:var(--surface); border-radius:18px; margin-bottom:14px; box-shadow:0 4px 16px rgba(36,52,74,.08); overflow:hidden;}
+  .ramo-card-header{padding:16px 16px 12px;}
+  .ramo-card h3{font-family:var(--font-display); font-size:17px; font-weight:600; margin:0;}
   .ramo-card .codigo{font-size:12px; color:var(--text-muted); margin-top:2px;}
-  .ramo-card .componentes-tags{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
-  .tag{
-    font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px;
-    background:var(--bg); color:var(--text-muted); border:1px solid var(--border);
-  }
-  .ramo-card .prof{font-size:12.5px; color:var(--text-muted); margin-top:10px;}
-  .ramo-card-actions{display:flex; gap:8px; margin-top:12px;}
-  .icon-btn{
-    border:none; background:transparent; color:var(--text-muted); font-size:12.5px;
-    font-family:var(--font-body); font-weight:600; cursor:pointer; padding:4px 0;
-  }
+  .ramo-row{display:flex; align-items:flex-start; gap:10px; padding:8px 16px;}
+  .ramo-row-icon{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;}
+  .ramo-row-icon svg{width:12px; height:12px; stroke-width:2; fill:none;}
+  .ramo-row-text{font-size:12.5px; color:var(--text); line-height:1.4; padding-top:1px;}
+  .ramo-card-actions{padding:6px 16px 14px;}
+  .icon-btn{border:none; background:transparent; color:var(--text-muted); font-size:12.5px; font-family:var(--font-body); font-weight:700; cursor:pointer; padding:4px 0;}
   .icon-btn.danger{color:var(--danger);}
 
-  /* fab */
-  .fab{
-    position:absolute; right:18px; bottom:88px; z-index:5;
-  }
+  .icon-info{background:rgba(53,89,125,.13);} .icon-info svg{stroke:var(--secondary);}
+  .icon-horario{background:rgba(92,134,176,.15);} .icon-horario svg{stroke:var(--primary);}
+  .icon-eval{background:rgba(169,196,222,.35);} .icon-eval svg{stroke:#5C86B0;}
 
-  /* buttons */
-  .btn{
-    font-family:var(--font-body); font-weight:600; font-size:14px; padding:12px 20px;
-    cursor:pointer; border:2px solid var(--primary); border-radius:999px; box-shadow:0 3px 10px rgba(0,0,0,.14);
-  }
+  .fab{position:absolute; right:18px; bottom:88px; z-index:5;}
+
+  .btn{font-family:var(--font-body); font-weight:700; font-size:14px; padding:12px 20px; cursor:pointer; border:2px solid var(--primary); border-radius:999px; box-shadow:0 3px 10px rgba(36,52,74,.16);}
   .btn-primary{background:var(--primary); color:var(--primary-ink);}
-  .btn-secondary{background:transparent; color:var(--primary); box-shadow:none;}
+  .btn-secondary{background:transparent; color:var(--primary);}
   .btn-block{width:100%;}
-  .btn-sm{padding:8px 14px; font-size:13px; box-shadow:none;}
-  .btn-ghost{background:transparent; color:var(--text-muted); border-color:var(--border); box-shadow:none;}
 
-  /* bottom nav */
-  .bottom-nav{
-    position:absolute; left:0; right:0; bottom:0; max-width:480px; margin:0 auto;
-    background:var(--surface); border-top:1px solid var(--border);
-    display:flex; padding:8px 4px calc(8px + env(safe-area-inset-bottom));
-  }
-  .nav-item{
-    flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
-    background:none; border:none; cursor:pointer; color:var(--text-muted); padding:6px 0;
-    font-family:var(--font-body);
-  }
+  .bottom-nav{position:absolute; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:var(--surface); border-top:1px solid var(--border); display:flex; padding:8px 4px calc(8px + env(safe-area-inset-bottom));}
+  .nav-item{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; cursor:pointer; color:var(--text-muted); padding:6px 0; font-family:var(--font-body);}
   .nav-item svg{width:22px; height:22px; stroke:var(--text-muted); fill:none; stroke-width:1.8;}
-  .nav-item span{font-size:10.5px; font-weight:600;}
+  .nav-item span{font-size:10.5px; font-weight:700;}
   .nav-item.active{color:var(--primary);}
   .nav-item.active svg{stroke:var(--primary);}
 
-  /* overlay form */
-  .overlay{
-    position:absolute; inset:0; background:var(--bg); z-index:20; display:none;
-    flex-direction:column; max-width:480px; margin:0 auto;
-  }
-  .overlay.active{display:flex;}
-  .overlay-header{
-    display:flex; align-items:center; justify-content:space-between; padding:16px 18px;
-    border-bottom:1px solid var(--border); flex-shrink:0;
-  }
-  .overlay-header h2{font-family:var(--font-display); font-size:19px; margin:0;}
-  .overlay-body{flex:1; overflow-y:auto; padding:16px 18px 100px;}
-  .overlay-footer{padding:14px 18px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--border); flex-shrink:0;}
+  .toast{position:absolute; top:14px; left:16px; right:16px; background:var(--text); color:#fff; padding:12px 14px; border-radius:12px; font-size:12.5px; line-height:1.4; z-index:40; opacity:0; transform:translateY(-8px); transition:all .2s ease; pointer-events:none;}
+  .toast.show{opacity:1; transform:translateY(0);}
 
+  .choice-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:28; display:none; align-items:center; justify-content:center; padding:22px;}
+  .choice-backdrop.active{display:flex;}
+  .choice-card{background:var(--surface); border-radius:18px; padding:20px; max-width:340px; width:100%;}
+  .choice-card h3{font-family:var(--font-display); font-size:16px; margin:0 0 4px;}
+  .choice-card>p{font-size:12.5px; color:var(--text-muted); margin:0 0 14px;}
+  .choice-btn{display:block; width:100%; text-align:left; background:var(--bg); border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; margin-bottom:8px; font-family:var(--font-body); font-weight:700; font-size:13px; color:var(--text); cursor:pointer;}
+  .choice-btn span{display:block; font-weight:400; font-size:11px; color:var(--text-muted); margin-top:2px;}
+  .choice-cancel{display:block; width:100%; text-align:center; background:none; border:none; color:var(--text-muted); font-family:var(--font-body); font-weight:700; font-size:13px; padding:8px; cursor:pointer;}
+
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:19; display:none;}
+  .modal-backdrop.active{display:block;}
+  .modal-sheet{position:absolute; left:0; right:0; bottom:0; max-height:85%; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
+  .modal-sheet.active{transform:translateY(0);}
+  .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px; margin:10px auto 0;}
+  .modal-header{display:flex; align-items:center; justify-content:space-between; padding:10px 18px 0;}
+  .modal-header h2{font-family:var(--font-display); font-size:18px; margin:0;}
   .close-x{background:none; border:none; font-size:20px; color:var(--text-muted); cursor:pointer; line-height:1;}
 
-  fieldset{border:none; padding:0; margin:0 0 22px;}
-  legend{font-family:var(--font-display); font-size:15px; font-weight:600; margin-bottom:10px; padding:0;}
+  .tab-switch{display:flex; gap:5px; padding:4px; background:var(--bg); border-radius:12px; margin:14px 18px;}
+  .tab-switch button{flex:1; border:none; background:transparent; padding:9px 4px; border-radius:9px; font-family:var(--font-body); font-weight:700; font-size:11.5px; color:var(--text-muted); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px;}
+  .tab-switch button svg{width:15px; height:15px; stroke:var(--text-muted); fill:none; stroke-width:1.8;}
+  .tab-switch button.active{background:var(--surface); color:var(--text); box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .tab-switch button.active svg{stroke:var(--primary);}
+
+  .modal-body{flex:1; overflow-y:auto; padding:4px 18px 30px; -webkit-overflow-scrolling:touch;}
+  .modal-footer{padding:12px 18px calc(12px + env(safe-area-inset-bottom)); border-top:1px solid var(--border); flex-shrink:0;}
+
   .field-group{margin-bottom:12px;}
-  .field-label{display:block; font-size:12px; color:var(--text-muted); margin-bottom:5px; font-weight:600;}
+  .field-label{display:block; font-size:12px; color:var(--text-muted); margin-bottom:5px; font-weight:700;}
   .field-row{display:flex; gap:8px;}
   .field-row .field-group{flex:1;}
   input[type=text], input[type=email], input[type=number], input[type=date], input[type=time], select{
@@ -136,87 +120,88 @@
     background:var(--surface); border:1.5px solid var(--border); border-radius:8px; outline:none;
   }
   input:focus, select:focus{border-color:var(--primary);}
-
   .checkline{display:flex; align-items:center; gap:9px; padding:9px 0; cursor:pointer;}
   .checkline input{width:18px; height:18px; accent-color:var(--primary);}
   .checkline span{font-size:13.5px;}
-  .checkline .sub{font-size:11.5px; color:var(--text-muted); display:block; margin-top:1px;}
+  .subcard{background:var(--bg); border-radius:12px; padding:12px; margin-bottom:10px;}
+  .subcard-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .subcard-head strong{font-size:13px;}
+  .remove-x{background:none; border:none; color:var(--text-muted); font-size:12.5px; cursor:pointer; font-weight:700;}
+  .add-link{background:none; border:1.5px dashed var(--border); border-radius:8px; color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:13px; padding:10px; width:100%; cursor:pointer;}
+  .hint{font-size:11.5px; color:var(--text-muted); margin-top:8px; line-height:1.4;}
 
-  .radio-row{display:flex; gap:14px; margin:8px 0;}
-  .radio-opt{display:flex; align-items:center; gap:6px; font-size:13px;}
-  .radio-opt input{accent-color:var(--primary);}
+  /* tabla de evaluaciones */
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:4px -2px 0;}
+  .eval-table{border-collapse:collapse; width:100%; min-width:520px;}
+  .eval-table.mini{min-width:460px;}
+  .eval-table th{font-family:var(--font-body); font-weight:800; font-size:10px; color:var(--text-muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--border); white-space:nowrap;}
+  .eval-table td{padding:4px 3px; border-bottom:1px solid var(--border); vertical-align:middle;}
+  .eval-table input{width:100%; font-family:var(--font-body); font-size:12.5px; padding:7px 6px; border:1.5px solid var(--border); border-radius:7px; color:var(--text); background:var(--surface);}
+  .eval-table .rm-row{background:none; border:none; color:var(--danger); font-size:16px; cursor:pointer; padding:0 4px;}
 
-  .subcard{
-    background:var(--surface); border:1px solid var(--border); border-radius:10px;
-    padding:14px; margin-bottom:12px;
-  }
-  .subcard-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
-  .subcard-head strong{font-size:13.5px;}
-  .remove-x{background:none; border:none; color:var(--text-muted); font-size:13px; cursor:pointer; font-weight:600;}
-
-  .add-link{
-    background:none; border:1.5px dashed var(--border); border-radius:8px; color:var(--primary);
-    font-family:var(--font-body); font-weight:600; font-size:13px; padding:10px; width:100%; cursor:pointer;
-  }
-  .hint{font-size:11.5px; color:var(--text-muted); margin-top:4px; line-height:1.4;}
-  .divider{height:1px; background:var(--border); margin:20px 0;}
+  /* grupos de evaluaciones */
+  .eval-actions-row{display:flex; gap:8px; margin-top:12px;}
+  .eval-actions-row .add-link{flex:1; margin-top:0;}
+  .grupo-block{border:1.5px dashed var(--border); border-radius:12px; padding:10px; margin-top:10px; cursor:pointer;}
+  .grupo-block.active{border-color:var(--primary); border-style:solid; background:rgba(92,134,176,.05);}
+  .grupo-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
+  .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted);}
+  .grupo-mini-check{display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-muted); cursor:pointer;}
+  .grupo-mini-check input{width:14px; height:14px; accent-color:var(--primary);}
+  .grupo-pond{display:flex; align-items:center; gap:3px; margin-left:auto;}
+  .grupo-pond input{width:46px; font-size:12px; padding:5px 6px; border:1.5px solid var(--border); border-radius:6px;}
+  .grupo-pond span{font-size:11px; color:var(--text-muted);}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <div class="topbar"><h1>RamOS</h1><p id="topSub">Segundo Semestre 2026</p></div>
+  <div class="topbar"><h1>RamOS</h1></div>
 
   <div class="screens">
+    <div class="toast" id="toast"></div>
+
     <div class="screen" id="screen-inicio"><div class="empty-state"><p>Inicio — próximamente.</p></div></div>
     <div class="screen" id="screen-horario"><div class="empty-state"><p>Horario semanal — próximamente.</p></div></div>
 
     <div class="screen active" id="screen-info">
       <div id="ramosList"></div>
-      <div class="empty-state" id="emptyInfo">
-        <p>Todavía no agregas ningún ramo.<br>Ahí se va a concentrar toda la info que después llena Horario, Promedio y Calendario.</p>
-      </div>
+      <div class="add-frame big" id="addFrame"><div class="plus">+</div><div class="label">Añadir ramo</div></div>
     </div>
 
     <div class="screen" id="screen-promedio"><div class="empty-state"><p>Promedio — próximamente.</p></div></div>
     <div class="screen" id="screen-calendario"><div class="empty-state"><p>Calendario — próximamente.</p></div></div>
   </div>
 
-  <button class="btn btn-primary fab" id="addRamoBtn">+ Ramo</button>
+  <button class="btn btn-primary fab" id="uploadFabBtn">Subir horario</button>
+  <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
 
   <nav class="bottom-nav">
-    <button class="nav-item" data-tab="inicio">
-      <svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>
-      <span>Inicio</span>
-    </button>
-    <button class="nav-item" data-tab="horario">
-      <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>
-      <span>Horario</span>
-    </button>
-    <button class="nav-item active" data-tab="info">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/></svg>
-      <span>Info</span>
-    </button>
-    <button class="nav-item" data-tab="promedio">
-      <svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg>
-      <span>Promedio</span>
-    </button>
-    <button class="nav-item" data-tab="calendario">
-      <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg>
-      <span>Calendario</span>
-    </button>
+    <button class="nav-item" data-tab="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span>Inicio</span></button>
+    <button class="nav-item" data-tab="horario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span>Horario</span></button>
+    <button class="nav-item active" data-tab="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.01"/></svg><span>Info</span></button>
+    <button class="nav-item" data-tab="promedio"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg><span>Promedio</span></button>
+    <button class="nav-item" data-tab="calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg><span>Calendario</span></button>
   </nav>
 
-  <!-- FORM OVERLAY -->
-  <div class="overlay" id="ramoForm">
-    <div class="overlay-header">
-      <h2>Nuevo ramo</h2>
-      <button class="close-x" id="closeFormBtn">✕</button>
+  <div class="choice-backdrop" id="choiceBackdrop">
+    <div class="choice-card">
+      <h3>Ya tienes ramos cargados</h3>
+      <p>¿Qué quieres hacer con el horario nuevo?</p>
+      <button class="choice-btn" data-mode="reemplazar">Reemplazar<span>Borra toda la info actual y carga desde cero</span></button>
+      <button class="choice-btn" data-mode="actualizar">Actualizar<span>Mantiene lo que sigue igual, cambia solo lo que varió</span></button>
+      <button class="choice-btn" data-mode="agregar">Agregar<span>Suma los ramos nuevos a los que ya tienes</span></button>
+      <button class="choice-cancel" id="choiceCancelBtn">Cancelar</button>
     </div>
-    <div class="overlay-body" id="formBody"></div>
-    <div class="overlay-footer">
-      <button class="btn btn-primary btn-block" id="saveRamoBtn">Guardar ramo</button>
-    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-sheet" id="ramoModal">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><h2 id="modalTitle">Nuevo ramo</h2><button class="close-x" id="closeModalBtn">✕</button></div>
+    <div class="tab-switch" id="tabSwitch"></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer"><button class="btn btn-primary btn-block" id="saveRamoBtn">Guardar ramo</button></div>
   </div>
 
 </div>
@@ -228,12 +213,18 @@ const BLOQUES = [
   {n:7, r:'18:45–20:05'}, {n:8, r:'20:05–21:25'}, {n:9, r:'21:25–22:45'}
 ];
 const DIAS = [{v:'L',l:'Lunes'},{v:'M',l:'Martes'},{v:'W',l:'Miércoles'},{v:'J',l:'Jueves'},{v:'V',l:'Viernes'},{v:'S',l:'Sábado'}];
-const TIPO_LABEL = {teoria:'Teoría', laboratorio:'Laboratorio', ejercicio:'Ejercicio'};
+
+const ICON_INFO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9.5 12.5h5M9.5 16h5"/></svg>';
+const ICON_HORARIO = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+const ICON_EVAL = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 7 21l5-2.5 5 2.5-2-7.5"/></svg>';
 
 let ramos = [];
-let draft = null; // ramo en edición dentro del formulario
+let draft = null;
+let modalTab = 'evaluaciones';
+let activeGroupIndex = null;
+let pendingUploadMode = null;
+let toastTimer = null;
 
-/* ---------- navegación ---------- */
 document.querySelectorAll('.nav-item').forEach(btn=>{
   btn.onclick = ()=>{
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
@@ -243,465 +234,322 @@ document.querySelectorAll('.nav-item').forEach(btn=>{
   };
 });
 
-/* ---------- helpers de estado ---------- */
-function nuevoComponente(tipo){
-  return { tipo, coordinacion:'', horarios:[], pool:{grupos:[], sueltas:[]} };
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3600);
 }
+
+/* ---------- estado ---------- */
 function nuevoRamo(){
   return {
     id: Date.now(),
-    nombre:'', codigo:'', profesorNombre:'', profesorCorreo:'',
-    tieneLab:false, tieneEjercicio:false, separado:false,
-    componentes:[ nuevoComponente('teoria') ],
+    nombre:'', codigo:'', profesorNombre:'', profesorCorreo:'', coordinacion:'',
+    horarios: [],
     poolCompartido: { grupos:[], sueltas:[] }
   };
 }
+function nuevaEvaluacion(){ return { nombre:'', notaRaw:'', ponderacion:0, fecha:'', hora:'', sala:'' }; }
+function nuevoHorario(){ return { dia:'L', bloque:1, sala:'', tipo:'teoria', dividir:false, pondTeoria:0, pondLab:0 }; }
+function nuevoGrupo(){ return { ponderacionGrupo:0, eliminarPeorNota:false, evaluaciones:[] }; }
 
-/* ---------- abrir / cerrar formulario ---------- */
-document.getElementById('addRamoBtn').onclick = ()=>{
+/* ---------- abrir / cerrar modal de ramo ---------- */
+document.getElementById('addFrame').onclick = ()=>{
   draft = nuevoRamo();
-  renderForm();
-  document.getElementById('ramoForm').classList.add('active');
+  modalTab = 'evaluaciones';
+  activeGroupIndex = null;
+  document.getElementById('modalTitle').textContent = 'Nuevo ramo';
+  renderModal();
+  document.getElementById('modalBackdrop').classList.add('active');
+  document.getElementById('ramoModal').classList.add('active');
 };
-document.getElementById('closeFormBtn').onclick = ()=>{
-  document.getElementById('ramoForm').classList.remove('active');
-};
+function closeRamoModal(){
+  document.getElementById('modalBackdrop').classList.remove('active');
+  document.getElementById('ramoModal').classList.remove('active');
+}
+document.getElementById('closeModalBtn').onclick = closeRamoModal;
+document.getElementById('modalBackdrop').onclick = closeRamoModal;
 
-/* ---------- render del formulario completo ---------- */
-function renderForm(){
-  const body = document.getElementById('formBody');
-  body.innerHTML = '';
+/* ---------- tabs ---------- */
+const TABS = [
+  {id:'evaluaciones', label:'Evaluaciones', icon:ICON_EVAL},
+  {id:'horario', label:'Horario', icon:ICON_HORARIO},
+  {id:'info', label:'Información', icon:ICON_INFO}
+];
+function renderTabSwitch(){
+  const row = document.getElementById('tabSwitch');
+  row.innerHTML = TABS.map(t=>`<button type="button" data-modaltab="${t.id}" class="${modalTab===t.id?'active':''}">${t.icon}${t.label}</button>`).join('');
+  row.querySelectorAll('[data-modaltab]').forEach(btn=>{
+    btn.onclick = ()=>{ modalTab = btn.dataset.modaltab; renderModal(); };
+  });
+}
+function renderModal(){
+  renderTabSwitch();
+  const body = document.getElementById('modalBody');
+  if(modalTab==='evaluaciones') body.innerHTML = evalTabHTML();
+  else if(modalTab==='horario') body.innerHTML = horarioTabHTML();
+  else body.innerHTML = infoTabHTML();
+  attachModalListeners();
+}
 
-  body.appendChild(fieldset('Datos del ramo', datosRamoHTML()));
-  body.appendChild(fieldset('Componentes', componentesToggleHTML()));
+/* ---------- tab: Evaluaciones ---------- */
+function evalTabHTML(){
+  const actionsHTML = activeGroupIndex === null
+    ? `<button type="button" class="add-link" id="addEvalRowBtn">+ Fila</button><button type="button" class="add-link" id="crearGrupoBtn">Crear grupo</button>`
+    : `<button type="button" class="add-link" id="addGrupoRowBtn">+ Fila grupo</button><button type="button" class="add-link" id="terminarGrupoBtn">Terminar grupo</button>`;
+  return `
+    <div class="table-scroll">
+      <table class="eval-table">
+        <thead><tr><th>Evaluación</th><th>Nota</th><th>%</th><th>Fecha</th><th>Hora</th><th>Sala</th><th></th></tr></thead>
+        <tbody>${draft.poolCompartido.sueltas.map((e,i)=>evalRowHTML(e,i)).join('')}</tbody>
+      </table>
+    </div>
+    <div id="gruposWrap">${draft.poolCompartido.grupos.map((g,gi)=>grupoBlockHTML(g,gi)).join('')}</div>
+    <div class="eval-actions-row">${actionsHTML}</div>
+    <p class="hint">Toca el borde de un grupo ya creado para volver a editarlo y agregar más pruebas.</p>
+  `;
+}
+function evalRowHTML(e, i, grupoIdx){
+  const g = grupoIdx!==undefined ? ` data-egroup="${grupoIdx}"` : '';
+  return `<tr>
+    <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1" style="min-width:110px;"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2" style="width:56px;"></td>
+    <td><input type="number" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion}" placeholder="10" style="width:52px;"></td>
+    <td><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}" style="min-width:130px;"></td>
+    <td><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}" style="min-width:90px;"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421" style="width:70px;"></td>
+    <td><button type="button" class="rm-row" data-rmrow="${i}"${g}>×</button></td>
+  </tr>`;
+}
+function grupoBlockHTML(g, gi){
+  const active = activeGroupIndex === gi;
+  return `
+  <div class="grupo-block${active?' active':''}" data-grupoborder="${gi}">
+    <div class="grupo-head">
+      <span class="grupo-title">Grupo ${gi+1}</span>
+      <label class="grupo-mini-check"><input type="checkbox" data-g="${gi}" data-gfield="eliminarPeorNota" ${g.eliminarPeorNota?'checked':''}><span>Eliminar peor nota</span></label>
+      <div class="grupo-pond"><input type="number" data-g="${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo}" placeholder="0"><span>%</span></div>
+    </div>
+    <div class="table-scroll">
+      <table class="eval-table mini"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi)).join('')}</tbody></table>
+    </div>
+  </div>`;
+}
 
-  draft.componentes.forEach((c, i)=>{
-    body.appendChild(componenteBlock(c, i));
+/* ---------- tab: Horario ---------- */
+function horarioTabHTML(){
+  return `
+    <div id="horarioRows">${draft.horarios.map((h,i)=>horarioRowHTML(h,i)).join('')}</div>
+    <button type="button" class="add-link" id="addHorarioBtn">+ Agregar bloque de horario</button>
+  `;
+}
+function horarioRowHTML(h, i){
+  return `
+  <div class="subcard">
+    <div class="subcard-head"><strong>Bloque ${i+1}</strong><button type="button" class="remove-x" data-rmhorario="${i}">Quitar</button></div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Día</label>
+        <select data-h="${i}" data-hfield="dia">${DIAS.map(d=>`<option value="${d.v}" ${h.dia===d.v?'selected':''}>${d.l}</option>`).join('')}</select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Bloque</label>
+        <select data-h="${i}" data-hfield="bloque">${BLOQUES.map(b=>`<option value="${b.n}" ${h.bloque==b.n?'selected':''}>${b.n} · ${b.r}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Sala</label>
+      <input type="text" data-h="${i}" data-hfield="sala" value="${h.sala}" placeholder="Ej: IND421">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Tipo</label>
+      <select data-h="${i}" data-hfield="tipo">
+        <option value="teoria" ${h.tipo==='teoria'?'selected':''}>Teoría</option>
+        <option value="ejercicio" ${h.tipo==='ejercicio'?'selected':''}>Ejercicio</option>
+        <option value="laboratorio" ${h.tipo==='laboratorio'?'selected':''}>Laboratorio</option>
+      </select>
+    </div>
+    ${h.tipo==='laboratorio' ? `
+    <label class="checkline">
+      <input type="checkbox" data-h="${i}" data-hfield="dividirBool" ${h.dividir?'checked':''}>
+      <span>Dividir notas de lab y teoría</span>
+    </label>
+    ${h.dividir ? `
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">% Teoría</label><input type="number" data-h="${i}" data-hfield="pondTeoria" value="${h.pondTeoria}"></div>
+      <div class="field-group"><label class="field-label">% Laboratorio</label><input type="number" data-h="${i}" data-hfield="pondLab" value="${h.pondLab}"></div>
+    </div>` : ''}
+    ` : ''}
+  </div>`;
+}
+
+/* ---------- tab: Información ---------- */
+function infoTabHTML(){
+  return `
+    <div class="field-group"><label class="field-label">Nombre del ramo</label><input type="text" id="f-nombre" value="${draft.nombre}" placeholder="Ej: Microeconomía"></div>
+    <div class="field-group"><label class="field-label">Código</label><input type="text" id="f-codigo" value="${draft.codigo}" placeholder="14137-0"></div>
+    <div class="field-row">
+      <div class="field-group"><label class="field-label">Profesor</label><input type="text" id="f-profNombre" value="${draft.profesorNombre}" placeholder="Nombre"></div>
+      <div class="field-group"><label class="field-label">Correo</label><input type="email" id="f-profCorreo" value="${draft.profesorCorreo}" placeholder="correo@usach.cl"></div>
+    </div>
+    <div class="field-group"><label class="field-label">Coordinación</label><input type="text" id="f-coordinacion" value="${draft.coordinacion}" placeholder="Ej: A-3" style="max-width:140px;"></div>
+  `;
+}
+
+/* ---------- listeners del modal ---------- */
+function attachModalListeners(){
+  const body = document.getElementById('modalBody');
+
+  // Evaluaciones — filas sueltas / grupo activo
+  const addEvalBtn = document.getElementById('addEvalRowBtn');
+  if(addEvalBtn) addEvalBtn.onclick = ()=>{ draft.poolCompartido.sueltas.push(nuevaEvaluacion()); renderModal(); };
+  const crearGrupoBtn = document.getElementById('crearGrupoBtn');
+  if(crearGrupoBtn) crearGrupoBtn.onclick = ()=>{
+    draft.poolCompartido.grupos.push(nuevoGrupo());
+    activeGroupIndex = draft.poolCompartido.grupos.length - 1;
+    renderModal();
+  };
+  const addGrupoRowBtn = document.getElementById('addGrupoRowBtn');
+  if(addGrupoRowBtn) addGrupoRowBtn.onclick = ()=>{ draft.poolCompartido.grupos[activeGroupIndex].evaluaciones.push(nuevaEvaluacion()); renderModal(); };
+  const terminarGrupoBtn = document.getElementById('terminarGrupoBtn');
+  if(terminarGrupoBtn) terminarGrupoBtn.onclick = ()=>{ activeGroupIndex = null; renderModal(); };
+
+  body.querySelectorAll('[data-rmrow]').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(btn.dataset.egroup !== undefined) draft.poolCompartido.grupos[btn.dataset.egroup].evaluaciones.splice(btn.dataset.rmrow,1);
+      else draft.poolCompartido.sueltas.splice(btn.dataset.rmrow,1);
+      renderModal();
+    };
+  });
+  body.querySelectorAll('[data-erow]').forEach(el=>{
+    el.oninput = ()=>{
+      const target = el.dataset.egroup !== undefined
+        ? draft.poolCompartido.grupos[el.dataset.egroup].evaluaciones[el.dataset.erow]
+        : draft.poolCompartido.sueltas[el.dataset.erow];
+      target[el.dataset.efield] = el.value;
+    };
+  });
+  body.querySelectorAll('[data-g]').forEach(el=>{
+    const handler = ()=>{
+      const g = draft.poolCompartido.grupos[el.dataset.g];
+      if(el.dataset.gfield==='eliminarPeorNota') g.eliminarPeorNota = el.checked;
+      else g.ponderacionGrupo = Number(el.value);
+    };
+    el.type==='checkbox' ? el.onchange = handler : el.oninput = handler;
+  });
+  body.querySelectorAll('[data-grupoborder]').forEach(block=>{
+    block.addEventListener('click', (ev)=>{
+      if(ev.target.closest('input, table, button')) return;
+      activeGroupIndex = Number(block.dataset.grupoborder);
+      renderModal();
+    });
   });
 
-  if(!draft.separado){
-    body.appendChild(fieldset('Evaluaciones (pool único del ramo)', poolHTML(draft.poolCompartido, 'compartido')));
-  }
+  // Horario
+  const addHorarioBtn = document.getElementById('addHorarioBtn');
+  if(addHorarioBtn) addHorarioBtn.onclick = ()=>{ draft.horarios.push(nuevoHorario()); renderModal(); };
+  body.querySelectorAll('[data-rmhorario]').forEach(btn=>{
+    btn.onclick = ()=>{ draft.horarios.splice(btn.dataset.rmhorario,1); renderModal(); };
+  });
+  body.querySelectorAll('[data-h]').forEach(el=>{
+    const handler = ()=>{
+      const h = draft.horarios[el.dataset.h];
+      if(el.dataset.hfield==='dividirBool'){ h.dividir = el.checked; renderModal(); return; }
+      if(el.dataset.hfield==='tipo'){ h.tipo = el.value; renderModal(); return; }
+      h[el.dataset.hfield] = el.type==='number' ? Number(el.value) : el.value;
+    };
+    (el.tagName==='SELECT' || el.type==='checkbox') ? el.onchange = handler : el.oninput = handler;
+  });
 
-  attachFormListeners();
-}
-
-function fieldset(title, innerHTML){
-  const fs = document.createElement('fieldset');
-  fs.innerHTML = `<legend>${title}</legend>${innerHTML}`;
-  return fs;
-}
-
-function datosRamoHTML(){
-  return `
-    <div class="field-group">
-      <label class="field-label">Nombre del ramo</label>
-      <input type="text" id="f-nombre" value="${draft.nombre}" placeholder="Ej: Microeconomía">
-    </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label class="field-label">Código</label>
-        <input type="text" id="f-codigo" value="${draft.codigo}" placeholder="14137-0">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label class="field-label">Profesor</label>
-        <input type="text" id="f-profNombre" value="${draft.profesorNombre}" placeholder="Nombre">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Correo</label>
-        <input type="email" id="f-profCorreo" value="${draft.profesorCorreo}" placeholder="correo@usach.cl">
-      </div>
-    </div>
-  `;
-}
-
-function componentesToggleHTML(){
-  return `
-    <label class="checkline">
-      <input type="checkbox" id="f-tieneLab" ${draft.tieneLab?'checked':''}>
-      <span>Tiene laboratorio</span>
-    </label>
-    <label class="checkline">
-      <input type="checkbox" id="f-tieneEjercicio" ${draft.tieneEjercicio?'checked':''}>
-      <span>Tiene ejercicio</span>
-    </label>
-    ${(draft.tieneLab||draft.tieneEjercicio) ? `
-    <label class="checkline">
-      <input type="checkbox" id="f-separado" ${draft.separado?'checked':''}>
-      <span>Separar nota de teoría y laboratorio/ejercicio
-        <span class="sub">Si lo dejas apagado, todas las evaluaciones caen en un solo pool que promedia el ramo completo.</span>
-      </span>
-    </label>` : ''}
-  `;
-}
-
-function componenteBlock(c, idx){
-  const fs = document.createElement('fieldset');
-  const puedeQuitar = c.tipo !== 'teoria';
-  fs.innerHTML = `
-    <legend>${TIPO_LABEL[c.tipo]}${c.tipo!=='teoria' ? ' <span style="font-weight:400;color:var(--text-muted);font-size:12.5px;">— se muestra como "'+ (draft.nombre||'Ramo') +' - '+ (c.tipo==='laboratorio'?'L':'E') +'"</span>' : ''}</legend>
-    ${c.tipo!=='ejercicio' ? `
-    <div class="field-group">
-      <label class="field-label">Coordinación</label>
-      <input type="text" data-comp="${idx}" data-field="coordinacion" value="${c.coordinacion}" placeholder="Ej: A-3" style="max-width:120px;">
-    </div>` : ''}
-    <div id="horarios-${idx}"></div>
-    <button type="button" class="add-link" data-addhorario="${idx}">+ Agregar bloque de horario</button>
-    ${draft.separado ? `<div class="divider"></div><div id="pool-${idx}"></div>` : ''}
-  `;
-  renderHorarios(fs, c, idx);
-  if(draft.separado){
-    const poolWrap = fs.querySelector(`#pool-${idx}`);
-    poolWrap.innerHTML = `<legend style="font-family:var(--font-display);font-size:14px;margin-bottom:8px;">Evaluaciones</legend>` + poolHTML(c.pool, idx);
-  }
-  return fs;
-}
-
-function renderHorarios(container, c, idx){
-  const wrap = container.querySelector(`#horarios-${idx}`);
-  wrap.innerHTML = c.horarios.map((h,hi)=>`
-    <div class="subcard">
-      <div class="subcard-head"><strong>Bloque ${hi+1}</strong><button type="button" class="remove-x" data-rmhorario="${idx}:${hi}">Quitar</button></div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Día</label>
-          <select data-h="${idx}:${hi}" data-hfield="dia">
-            ${DIAS.map(d=>`<option value="${d.v}" ${h.dia===d.v?'selected':''}>${d.l}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Bloque inicio</label>
-          <select data-h="${idx}:${hi}" data-hfield="bloqueInicio">
-            ${BLOQUES.map(b=>`<option value="${b.n}" ${h.bloqueInicio==b.n?'selected':''}>${b.n} · ${b.r}</option>`).join('')}
-          </select>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Bloque fin</label>
-          <select data-h="${idx}:${hi}" data-hfield="bloqueFin">
-            ${BLOQUES.map(b=>`<option value="${b.n}" ${h.bloqueFin==b.n?'selected':''}>${b.n} · ${b.r}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label">Sala</label>
-        <input type="text" data-h="${idx}:${hi}" data-hfield="sala" value="${h.sala}" placeholder="Ej: IND421">
-      </div>
-    </div>
-  `).join('');
-}
-
-function poolHTML(pool, key){
-  return `
-    <div id="grupos-${key}"></div>
-    <button type="button" class="add-link" data-addgrupo="${key}" style="margin-bottom:10px;">+ Agregar grupo de evaluaciones</button>
-    <div id="sueltas-${key}"></div>
-    <button type="button" class="add-link" data-addsuelta="${key}">+ Agregar evaluación suelta</button>
-  `;
-}
-
-function renderPoolInner(pool, key, root){
-  const gWrap = root.querySelector(`#grupos-${key}`);
-  gWrap.innerHTML = pool.grupos.map((g,gi)=>grupoHTML(g,key,gi)).join('');
-  const sWrap = root.querySelector(`#sueltas-${key}`);
-  sWrap.innerHTML = pool.sueltas.map((e,ei)=>evaluacionHTML(e,key,'suelta',ei)).join('');
-}
-
-function grupoHTML(g,key,gi){
-  return `
-    <div class="subcard">
-      <div class="subcard-head"><strong>Grupo</strong><button type="button" class="remove-x" data-rmgrupo="${key}:${gi}">Quitar grupo</button></div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Nombre del grupo</label>
-          <input type="text" data-g="${key}:${gi}" data-gfield="nombre" value="${g.nombre}" placeholder="Ej: Controles">
-        </div>
-        <div class="field-group" style="max-width:90px;">
-          <label class="field-label">% grupo</label>
-          <input type="number" data-g="${key}:${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo}" placeholder="30">
-        </div>
-      </div>
-      <label class="checkline">
-        <input type="checkbox" data-g="${key}:${gi}" data-gfield="personalizado" ${g.personalizado?'checked':''}>
-        <span>Personalizar<span class="sub">Control manual de % y eliminación por evaluación — para casos no estándar.</span></span>
-      </label>
-      ${!g.personalizado ? `
-      <label class="checkline">
-        <input type="checkbox" data-g="${key}:${gi}" data-gfield="distribuirIgual" ${g.distribuirIgual?'checked':''}>
-        <span>Distribuir % en partes iguales</span>
-      </label>
-      <label class="checkline">
-        <input type="checkbox" data-g="${key}:${gi}" data-gfield="eliminarPeorNota" ${g.eliminarPeorNota?'checked':''}>
-        <span>Eliminar la peor nota del grupo</span>
-      </label>
-      ${g.eliminarPeorNota ? `
-        <div class="radio-row">
-          <label class="radio-opt"><input type="radio" name="crit-${key}-${gi}" data-g="${key}:${gi}" data-gfield="criterioEliminacion" value="menorNota" ${g.criterioEliminacion==='menorNota'?'checked':''}> Menor nota</label>
-          <label class="radio-opt"><input type="radio" name="crit-${key}-${gi}" data-g="${key}:${gi}" data-gfield="criterioEliminacion" value="menorPonderacion" ${g.criterioEliminacion==='menorPonderacion'?'checked':''}> Menor ponderación</label>
-        </div>
-        <div class="field-group" style="max-width:90px;">
-          <label class="field-label">Cuántas eliminar</label>
-          <input type="number" min="1" data-g="${key}:${gi}" data-gfield="cantidadAEliminar" value="${g.cantidadAEliminar}">
-        </div>
-      ` : ''}
-      ` : ''}
-      <div class="divider"></div>
-      <div id="evals-${key}-${gi}"></div>
-      <button type="button" class="add-link" data-addeval="${key}:${gi}">+ Agregar evaluación</button>
-    </div>
-  `;
-}
-
-function evaluacionHTML(e,key,scope,idx1,idx2){
-  const dataAttr = scope==='grupo' ? `data-e="${key}:${idx1}:${idx2}"` : `data-e="${key}:${idx1}"`;
-  const rmAttr = scope==='grupo' ? `data-rmeval="${key}:${idx1}:${idx2}"` : `data-rmsuelta="${key}:${idx1}"`;
-  return `
-    <div class="subcard" style="background:var(--bg);">
-      <div class="subcard-head"><strong>${e.nombre || 'Evaluación'}</strong><button type="button" class="remove-x" ${rmAttr}>Quitar</button></div>
-      <div class="field-group">
-        <label class="field-label">Nombre</label>
-        <input type="text" ${dataAttr} data-efield="nombre" value="${e.nombre}" placeholder="Ej: Control 1">
-      </div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Nota</label>
-          <input type="text" ${dataAttr} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2 / 6.2 / 62">
-        </div>
-        <div class="field-group">
-          <label class="field-label">% ponderación</label>
-          <input type="number" ${dataAttr} data-efield="ponderacion" value="${e.ponderacion}" ${e.disabledPond?'disabled':''} placeholder="10">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Fecha</label>
-          <input type="date" ${dataAttr} data-efield="fecha" value="${e.fecha}">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Hora</label>
-          <input type="time" ${dataAttr} data-efield="hora" value="${e.hora}">
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label">Sala</label>
-        <input type="text" ${dataAttr} data-efield="sala" value="${e.sala}" placeholder="Ej: IND421">
-      </div>
-    </div>
-  `;
-}
-
-function nuevoGrupo(){
-  return { nombre:'', ponderacionGrupo:0, personalizado:false, distribuirIgual:true, eliminarPeorNota:false, criterioEliminacion:'menorNota', cantidadAEliminar:1, evaluaciones:[] };
-}
-function nuevaEvaluacion(){
-  return { nombre:'', notaRaw:'', ponderacion:0, fecha:'', hora:'', sala:'' };
-}
-
-function getPool(key){
-  if(key==='compartido') return draft.poolCompartido;
-  return draft.componentes[key].pool;
-}
-
-/* ---------- listeners (delegación simple, se re-atan tras cada render) ---------- */
-function attachFormListeners(){
-  const body = document.getElementById('formBody');
-
-  body.querySelectorAll('#f-nombre,#f-codigo,#f-profNombre,#f-profCorreo').forEach(el=>{
-    el.oninput = ()=>{
+  // Información
+  ['f-nombre','f-codigo','f-profNombre','f-profCorreo','f-coordinacion'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.oninput = ()=>{
       draft.nombre = document.getElementById('f-nombre').value;
       draft.codigo = document.getElementById('f-codigo').value;
       draft.profesorNombre = document.getElementById('f-profNombre').value;
       draft.profesorCorreo = document.getElementById('f-profCorreo').value;
-    };
-  });
-
-  const labChk = document.getElementById('f-tieneLab');
-  const ejChk = document.getElementById('f-tieneEjercicio');
-  if(labChk) labChk.onchange = ()=>{
-    draft.tieneLab = labChk.checked;
-    syncComponentes(); renderForm();
-  };
-  if(ejChk) ejChk.onchange = ()=>{
-    draft.tieneEjercicio = ejChk.checked;
-    syncComponentes(); renderForm();
-  };
-  const sepChk = document.getElementById('f-separado');
-  if(sepChk) sepChk.onchange = ()=>{ draft.separado = sepChk.checked; renderForm(); };
-
-  body.querySelectorAll('[data-comp]').forEach(el=>{
-    el.oninput = ()=>{ draft.componentes[el.dataset.comp][el.dataset.field] = el.value; };
-  });
-
-  body.querySelectorAll('[data-addhorario]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const idx = btn.dataset.addhorario;
-      draft.componentes[idx].horarios.push({dia:'L', bloqueInicio:1, bloqueFin:1, sala:''});
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-rmhorario]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [idx,hi] = btn.dataset.rmhorario.split(':');
-      draft.componentes[idx].horarios.splice(hi,1);
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-h]').forEach(el=>{
-    el.oninput = ()=>{
-      const [idx,hi] = el.dataset.h.split(':');
-      draft.componentes[idx].horarios[hi][el.dataset.hfield] = el.value;
-    };
-  });
-
-  body.querySelectorAll('[data-addgrupo]').forEach(btn=>{
-    btn.onclick = ()=>{
-      getPool(isNaN(btn.dataset.addgrupo)?btn.dataset.addgrupo:Number(btn.dataset.addgrupo)).grupos.push(nuevoGrupo());
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-addsuelta]').forEach(btn=>{
-    btn.onclick = ()=>{
-      getPool(isNaN(btn.dataset.addsuelta)?btn.dataset.addsuelta:Number(btn.dataset.addsuelta)).sueltas.push(nuevaEvaluacion());
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-rmgrupo]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [key,gi] = btn.dataset.rmgrupo.split(':');
-      getPool(isNaN(key)?key:Number(key)).grupos.splice(gi,1);
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-rmsuelta]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [key,ei] = btn.dataset.rmsuelta.split(':');
-      getPool(isNaN(key)?key:Number(key)).sueltas.splice(ei,1);
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-addeval]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [key,gi] = btn.dataset.addeval.split(':');
-      getPool(isNaN(key)?key:Number(key)).grupos[gi].evaluaciones.push(nuevaEvaluacion());
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-rmeval]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [key,gi,ei] = btn.dataset.rmeval.split(':');
-      getPool(isNaN(key)?key:Number(key)).grupos[gi].evaluaciones.splice(ei,1);
-      renderForm();
-    };
-  });
-  body.querySelectorAll('[data-g]').forEach(el=>{
-    el.addEventListener(el.type==='checkbox'||el.type==='radio' ? 'change':'input', ()=>{
-      const [key,gi] = el.dataset.g.split(':');
-      const grupo = getPool(isNaN(key)?key:Number(key)).grupos[gi];
-      const field = el.dataset.gfield;
-      grupo[field] = el.type==='checkbox' ? el.checked : (el.type==='number' ? Number(el.value) : el.value);
-      renderForm();
-    });
-  });
-  body.querySelectorAll('[data-e]').forEach(el=>{
-    el.oninput = ()=>{
-      const parts = el.dataset.e.split(':');
-      let target;
-      if(parts.length===3){
-        const [key,gi,ei]=parts;
-        target = getPool(isNaN(key)?key:Number(key)).grupos[gi].evaluaciones[ei];
-      } else {
-        const [key,ei]=parts;
-        target = getPool(isNaN(key)?key:Number(key)).sueltas[ei];
-      }
-      target[el.dataset.efield] = el.value;
-    };
-  });
-
-  // render dinámico de grupos/sueltas dentro de cada pool visible
-  document.querySelectorAll('[id^="grupos-"]').forEach(el=>{
-    const key = el.id.replace('grupos-','');
-    renderPoolInner(getPool(isNaN(key)?key:Number(key)), key, document.getElementById('formBody'));
-  });
-  // grupos internos: renderizar evaluaciones de cada grupo
-  document.querySelectorAll('[id^="evals-"]').forEach(el=>{
-    const [key,gi] = el.id.replace('evals-','').split('-');
-    const grupo = getPool(isNaN(key)?key:Number(key)).grupos[gi];
-    el.innerHTML = grupo.evaluaciones.map((e,ei)=>evaluacionHTML(e,key,'grupo',gi,ei)).join('');
-  });
-  // reatar listeners de los recién insertados (evaluaciones dentro de grupos)
-  body.querySelectorAll('[data-e]').forEach(el=>{
-    el.oninput = ()=>{
-      const parts = el.dataset.e.split(':');
-      let target;
-      if(parts.length===3){
-        const [key,gi,ei]=parts;
-        target = getPool(isNaN(key)?key:Number(key)).grupos[gi].evaluaciones[ei];
-      } else {
-        const [key,ei]=parts;
-        target = getPool(isNaN(key)?key:Number(key)).sueltas[ei];
-      }
-      target[el.dataset.efield] = el.value;
-    };
-  });
-  body.querySelectorAll('[data-rmeval]').forEach(btn=>{
-    btn.onclick = ()=>{
-      const [key,gi,ei] = btn.dataset.rmeval.split(':');
-      getPool(isNaN(key)?key:Number(key)).grupos[gi].evaluaciones.splice(ei,1);
-      renderForm();
+      draft.coordinacion = document.getElementById('f-coordinacion').value;
     };
   });
 }
 
-function syncComponentes(){
-  const tieneLab = draft.tieneLab;
-  const tieneEj = draft.tieneEjercicio;
-  const teoria = draft.componentes.find(c=>c.tipo==='teoria');
-  const nuevos = [teoria];
-  if(tieneLab) nuevos.push(draft.componentes.find(c=>c.tipo==='laboratorio') || nuevoComponente('laboratorio'));
-  if(tieneEj) nuevos.push(draft.componentes.find(c=>c.tipo==='ejercicio') || nuevoComponente('ejercicio'));
-  draft.componentes = nuevos;
-  if(!tieneLab && !tieneEj) draft.separado = false;
-}
-
-/* ---------- guardar ramo y pintar card ---------- */
+/* ---------- guardar ramo ---------- */
 document.getElementById('saveRamoBtn').onclick = ()=>{
-  if(!draft.nombre.trim()){ alert('Ponle un nombre al ramo.'); return; }
+  if(!draft.nombre.trim()){
+    modalTab = 'info'; activeGroupIndex = null; renderModal();
+    showToast('Ponle un nombre al ramo antes de guardar.');
+    return;
+  }
   ramos.push(draft);
   renderRamosList();
-  document.getElementById('ramoForm').classList.remove('active');
+  closeRamoModal();
 };
 
+/* ---------- lista de ramos ---------- */
+function summarizeInfo(r){
+  const parts = [];
+  if(r.profesorNombre) parts.push(r.profesorNombre);
+  if(r.coordinacion) parts.push(r.coordinacion);
+  return parts.length ? parts.join(' · ') : 'Sin profesor ni coordinación registrada';
+}
+function summarizeHorario(r){
+  const total = r.horarios.length;
+  if(!total) return 'Sin bloques de horario cargados';
+  const dias = [...new Set(r.horarios.map(h=>DIAS.find(d=>d.v===h.dia)?.l).filter(Boolean))];
+  return `${total} bloque${total>1?'s':''} · ${dias.join(', ')}`;
+}
+function summarizeEval(r){
+  const nS = r.poolCompartido.sueltas.length, nG = r.poolCompartido.grupos.length;
+  if(!nS && !nG) return 'Sin evaluaciones cargadas';
+  const bits = [];
+  if(nG) bits.push(`${nG} grupo${nG>1?'s':''}`);
+  if(nS) bits.push(`${nS} suelta${nS>1?'s':''}`);
+  return bits.join(' · ');
+}
 function renderRamosList(){
   const list = document.getElementById('ramosList');
-  const empty = document.getElementById('emptyInfo');
-  empty.style.display = ramos.length ? 'none' : 'block';
+  const frame = document.getElementById('addFrame');
   list.innerHTML = ramos.map(r=>`
     <div class="ramo-card">
-      <div class="ramo-card-top">
-        <div>
-          <h3>${r.nombre}</h3>
-          <div class="codigo">${r.codigo || 'sin código'}</div>
-        </div>
-      </div>
-      <div class="componentes-tags">
-        ${r.componentes.map(c=>`<span class="tag">${TIPO_LABEL[c.tipo]}${c.coordinacion?' · '+c.coordinacion:''}</span>`).join('')}
-        ${r.separado ? `<span class="tag">notas separadas</span>` : ''}
-      </div>
-      ${r.profesorNombre ? `<div class="prof">${r.profesorNombre}${r.profesorCorreo ? ' · '+r.profesorCorreo : ''}</div>` : ''}
-      <div class="ramo-card-actions">
-        <button class="icon-btn danger" data-delramo="${r.id}">Eliminar</button>
-      </div>
+      <div class="ramo-card-header"><h3>${r.nombre}</h3><div class="codigo">${r.codigo || 'sin código'}</div></div>
+      <div class="ramo-row"><div class="ramo-row-icon icon-info">${ICON_INFO}</div><div class="ramo-row-text">${summarizeInfo(r)}</div></div>
+      <div class="ramo-row"><div class="ramo-row-icon icon-horario">${ICON_HORARIO}</div><div class="ramo-row-text">${summarizeHorario(r)}</div></div>
+      <div class="ramo-row"><div class="ramo-row-icon icon-eval">${ICON_EVAL}</div><div class="ramo-row-text">${summarizeEval(r)}</div></div>
+      <div class="ramo-card-actions"><button class="icon-btn danger" data-delramo="${r.id}">Eliminar</button></div>
     </div>
   `).join('');
   list.querySelectorAll('[data-delramo]').forEach(btn=>{
-    btn.onclick = ()=>{
-      ramos = ramos.filter(r=>r.id != btn.dataset.delramo);
-      renderRamosList();
-    };
+    btn.onclick = ()=>{ ramos = ramos.filter(r=>r.id != btn.dataset.delramo); renderRamosList(); };
   });
+  frame.className = ramos.length===0 ? 'add-frame big' : 'add-frame compact';
+  frame.innerHTML = `<div class="plus">+</div><div class="label">Añadir ramo</div>`;
+}
+
+/* ---------- burbuja "Subir horario" ---------- */
+document.getElementById('uploadFabBtn').onclick = ()=>{
+  if(ramos.length===0){ pendingUploadMode = 'primero'; document.getElementById('pdfInput').click(); }
+  else { document.getElementById('choiceBackdrop').classList.add('active'); }
+};
+document.querySelectorAll('.choice-btn').forEach(btn=>{
+  btn.onclick = ()=>{
+    pendingUploadMode = btn.dataset.mode;
+    document.getElementById('choiceBackdrop').classList.remove('active');
+    document.getElementById('pdfInput').click();
+  };
+});
+document.getElementById('choiceCancelBtn').onclick = ()=>{ document.getElementById('choiceBackdrop').classList.remove('active'); };
+document.getElementById('pdfInput').onchange = (e)=>{
+  const file = e.target.files[0];
+  e.target.value = '';
+  if(!file) return;
+  procesarHorarioPDF(file, pendingUploadMode);
+  pendingUploadMode = null;
+};
+function procesarHorarioPDF(file, modo){
+  const modoTexto = { primero:'primera carga', reemplazar:'reemplazar', actualizar:'actualizar', agregar:'agregar' }[modo] || modo;
+  showToast(`"${file.name}" recibido (modo: ${modoTexto}). El parseo automático del PDF es la próxima pieza — por ahora sigue agregando los ramos con "+ Añadir ramo".`);
 }
 
 renderRamosList();
