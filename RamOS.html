@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>RamOS</title>
 
 <link rel="icon" type="image/png" href="RamOS.png">
@@ -32,7 +32,7 @@
   body{margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); overflow:hidden;}
   .app{position:relative; height:100vh; height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
 
-  .topbar{padding:20px 18px 12px; flex-shrink:0;}
+  .topbar{padding:calc(20px + env(safe-area-inset-top)) 18px 12px; flex-shrink:0;}
   .topbar h1{font-family:var(--font-display); font-size:23px; font-weight:700; margin:0;}
 
   .screens{flex:1; overflow-y:auto; padding:0 18px 110px; -webkit-overflow-scrolling:touch; position:relative;}
@@ -95,9 +95,10 @@
 
   .modal-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:19; display:none;}
   .modal-backdrop.active{display:block;}
-  .modal-sheet{position:absolute; left:0; right:0; bottom:0; max-height:85%; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
+  .modal-sheet{position:absolute; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
   .modal-sheet.active{transform:translateY(0);}
-  .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px; margin:10px auto 0;}
+  .modal-drag-zone{padding:9px 0 7px; display:flex; justify-content:center; cursor:grab; touch-action:none; flex-shrink:0;}
+  .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px;}
   .modal-header{display:flex; align-items:center; justify-content:space-between; padding:10px 18px 0;}
   .modal-header h2{font-family:var(--font-display); font-size:18px; margin:0;}
   .close-x{background:none; border:none; font-size:20px; color:var(--text-muted); cursor:pointer; line-height:1;}
@@ -126,8 +127,8 @@
 
   /* interruptor tipo píldora */
   .switch{position:relative; display:inline-block; width:38px; height:22px; flex-shrink:0;}
-  .switch input{opacity:0; width:0; height:0; position:absolute;}
-  .switch .track{position:absolute; inset:0; background:var(--border); border-radius:999px; transition:background .2s ease; cursor:pointer;}
+  .switch input{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; -webkit-appearance:none; appearance:none; z-index:2;}
+  .switch .track{position:absolute; inset:0; background:var(--border); border-radius:999px; transition:background .2s ease; pointer-events:none;}
   .switch .thumb{position:absolute; left:2px; top:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform .2s ease; box-shadow:0 1px 3px rgba(0,0,0,.25);}
   .switch input:checked + .track{background:var(--primary);}
   .switch input:checked + .track .thumb{transform:translateX(16px);}
@@ -145,11 +146,18 @@
 
   /* tabla de evaluaciones */
   .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:4px -2px 0;}
-  .eval-table{border-collapse:collapse; width:100%; min-width:520px;}
-  .eval-table.mini{min-width:460px;}
+  .eval-table{border-collapse:collapse; width:100%; min-width:560px; table-layout:fixed;}
+  .eval-table.mini{min-width:520px;}
+  .eval-table th:nth-child(1), .eval-table td:nth-child(1){width:120px;}
+  .eval-table th:nth-child(2), .eval-table td:nth-child(2){width:64px;}
+  .eval-table th:nth-child(3), .eval-table td:nth-child(3){width:54px;}
+  .eval-table th:nth-child(4), .eval-table td:nth-child(4){width:124px;}
+  .eval-table th:nth-child(5), .eval-table td:nth-child(5){width:90px;}
+  .eval-table th:nth-child(6), .eval-table td:nth-child(6){width:72px;}
+  .eval-table th:nth-child(7), .eval-table td:nth-child(7){width:28px;}
   .eval-table th{font-family:var(--font-body); font-weight:800; font-size:10px; color:var(--text-muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--border); white-space:nowrap;}
-  .eval-table td{padding:4px 3px; border-bottom:1px solid var(--border); vertical-align:middle;}
-  .eval-table input{width:100%; font-family:var(--font-body); font-size:12.5px; padding:7px 6px; border:1.5px solid var(--border); border-radius:7px; color:var(--text); background:var(--surface);}
+  .eval-table td{padding:4px 3px; border-bottom:1px solid var(--border); vertical-align:middle; overflow:hidden;}
+  .eval-table input{width:100%; font-family:var(--font-body); font-size:12.5px; padding:7px 5px; border:1.5px solid var(--border); border-radius:7px; color:var(--text); background:var(--surface); box-sizing:border-box;}
   .eval-table .rm-row{background:none; border:none; color:var(--danger); font-size:16px; cursor:pointer; padding:0 4px;}
 
   /* grupos de evaluaciones */
@@ -158,14 +166,13 @@
   .grupo-block{border:1.5px dashed var(--border); border-radius:12px; padding:10px; margin-top:10px; cursor:pointer;}
   .grupo-block.active{border-color:var(--primary); border-style:solid; background:rgba(92,134,176,.05);}
   .grupo-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
-  .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted);}
-  .grupo-mini-check{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); cursor:pointer;}
-  .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted); outline:none; cursor:text; display:inline-block; min-width:16px;}
+  .grupo-title{font-family:var(--font-display); font-size:12px; font-weight:700; color:var(--text-muted); outline:none; cursor:text; display:inline-block; min-width:44px; padding:3px 2px;}
   .grupo-title:empty:before{content:attr(data-placeholder);}
-  .grupo-pond{display:flex; align-items:center; gap:3px; margin-left:auto;}
-  .grupo-pond input{width:46px; font-size:12px; padding:5px 6px; border:1.5px solid var(--border); border-radius:6px;}
+  .grupo-pond{display:flex; align-items:baseline; gap:2px; margin-left:auto;}
+  .grupo-pond input{width:30px; text-align:right; font-family:var(--font-body); font-size:13px; padding:3px 1px; border:none; border-bottom:1.5px solid var(--border); border-radius:0; background:transparent; color:var(--text);}
+  .grupo-pond input:focus{border-bottom-color:var(--primary);}
   .grupo-pond span{font-size:11px; color:var(--text-muted);}
-  .mini-btn{border:none; background:var(--bg); color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:10.5px; padding:6px 9px; border-radius:8px; cursor:pointer;}
+  .mini-btn{border:1.5px solid var(--primary); background:transparent; color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:10.5px; padding:6px 12px; border-radius:999px; cursor:pointer;}
   .discarded-row{opacity:.5;}
   .discarded-row input{text-decoration:line-through;}
 </style>
@@ -212,9 +219,24 @@
     </div>
   </div>
 
+  <div class="choice-backdrop" id="grupoOptionsBackdrop">
+    <div class="choice-card">
+      <h3>Opciones del grupo</h3>
+      <label class="switch-row">
+        <span class="switch-text">Eliminar peor nota</span>
+        <span class="switch"><input type="checkbox" id="optElimPeor"><span class="track"><span class="thumb"></span></span></span>
+      </label>
+      <label class="switch-row">
+        <span class="switch-text">Dividir ponderación igual</span>
+        <span class="switch"><input type="checkbox" id="optDividirIgual"><span class="track"><span class="thumb"></span></span></span>
+      </label>
+      <button class="choice-cancel" id="grupoOptionsCloseBtn">Listo</button>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="modalBackdrop"></div>
   <div class="modal-sheet" id="ramoModal">
-    <div class="modal-handle"></div>
+    <div class="modal-drag-zone" id="modalDragZone"><div class="modal-handle"></div></div>
     <div class="modal-header"><h2 id="modalTitle">Nuevo ramo</h2><button class="close-x" id="closeModalBtn">✕</button></div>
     <div class="tab-switch" id="tabSwitch"></div>
     <div class="modal-body" id="modalBody"></div>
@@ -240,6 +262,7 @@ let draft = null;
 let editingId = null;
 let modalTab = 'evaluaciones';
 let activeGroupIndex = null;
+let grupoOptionsIndex = null;
 let pendingUploadMode = null;
 let toastTimer = null;
 
@@ -281,7 +304,7 @@ function nuevoRamo(){
 }
 function nuevaEvaluacion(){ return { nombre:'', notaRaw:'', ponderacion:0, fecha:'', hora:'', sala:'' }; }
 function nuevoHorario(){ return { dia:'L', bloque:1, sala:'', tipo:'teoria', dividir:false, pondTeoria:0, pondLab:0 }; }
-function nuevoGrupo(){ return { nombre:'', ponderacionGrupo:0, eliminarPeorNota:false, evaluaciones:[] }; }
+function nuevoGrupo(){ return { nombre:'', ponderacionGrupo:0, eliminarPeorNota:false, dividirIgual:false, evaluaciones:[] }; }
 
 function normalizarNota(raw){
   if(!raw) return null;
@@ -303,12 +326,13 @@ function getDiscardedIndex(g){
   });
   return worstIdx;
 }
-function dividirPonderacionIgual(g){
+function aplicarDivisionIgualSiCorresponde(g){
+  if(!g.dividirIgual) return;
   const n = g.evaluaciones.length;
   if(n===0) return;
   const discardedIdx = g.eliminarPeorNota ? getDiscardedIndex(g) : -1;
   const effectiveN = (g.eliminarPeorNota && discardedIdx !== -1) ? Math.max(n-1,1) : n;
-  const each = Math.round((g.ponderacionGrupo / effectiveN) * 10) / 10;
+  const each = Math.round(((g.ponderacionGrupo||0) / effectiveN) * 10) / 10;
   g.evaluaciones.forEach((e,i)=>{
     e.ponderacion = (g.eliminarPeorNota && i===discardedIdx) ? 0 : each;
   });
@@ -321,6 +345,11 @@ function nombreSiguiente(nombreAnterior){
 }
 
 /* ---------- abrir / cerrar modal de ramo ---------- */
+function openRamoModal(){
+  document.getElementById('ramoModal').style.height = '';
+  document.getElementById('modalBackdrop').classList.add('active');
+  document.getElementById('ramoModal').classList.add('active');
+}
 document.getElementById('addFrame').onclick = ()=>{
   draft = nuevoRamo();
   editingId = null;
@@ -328,8 +357,7 @@ document.getElementById('addFrame').onclick = ()=>{
   activeGroupIndex = null;
   document.getElementById('modalTitle').textContent = 'Nuevo ramo';
   renderModal();
-  document.getElementById('modalBackdrop').classList.add('active');
-  document.getElementById('ramoModal').classList.add('active');
+  openRamoModal();
 };
 function openEditRamo(id){
   const r = ramos.find(x=>x.id===id);
@@ -340,8 +368,7 @@ function openEditRamo(id){
   activeGroupIndex = null;
   document.getElementById('modalTitle').textContent = draft.nombre || 'Editar ramo';
   renderModal();
-  document.getElementById('modalBackdrop').classList.add('active');
-  document.getElementById('ramoModal').classList.add('active');
+  openRamoModal();
 }
 function closeRamoModal(){
   document.getElementById('modalBackdrop').classList.remove('active');
@@ -349,6 +376,37 @@ function closeRamoModal(){
 }
 document.getElementById('closeModalBtn').onclick = closeRamoModal;
 document.getElementById('modalBackdrop').onclick = closeRamoModal;
+
+/* ---------- arrastrar el tirador para agrandar/achicar la tarjeta ---------- */
+(function setupModalDrag(){
+  const sheet = document.getElementById('ramoModal');
+  const zone = document.getElementById('modalDragZone');
+  let dragging = false, startY = 0, startHeight = 0;
+  function begin(clientY){
+    dragging = true;
+    startY = clientY;
+    startHeight = sheet.getBoundingClientRect().height;
+    sheet.style.transition = 'none';
+  }
+  function move(clientY){
+    if(!dragging) return;
+    const delta = startY - clientY;
+    const minH = window.innerHeight * 0.4;
+    const maxH = window.innerHeight * 0.92;
+    let newHeight = Math.max(minH, Math.min(maxH, startHeight + delta));
+    sheet.style.height = newHeight + 'px';
+  }
+  function end(){
+    dragging = false;
+    sheet.style.transition = '';
+  }
+  zone.addEventListener('touchstart', e=> begin(e.touches[0].clientY), {passive:true});
+  zone.addEventListener('touchmove', e=> move(e.touches[0].clientY), {passive:true});
+  zone.addEventListener('touchend', end);
+  zone.addEventListener('mousedown', e=>{ begin(e.clientY); e.preventDefault(); });
+  window.addEventListener('mousemove', e=> move(e.clientY));
+  window.addEventListener('mouseup', end);
+})();
 
 /* ---------- tabs ---------- */
 const TABS = [
@@ -389,35 +447,32 @@ function evalTabHTML(){
     <p class="hint">Toca el borde de un grupo ya creado para volver a editarlo y agregar más pruebas.</p>
   `;
 }
-function evalRowHTML(e, i, grupoIdx, isDiscarded){
+function evalRowHTML(e, i, grupoIdx, isDiscarded, lockedPond){
   const g = grupoIdx!==undefined ? ` data-egroup="${grupoIdx}"` : '';
   const trClass = isDiscarded ? ' class="discarded-row"' : '';
   return `<tr${trClass}>
-    <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1" style="min-width:110px;"></td>
-    <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2" style="width:56px;"></td>
-    <td><input type="number" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion}" placeholder="10" style="width:52px;"></td>
-    <td><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}" style="min-width:130px;"></td>
-    <td><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}" style="min-width:90px;"></td>
-    <td><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421" style="width:70px;"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="nombre" value="${e.nombre}" placeholder="Control 1"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="notaRaw" value="${e.notaRaw}" placeholder="6,2"></td>
+    <td><input type="text" inputmode="numeric" pattern="[0-9]*" data-erow="${i}"${g} data-efield="ponderacion" value="${e.ponderacion||''}" placeholder="0"${lockedPond?' disabled':''}></td>
+    <td><input type="date" data-erow="${i}"${g} data-efield="fecha" value="${e.fecha}"></td>
+    <td><input type="time" data-erow="${i}"${g} data-efield="hora" value="${e.hora}"></td>
+    <td><input type="text" data-erow="${i}"${g} data-efield="sala" value="${e.sala}" placeholder="IND421"></td>
     <td><button type="button" class="rm-row" data-rmrow="${i}"${g}>×</button></td>
   </tr>`;
 }
 function grupoBlockHTML(g, gi){
   const active = activeGroupIndex === gi;
+  aplicarDivisionIgualSiCorresponde(g);
   const discardedIdx = g.eliminarPeorNota ? getDiscardedIndex(g) : -1;
   return `
   <div class="grupo-block${active?' active':''}" data-grupoborder="${gi}">
     <div class="grupo-head">
       <span class="grupo-title" contenteditable="true" data-g="${gi}" data-gfield="nombre" data-placeholder="Grupo ${gi+1}">${g.nombre||''}</span>
-      <label class="grupo-mini-check">
-        <span class="switch mini"><input type="checkbox" data-g="${gi}" data-gfield="eliminarPeorNota" ${g.eliminarPeorNota?'checked':''}><span class="track"><span class="thumb"></span></span></span>
-        <span>Eliminar peor nota</span>
-      </label>
-      <button type="button" class="mini-btn" data-dividepond="${gi}">Dividir ponderación igual</button>
-      <div class="grupo-pond"><input type="number" data-g="${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo}" placeholder="0"><span>%</span></div>
+      <div class="grupo-pond"><input type="text" inputmode="numeric" pattern="[0-9]*" data-g="${gi}" data-gfield="ponderacionGrupo" value="${g.ponderacionGrupo||''}" placeholder="0"><span>%</span></div>
+      <button type="button" class="mini-btn" data-personalizar="${gi}">Personalizar</button>
     </div>
     <div class="table-scroll">
-      <table class="eval-table mini"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi,ei===discardedIdx)).join('')}</tbody></table>
+      <table class="eval-table mini"><tbody>${g.evaluaciones.map((e,ei)=>evalRowHTML(e,ei,gi,ei===discardedIdx,g.dividirIgual)).join('')}</tbody></table>
     </div>
   </div>`;
 }
@@ -462,8 +517,8 @@ function horarioRowHTML(h, i){
     </label>
     ${h.dividir ? `
     <div class="field-row">
-      <div class="field-group"><label class="field-label">% Teoría</label><input type="number" data-h="${i}" data-hfield="pondTeoria" value="${h.pondTeoria}"></div>
-      <div class="field-group"><label class="field-label">% Laboratorio</label><input type="number" data-h="${i}" data-hfield="pondLab" value="${h.pondLab}"></div>
+      <div class="field-group"><label class="field-label">% Teoría</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondTeoria" value="${h.pondTeoria||''}" placeholder="0"></div>
+      <div class="field-group"><label class="field-label">% Laboratorio</label><input type="text" inputmode="numeric" pattern="[0-9]*" data-h="${i}" data-hfield="pondLab" value="${h.pondLab||''}" placeholder="0"></div>
     </div>` : ''}
     ` : ''}
   </div>`;
@@ -525,18 +580,15 @@ function attachModalListeners(){
       el.onblur = ()=> renderModal();
     }
   });
-  body.querySelectorAll('[data-dividepond]').forEach(btn=>{
-    btn.onclick = ()=>{
-      dividirPonderacionIgual(draft.poolCompartido.grupos[btn.dataset.dividepond]);
-      renderModal();
-    };
+  body.querySelectorAll('[data-personalizar]').forEach(btn=>{
+    btn.onclick = ()=> openGrupoOptions(Number(btn.dataset.personalizar));
   });
   body.querySelectorAll('[data-g]').forEach(el=>{
     const handler = ()=>{
       const g = draft.poolCompartido.grupos[el.dataset.g];
-      if(el.dataset.gfield==='eliminarPeorNota') g.eliminarPeorNota = el.checked;
-      else if(el.dataset.gfield==='nombre') g.nombre = el.textContent.trim();
-      else g.ponderacionGrupo = Number(el.value);
+      if(el.dataset.gfield==='eliminarPeorNota'){ g.eliminarPeorNota = el.checked; renderModal(); return; }
+      if(el.dataset.gfield==='nombre'){ g.nombre = el.textContent.trim(); return; }
+      g.ponderacionGrupo = Number(el.value);
     };
     el.type==='checkbox' ? el.onchange = handler : el.oninput = handler;
     if(el.dataset.gfield==='nombre'){
@@ -545,7 +597,7 @@ function attachModalListeners(){
   });
   body.querySelectorAll('[data-grupoborder]').forEach(block=>{
     block.addEventListener('click', (ev)=>{
-      if(ev.target.closest('input, table, button, .grupo-title')) return;
+      if(ev.target.closest('input, table, button, .grupo-title, .grupo-head')) return;
       activeGroupIndex = Number(block.dataset.grupoborder);
       renderModal();
     });
@@ -664,6 +716,25 @@ document.querySelectorAll('.choice-btn').forEach(btn=>{
   };
 });
 document.getElementById('choiceCancelBtn').onclick = ()=>{ document.getElementById('choiceBackdrop').classList.remove('active'); };
+
+/* ---------- popup "Personalizar" de un grupo ---------- */
+function openGrupoOptions(gi){
+  grupoOptionsIndex = gi;
+  const g = draft.poolCompartido.grupos[gi];
+  document.getElementById('optElimPeor').checked = g.eliminarPeorNota;
+  document.getElementById('optDividirIgual').checked = g.dividirIgual;
+  document.getElementById('grupoOptionsBackdrop').classList.add('active');
+}
+document.getElementById('optElimPeor').onchange = (ev)=>{
+  draft.poolCompartido.grupos[grupoOptionsIndex].eliminarPeorNota = ev.target.checked;
+};
+document.getElementById('optDividirIgual').onchange = (ev)=>{
+  draft.poolCompartido.grupos[grupoOptionsIndex].dividirIgual = ev.target.checked;
+};
+document.getElementById('grupoOptionsCloseBtn').onclick = ()=>{
+  document.getElementById('grupoOptionsBackdrop').classList.remove('active');
+  renderModal();
+};
 document.getElementById('pdfInput').onchange = (e)=>{
   const file = e.target.files[0];
   e.target.value = '';
