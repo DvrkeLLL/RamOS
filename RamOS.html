@@ -152,7 +152,9 @@
   .subcard-head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px;}
   .subcard-head strong{font-size:13px;}
   .remove-x{background:none; border:none; color:var(--text-muted); font-size:12.5px; cursor:pointer; font-weight:700; flex-shrink:0;}
-  .correo-arrow-btn{margin-top:5px; border:1.5px solid var(--border); background:var(--surface); color:var(--primary); font-size:11px; line-height:1; padding:4px 9px; border-radius:8px; cursor:pointer;}
+  .correo-input-row{display:flex; align-items:stretch; gap:6px;}
+  .correo-input-row input{flex:1; min-width:0;}
+  .correo-arrow-btn{flex-shrink:0; border:1.5px solid var(--border); background:var(--surface); color:var(--primary); font-size:16px; font-weight:700; line-height:1; padding:0 12px; border-radius:8px; cursor:pointer;}
   .add-link{background:none; border:1.5px dashed var(--border); border-radius:8px; color:var(--primary); font-family:var(--font-body); font-weight:700; font-size:13px; padding:10px; width:100%; cursor:pointer;}
   .hint{font-size:11.5px; color:var(--text-muted); margin-top:8px; line-height:1.4;}
 
@@ -905,8 +907,10 @@ function infoTabHTML(){
       <div class="field-group"><label class="field-label">Profesor</label><input type="text" id="f-profNombre" value="${draft.profesorNombre}" placeholder="Nombre"></div>
       <div class="field-group">
         <label class="field-label">Correo</label>
-        <input type="email" id="f-profCorreo" value="${draft.profesorCorreo}" placeholder="correo@usach.cl">
-        <button type="button" class="correo-arrow-btn" id="correoArrowBtn" title="Agregar letra del segundo apellido">▾</button>
+        <div class="correo-input-row">
+          <input type="email" id="f-profCorreo" value="${draft.profesorCorreo}" placeholder="correo@usach.cl">
+          <button type="button" class="correo-arrow-btn" id="correoArrowBtn" title="Agregar letra del segundo apellido">›</button>
+        </div>
       </div>
     </div>
   `;
