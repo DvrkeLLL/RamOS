@@ -305,6 +305,23 @@
   .preset-table td{padding:11px 4px; font-size:13.5px; color:var(--text); border-bottom:1px solid var(--border); cursor:pointer;}
   .preset-table tr:active td{background:var(--bg);}
   .preset-table tr:last-child td{color:var(--primary); font-weight:700;}
+  .json-textarea{width:100%; min-height:150px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; line-height:1.4; padding:10px; border:1.5px solid var(--border); border-radius:10px; background:var(--bg); color:var(--text); resize:vertical; box-sizing:border-box; margin-bottom:10px;}
+  .import-ramo-card{border:1.5px solid var(--border); border-radius:14px; padding:12px; margin-bottom:14px;}
+  .import-warn{font-size:11.5px; color:var(--danger); font-weight:700; margin:6px 0 2px;}
+  .import-grupo{border:1.5px dashed var(--border); border-radius:12px; padding:10px; margin-top:10px;}
+  .import-grupo-head{display:flex; gap:6px; align-items:center; margin-bottom:4px;}
+  .import-grupo-head input.gname{flex:1; min-width:0; padding:7px 8px; font-size:13px;}
+  .import-grupo-head input.gpond{width:52px; flex-shrink:0; padding:7px 6px; font-size:13px;}
+  .eval-table.import-table{min-width:480px; margin-top:8px;}
+  .eval-table.import-table th:nth-child(1), .eval-table.import-table td:nth-child(1){width:118px;}
+  .eval-table.import-table th:nth-child(2), .eval-table.import-table td:nth-child(2){width:46px;}
+  .eval-table.import-table th:nth-child(3), .eval-table.import-table td:nth-child(3){width:112px;}
+  .eval-table.import-table th:nth-child(4), .eval-table.import-table td:nth-child(4){width:102px;}
+  .eval-table.import-table th:nth-child(5), .eval-table.import-table td:nth-child(5){width:68px;}
+  .eval-table.import-table th:nth-child(6), .eval-table.import-table td:nth-child(6){width:28px;}
+  .import-sheet-hint{font-size:10.5px; color:var(--text-muted); margin:0 0 8px; text-align:center; line-height:1.35;}
+  .mode-row{display:flex; gap:6px;}
+  .mode-row .btn{flex:1; padding:11px 4px; font-size:12.5px;}
   .btn-confirm{width:100%; padding:12px; background:var(--primary); color:var(--primary-ink); border:none; border-radius:999px; font-family:var(--font-body); font-weight:700; font-size:14px; cursor:pointer;}
 
   /* grupos de evaluaciones */
@@ -388,7 +405,7 @@
     </div>
   </div>
 
-  <button class="btn btn-primary fab" id="uploadFabBtn" style="display:none;">Subir horario</button>
+  <button class="btn btn-primary fab" id="uploadFabBtn" style="display:none;">Subir archivos</button>
   <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
 
   <nav class="bottom-nav">
@@ -505,6 +522,54 @@
       <div class="hd-row"><span class="hd-label">Profesor</span><span class="hd-value" id="hdProfesor">—</span></div>
       <div class="hd-row"><span class="hd-label">Correo</span><span class="hd-value" id="hdCorreo">—</span></div>
       <button class="choice-cancel" id="hdCloseBtn" style="margin-top:6px;">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="uploadMenuBackdrop">
+    <div class="choice-card">
+      <h3>Subir archivos</h3>
+      <p>¿Qué quieres cargar?</p>
+      <button class="choice-btn" id="uploadHorarioOpt">Horario (PDF)<span>El PDF de tu horario de la universidad</span></button>
+      <button class="choice-btn" id="uploadEvalOpt">Evaluaciones (JSON de IA)<span>Pega o sube el JSON que te entregó la IA</span></button>
+      <button class="choice-btn" id="aiInstrOpt">Instrucciones para la IA<span>Cópialas y pégalas en la IA junto con tus fotos</span></button>
+      <button class="choice-cancel" id="uploadMenuCancelBtn">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="aiInstrBackdrop">
+    <div class="choice-card">
+      <h3>Instrucciones para la IA</h3>
+      <p>Copia esto, pégalo en cualquier IA (ChatGPT, Claude, Gemini...) y adjunta las fotos del programa del ramo. Ya incluye la lista de tus ramos.</p>
+      <textarea class="json-textarea" id="aiInstrText" readonly></textarea>
+      <button type="button" class="btn-confirm" id="copyAiInstrBtn">Copiar instrucciones</button>
+      <button class="choice-cancel" id="aiInstrCloseBtn">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="evalPasteBackdrop">
+    <div class="choice-card">
+      <h3>Importar evaluaciones</h3>
+      <p>Pega aquí el JSON que te dio la IA, o sube el archivo.</p>
+      <textarea class="json-textarea" id="evalJsonText" placeholder='{ "formato": "ramos-evaluaciones-v1", ... }'></textarea>
+      <button type="button" class="mini-btn" id="evalJsonFileBtn" style="width:100%; margin-bottom:10px;">Subir archivo .json</button>
+      <button type="button" class="btn-confirm" id="evalJsonReviewBtn">Revisar</button>
+      <button class="choice-cancel" id="evalPasteCancelBtn">Cancelar</button>
+    </div>
+  </div>
+  <input type="file" id="evalJsonFileInput" accept="application/json,.json,.txt" style="display:none;">
+
+  <div class="modal-backdrop" id="evalImportBackdrop"></div>
+  <div class="modal-sheet" id="evalImportSheet">
+    <div class="modal-drag-zone"><div class="modal-handle"></div></div>
+    <div class="modal-header"><h2>Revisar evaluaciones</h2><button class="close-x" id="evalImportCloseBtn">✕</button></div>
+    <div class="modal-body" id="evalImportBody" style="padding-top:12px;"></div>
+    <div class="modal-footer">
+      <p class="import-sheet-hint">Reemplazar borra las evaluaciones actuales del ramo · Actualizar cambia solo las que coinciden por nombre · Agregar las suma</p>
+      <div class="mode-row">
+        <button type="button" class="btn btn-secondary" data-evalmode="reemplazar">Reemplazar</button>
+        <button type="button" class="btn btn-secondary" data-evalmode="actualizar">Actualizar</button>
+        <button type="button" class="btn btn-primary" data-evalmode="agregar">Agregar</button>
+      </div>
     </div>
   </div>
 
@@ -695,7 +760,8 @@ function normalizarNota(raw){
   const n = parseFloat(s);
   return isNaN(n) ? null : n;
 }
-function autocompletarSalaSiCoincide(evaluacion){
+function autocompletarSalaSiCoincide(evaluacion, horarios){
+  horarios = horarios || (draft ? draft.horarios : []);
   if(evaluacion.sala && evaluacion.sala.trim()) return false;
   if(!evaluacion.fecha || !evaluacion.hora) return false;
   const m1 = evaluacion.fecha.match(/^(\d{2})-(\d{2})-(\d{2})$/);
@@ -717,7 +783,7 @@ function autocompletarSalaSiCoincide(evaluacion){
   const bloqueMatch = BLOQUES.find(b=> minutosTotal >= (b.sh*60+b.sm) && minutosTotal < (b.eh*60+b.em));
   if(!bloqueMatch) return false;
 
-  const horarioMatch = draft.horarios.find(hh=> hh.dia===diaCode && hh.bloque===bloqueMatch.n);
+  const horarioMatch = horarios.find(hh=> hh.dia===diaCode && hh.bloque===bloqueMatch.n);
   if(!horarioMatch || !horarioMatch.sala) return false;
 
   evaluacion.sala = horarioMatch.sala;
@@ -1204,11 +1270,7 @@ function renderRamosList(){
 }
 
 /* ---------- burbuja "Subir horario" ---------- */
-document.getElementById('uploadFabBtn').onclick = ()=>{
-  if(ramos.length===0){ pendingUploadMode = 'primero'; document.getElementById('pdfInput').click(); }
-  else { document.getElementById('choiceBackdrop').classList.add('active'); }
-};
-document.querySelectorAll('.choice-btn').forEach(btn=>{
+document.querySelectorAll('#choiceBackdrop .choice-btn').forEach(btn=>{
   btn.onclick = ()=>{
     pendingUploadMode = btn.dataset.mode;
     document.getElementById('choiceBackdrop').classList.remove('active');
@@ -2251,6 +2313,372 @@ function aplicarRamosImportadosJSON(lista, modo){
   saveRamos();
   renderRamosList();
 }
+
+/* ============ SUBIR ARCHIVOS: horario PDF / evaluaciones JSON de IA ============ */
+function abrirBackdrop(id){ document.getElementById(id).classList.add('active'); }
+function cerrarBackdrop(id){ document.getElementById(id).classList.remove('active'); }
+['uploadMenuBackdrop','aiInstrBackdrop','evalPasteBackdrop'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', e=>{ if(e.target.id===id) cerrarBackdrop(id); });
+});
+function escHtml(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return escHtml(s).replace(/"/g,'&quot;'); }
+function normTxt(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim(); }
+
+document.getElementById('uploadFabBtn').onclick = ()=> abrirBackdrop('uploadMenuBackdrop');
+document.getElementById('uploadMenuCancelBtn').onclick = ()=> cerrarBackdrop('uploadMenuBackdrop');
+document.getElementById('uploadHorarioOpt').onclick = ()=>{
+  cerrarBackdrop('uploadMenuBackdrop');
+  if(ramos.length===0){ pendingUploadMode = 'primero'; document.getElementById('pdfInput').click(); }
+  else abrirBackdrop('choiceBackdrop');
+};
+document.getElementById('uploadEvalOpt').onclick = ()=>{
+  cerrarBackdrop('uploadMenuBackdrop');
+  document.getElementById('evalJsonText').value = '';
+  abrirBackdrop('evalPasteBackdrop');
+};
+document.getElementById('aiInstrOpt').onclick = ()=>{
+  cerrarBackdrop('uploadMenuBackdrop');
+  document.getElementById('aiInstrText').value = construirInstruccionesIA();
+  abrirBackdrop('aiInstrBackdrop');
+};
+document.getElementById('aiInstrCloseBtn').onclick = ()=> cerrarBackdrop('aiInstrBackdrop');
+document.getElementById('copyAiInstrBtn').onclick = async ()=>{
+  const ta = document.getElementById('aiInstrText');
+  let ok = false;
+  try{ await navigator.clipboard.writeText(ta.value); ok = true; }catch(err){}
+  if(!ok){
+    try{ ta.removeAttribute('readonly'); ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length); ok = document.execCommand('copy'); }catch(err){}
+    ta.setAttribute('readonly','');
+  }
+  showToast(ok ? 'Instrucciones copiadas. Pégalas en la IA junto con tus fotos.' : 'No se pudo copiar solo: mantén presionado el texto y cópialo.');
+};
+
+function construirInstruccionesIA(){
+  const hoy = new Date();
+  const hoyTxt = `${pad2(hoy.getDate())}-${pad2(hoy.getMonth()+1)}-${String(hoy.getFullYear()).slice(2)}`;
+  const listaRamos = ramos.length
+    ? ramos.map(r=> `- ${r.nombre}${r.codigo ? ` (código ${r.codigo})` : ''}${ramoTieneLabDividido(r) ? ' — tiene notas de laboratorio separadas' : ''}`).join('\n')
+    : '- (Aún no tengo ramos cargados: usa el nombre tal como aparece en la foto.)';
+  const tablaBloques = BLOQUES.map(b=>{ const {h12,ampm} = horas24a12(b.sh); return `   Bloque ${b.n}: ${pad2(h12)}:${pad2(b.sm)} ${ampm}`; }).join('\n');
+  const ejemplo = JSON.stringify({
+    formato:'ramos-evaluaciones-v1',
+    ramos:[{
+      ramo:'Nombre exacto de mi lista', codigo:'14136-0', profesor:'Nombre Apellido Apellido', coordinacion:'A-2', pool:'teoria',
+      sueltas:[{ nombre:'Examen', ponderacion:30, fecha:'25-11-26', hora:'09:50 AM', sala:'' }],
+      grupos:[{ nombre:'Controles', ponderacionGrupo:30, eliminarPeorNota:false, dividirIgual:true, evaluaciones:[
+        { nombre:'Control 1', ponderacion:15, fecha:'21-10-26', hora:'09:50 AM', sala:'' },
+        { nombre:'Control 2', ponderacion:15, fecha:'18-11-26', hora:'09:50 AM', sala:'' }
+      ]}]
+    }]
+  }, null, 2);
+  return `Eres un asistente que convierte fotos de programas de asignaturas universitarias en un JSON para mi app de ramos (RamOS).
+
+Te enviaré una o más fotos. Varias fotos pueden ser del mismo ramo (por ejemplo, una con las fechas y otra con las ponderaciones): combínalas en un solo ramo, emparejando las evaluaciones por su nombre o descripción.
+
+MIS RAMOS
+En el campo "ramo" usa exactamente uno de estos nombres. Si la foto trae el nombre abreviado o mal escrito, ajústalo al más parecido de esta lista:
+${listaRamos}
+
+REGLAS
+1. Ignora por completo las pruebas de recuperación o reemplazo: POR, PR, PS, recuperativas y similares.
+2. Incluye cada evaluación que tenga fecha, aunque valga 0 %.
+3. Fechas en formato dd-mm-aa (ejemplo: 21-10-26). Hoy es ${hoyTxt}. Si la foto no trae el año, usa el del semestre en curso.
+4. Hora en formato hh:mm AM/PM (ejemplo: 09:50 AM). Si la foto indica un módulo o bloque (por ejemplo "módulo W2": W = miércoles, bloque 2; L lunes, M martes, W miércoles, J jueves, V viernes, S sábado), usa la hora de inicio del bloque:
+${tablaBloques}
+   Si no hay hora, deja "".
+5. Ponderación como número, sin el símbolo % (ejemplo: 15).
+6. Agrupa las evaluaciones del mismo tipo (Control 1, Control 2...; PEP 1, PEP 2...) en un grupo. "ponderacionGrupo" es la suma de sus ponderaciones. Si todas valen lo mismo, "dividirIgual": true.
+7. "eliminarPeorNota": true solo si el documento dice explícitamente que se elimina la peor nota de ese tipo. Una prueba que "reemplaza la peor nota" (como un POR) no cuenta.
+8. Las evaluaciones únicas (un examen, un portafolio, un informe) van en "sueltas".
+9. Si una evaluación tiene porcentaje pero no fecha (por ejemplo, un portafolio continuo), inclúyela con fecha "".
+10. Si el ramo tiene notas de laboratorio separadas, pon esas evaluaciones en un objeto de ramo aparte con "pool": "laboratorio". En cualquier otro caso usa "pool": "teoria".
+11. Si aparecen en la foto, completa "profesor", "codigo" y "coordinacion" (la sección, por ejemplo "A-2"). Si no, déjalos "".
+12. Sala: déjala "" salvo que la foto la indique. La app la completa sola desde mi horario.
+
+ANTES DE ENTREGAR EL JSON
+Si algo es ambiguo, pregúntame primero y espera mi respuesta. Por ejemplo, si:
+- no puedes saber a qué ramo de mi lista corresponde una foto;
+- los porcentajes no suman 100 %;
+- una evaluación de las fechas no calza con ninguna de las ponderaciones, o al revés;
+- una evaluación no tiene fecha y no es obvio que sea continua;
+- no queda claro si se elimina la peor nota.
+
+FORMATO DE SALIDA
+Cuando no queden dudas, responde solo con el JSON dentro de un bloque de código, sin texto adicional, con esta estructura:
+${ejemplo}`;
+}
+
+/* ---------- lectura tolerante del JSON ---------- */
+const IGNORAR_EVAL = /^(por|pr|ps)\b|recuperativ|recuperaci/i;
+function normPondImport(v){ const n = parseFloat(String(v ?? '').replace('%','').replace(',','.')); return isNaN(n) ? 0 : Math.round(n*10)/10; }
+function normFechaImport(v){
+  const s = String(v||'').trim(); if(!s) return '';
+  let m = s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+  if(m) return `${pad2(+m[3])}-${pad2(+m[2])}-${m[1].slice(2)}`;
+  m = s.match(/^(\d{1,2})[-\/.](\d{1,2})(?:[-\/.](\d{2,4}))?$/);
+  if(m){ const y = m[3] ? m[3].slice(-2) : String(new Date().getFullYear()).slice(2); return `${pad2(+m[1])}-${pad2(+m[2])}-${y}`; }
+  return '';
+}
+function normHoraImport(v, bloque){
+  const s = String(v||'').trim();
+  let m = s.match(/^(\d{1,2}):(\d{2})\s*([ap])\.?\s*m\.?$/i);
+  if(m) return `${pad2(+m[1])}:${m[2]} ${m[3].toUpperCase()}M`;
+  m = s.match(/^(\d{1,2}):(\d{2})$/);
+  if(m){ const {h12,ampm} = horas24a12(+m[1]); return `${pad2(h12)}:${m[2]} ${ampm}`; }
+  let bn = Number(bloque);
+  if(!bn){ const mb = s.match(/^(?:[lmwjvs]|bloque\s*)?([1-9])$/i); if(mb) bn = +mb[1]; }
+  const b = BLOQUES.find(x=> x.n===bn);
+  if(b){ const {h12,ampm} = horas24a12(b.sh); return `${pad2(h12)}:${pad2(b.sm)} ${ampm}`; }
+  return '';
+}
+function evalImportDesde(o){
+  if(!o || typeof o!=='object') return null;
+  const nombre = String(o.nombre || o.evaluacion || o.name || '').trim();
+  if(IGNORAR_EVAL.test(nombre)) return null;
+  return { nombre, notaRaw:'', ponderacion: normPondImport(o.ponderacion ?? o.porcentaje ?? o.peso), fecha: normFechaImport(o.fecha), hora: normHoraImport(o.hora, o.bloque), sala: String(o.sala||'').trim() };
+}
+function buscarRamoParaImport(nombre, codigo){
+  const cod = String(codigo||'').match(/\d{3,6}/);
+  if(cod){ const r = ramos.find(x=> (String(x.codigo||'').match(/\d{3,6}/)||[])[0]===cod[0]); if(r) return r; }
+  const n = normTxt(nombre); if(!n) return null;
+  let r = ramos.find(x=> normTxt(x.nombre)===n); if(r) return r;
+  r = ramos.find(x=>{ const m = normTxt(x.nombre); return m && (m.includes(n) || n.includes(m)); }); if(r) return r;
+  const palabras = t=> new Set(normTxt(t).split(' ').filter(w=> w.length>2));
+  const pn = palabras(nombre); let mejor = null, mejorScore = 0;
+  ramos.forEach(x=>{
+    const px = palabras(x.nombre); if(!px.size || !pn.size) return;
+    let inter = 0;
+    pn.forEach(w=>{ if([...px].some(v=> v.startsWith(w.slice(0,4)) || w.startsWith(v.slice(0,4)))) inter++; });
+    const score = inter / Math.max(pn.size, px.size);
+    if(score > mejorScore){ mejorScore = score; mejor = x; }
+  });
+  return mejorScore >= 0.5 ? mejor : null;
+}
+function convertirRamoImport(o){
+  if(!o || typeof o!=='object') return null;
+  const nombreOriginal = String(o.ramo || o.nombre || o.asignatura || '').trim();
+  const sueltas = (Array.isArray(o.sueltas) ? o.sueltas : []).map(evalImportDesde).filter(Boolean);
+  if(Array.isArray(o.evaluaciones)) o.evaluaciones.map(evalImportDesde).filter(Boolean).forEach(e=> sueltas.push(e));
+  const grupos = (Array.isArray(o.grupos) ? o.grupos : []).map(g=>{
+    const evs = (Array.isArray(g.evaluaciones) ? g.evaluaciones : []).map(evalImportDesde).filter(Boolean);
+    if(!evs.length) return null;
+    const suma = evs.reduce((acc,e)=> acc + e.ponderacion, 0);
+    const iguales = evs.every(e=> e.ponderacion===evs[0].ponderacion);
+    return { nombre:String(g.nombre||'').trim(), ponderacionGrupo: normPondImport(g.ponderacionGrupo ?? g.ponderacion) || suma,
+             eliminarPeorNota: !!g.eliminarPeorNota, dividirIgual: g.dividirIgual!==undefined ? !!g.dividirIgual : iguales, evaluaciones: evs };
+  }).filter(Boolean);
+  const match = buscarRamoParaImport(nombreOriginal, o.codigo);
+  return {
+    nombreOriginal, codigo:String(o.codigo||'').trim(), profesor:String(o.profesor||'').trim(),
+    correo:String(o.correo||'').trim(), coordinacion:String(o.coordinacion || o.seccion || '').trim(),
+    pool: String(o.pool||'').toLowerCase().startsWith('lab') ? 'laboratorio' : 'teoria',
+    target: match ? match.id : (nombreOriginal ? 'nuevo' : 'ignorar'),
+    actualizarInfo: true, sueltas, grupos
+  };
+}
+function parsearJsonEvaluaciones(txt){
+  const t = String(txt||'').replace(/```(?:json)?/gi,'').trim();
+  const inicios = [t.indexOf('{'), t.indexOf('[')].filter(i=> i>=0).sort((a,b)=> a-b);
+  if(!inicios.length) throw new Error('sin json');
+  const start = inicios[0];
+  const end = t.lastIndexOf(t[start]==='{' ? '}' : ']');
+  const data = JSON.parse(t.slice(start, end+1));
+  const lista = Array.isArray(data) ? data : (Array.isArray(data.ramos) ? data.ramos : [data]);
+  return lista.map(convertirRamoImport).filter(x=> x && (x.sueltas.length || x.grupos.length));
+}
+
+/* ---------- pegar / subir JSON ---------- */
+let evalImportDraft = [];
+document.getElementById('evalPasteCancelBtn').onclick = ()=> cerrarBackdrop('evalPasteBackdrop');
+document.getElementById('evalJsonFileBtn').onclick = ()=> document.getElementById('evalJsonFileInput').click();
+document.getElementById('evalJsonFileInput').onchange = async (e)=>{
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  document.getElementById('evalJsonText').value = await f.text();
+  document.getElementById('evalJsonReviewBtn').click();
+};
+document.getElementById('evalJsonReviewBtn').onclick = ()=>{
+  let lista;
+  try{ lista = parsearJsonEvaluaciones(document.getElementById('evalJsonText').value); }
+  catch(err){ showToast('No pude leer ese JSON. Revisa que esté completo.'); return; }
+  if(!lista.length){ showToast('El JSON no trae evaluaciones.'); return; }
+  evalImportDraft = lista;
+  cerrarBackdrop('evalPasteBackdrop');
+  renderEvalImport();
+  document.getElementById('evalImportBody').scrollTop = 0;
+  document.getElementById('evalImportBackdrop').classList.add('active');
+  document.getElementById('evalImportSheet').classList.add('active');
+};
+function cerrarEvalImportSheet(){
+  document.getElementById('evalImportBackdrop').classList.remove('active');
+  document.getElementById('evalImportSheet').classList.remove('active');
+}
+document.getElementById('evalImportCloseBtn').onclick = cerrarEvalImportSheet;
+document.getElementById('evalImportBackdrop').onclick = cerrarEvalImportSheet;
+
+/* ---------- resumen editable ---------- */
+const ICON_CAL_SM = '<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>';
+const ICON_CLOCK_SM = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+function sumaPondImport(it){
+  return it.sueltas.reduce((acc,e)=> acc + (Number(e.ponderacion)||0), 0)
+       + it.grupos.reduce((acc,g)=> acc + (Number(g.ponderacionGrupo) || g.evaluaciones.reduce((a,e)=> a + (Number(e.ponderacion)||0), 0)), 0);
+}
+function filaImportHTML(e, ri, gi, ei){
+  const k = `data-ir="${ri}" data-ig="${gi}" data-ie="${ei}"`;
+  return `<tr>
+    <td><input type="text" ${k} data-if="nombre" value="${escAttr(e.nombre)}" placeholder="Nombre"></td>
+    <td><input type="text" inputmode="decimal" ${k} data-if="ponderacion" value="${e.ponderacion||''}" placeholder="0"></td>
+    <td><div class="picker-field-sm" data-openpicker="date"><input type="text" ${k} data-if="fecha" value="${escAttr(e.fecha)}" placeholder="dd-mm-aa" readonly>${ICON_CAL_SM}</div></td>
+    <td><div class="picker-field-sm" data-openpicker="time"><input type="text" ${k} data-if="hora" value="${escAttr(e.hora)}" placeholder="hh:mm" readonly>${ICON_CLOCK_SM}</div></td>
+    <td><input type="text" ${k} data-if="sala" value="${escAttr(e.sala)}" placeholder="auto"></td>
+    <td><button type="button" class="rm-row" ${k} data-irm="1">×</button></td>
+  </tr>`;
+}
+function renderEvalImport(){
+  const body = document.getElementById('evalImportBody');
+  body.innerHTML = `<p class="hint" style="margin:0 0 12px;">Revisa y corrige antes de guardar. Nada se guarda hasta que elijas abajo cómo importarlo.</p>` +
+  evalImportDraft.map((it,ri)=>{
+    const targetRamo = ramos.find(r=> String(r.id)===String(it.target));
+    const suma = sumaPondImport(it);
+    const sinFecha = [...it.sueltas, ...it.grupos.flatMap(g=> g.evaluaciones)].filter(e=> !e.fecha).length;
+    const avisos = [];
+    if(it.target==='ignorar') avisos.push('Este bloque no se importará.');
+    if(Math.abs(suma-100) > 0.05) avisos.push(`Los porcentajes suman ${+suma.toFixed(1)} %, no 100 %.`);
+    if(sinFecha) avisos.push(`${sinFecha} evaluación${sinFecha>1?'es':''} sin fecha.`);
+    const infoTxt = [it.profesor, it.codigo, it.coordinacion].filter(Boolean).join(' · ');
+    return `<div class="import-ramo-card">
+      <label class="field-label">Ramo${it.nombreOriginal ? ` <span style="font-weight:400;">(en el JSON: "${escHtml(it.nombreOriginal)}")</span>` : ''}</label>
+      <select data-irtarget="${ri}">
+        ${ramos.map(r=> `<option value="${r.id}" ${String(it.target)===String(r.id)?'selected':''}>${escHtml(r.nombre)}</option>`).join('')}
+        <option value="nuevo" ${it.target==='nuevo'?'selected':''}>+ Crear ramo nuevo${it.nombreOriginal ? `: ${escHtml(it.nombreOriginal)}` : ''}</option>
+        <option value="ignorar" ${it.target==='ignorar'?'selected':''}>No importar</option>
+      </select>
+      ${targetRamo && ramoTieneLabDividido(targetRamo) ? `<div class="field-group" style="margin:8px 0 0;"><label class="field-label">Notas de</label><select data-irpool="${ri}"><option value="teoria" ${it.pool==='teoria'?'selected':''}>Teoría</option><option value="laboratorio" ${it.pool==='laboratorio'?'selected':''}>Laboratorio</option></select></div>` : ''}
+      ${infoTxt ? `<label class="switch-row" style="padding:8px 0 2px;"><span class="switch-text" style="font-size:12.5px;">Completar información vacía<span style="display:block; font-size:11px; color:var(--text-muted);">${escHtml(infoTxt)}</span></span><span class="switch mini"><input type="checkbox" data-irinfo="${ri}" ${it.actualizarInfo?'checked':''}><span class="track"><span class="thumb"></span></span></span></label>` : ''}
+      ${avisos.map(a=> `<div class="import-warn">${a}</div>`).join('')}
+      ${it.sueltas.length ? `<div class="table-scroll"><table class="eval-table import-table"><thead><tr><th>Evaluación</th><th>%</th><th>Fecha</th><th>Hora</th><th>Sala</th><th></th></tr></thead><tbody>${it.sueltas.map((e,ei)=> filaImportHTML(e,ri,-1,ei)).join('')}</tbody></table></div>` : ''}
+      ${it.grupos.map((g,gi)=> `<div class="import-grupo">
+        <div class="import-grupo-head">
+          <input type="text" class="gname" data-igname="${ri}:${gi}" value="${escAttr(g.nombre)}" placeholder="Grupo ${gi+1}">
+          <input type="text" inputmode="decimal" class="gpond" data-igpond="${ri}:${gi}" value="${g.ponderacionGrupo||''}" placeholder="0"><span style="font-size:11px; color:var(--text-muted);">%</span>
+          <button type="button" class="remove-x" data-igrm="${ri}:${gi}">Quitar</button>
+        </div>
+        <label class="switch-row" style="padding:4px 0;"><span class="switch-text" style="font-size:12px;">Eliminar peor nota</span><span class="switch mini"><input type="checkbox" data-igpeor="${ri}:${gi}" ${g.eliminarPeorNota?'checked':''}><span class="track"><span class="thumb"></span></span></span></label>
+        <div class="table-scroll"><table class="eval-table import-table"><tbody>${g.evaluaciones.map((e,ei)=> filaImportHTML(e,ri,gi,ei)).join('')}</tbody></table></div>
+      </div>`).join('')}
+      ${!it.sueltas.length && !it.grupos.length ? '<p class="hint">Sin evaluaciones.</p>' : ''}
+    </div>`;
+  }).join('');
+  attachEvalImportListeners();
+}
+function attachEvalImportListeners(){
+  const body = document.getElementById('evalImportBody');
+  const evRef = el=>{ const it = evalImportDraft[+el.dataset.ir]; const gi = +el.dataset.ig; return gi<0 ? it.sueltas[+el.dataset.ie] : it.grupos[gi].evaluaciones[+el.dataset.ie]; };
+  body.querySelectorAll('[data-if]').forEach(el=>{
+    el.oninput = ()=>{ const e = evRef(el); const f = el.dataset.if; e[f] = f==='ponderacion' ? normPondImport(el.value) : el.value; };
+    if(el.dataset.if==='ponderacion') el.onchange = ()=> renderEvalImport();
+  });
+  body.querySelectorAll('[data-irm]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const it = evalImportDraft[+btn.dataset.ir]; const gi = +btn.dataset.ig; const ei = +btn.dataset.ie;
+      if(gi<0) it.sueltas.splice(ei,1);
+      else { it.grupos[gi].evaluaciones.splice(ei,1); if(!it.grupos[gi].evaluaciones.length) it.grupos.splice(gi,1); }
+      renderEvalImport();
+    };
+  });
+  body.querySelectorAll('[data-irtarget]').forEach(sel=> sel.onchange = ()=>{ evalImportDraft[+sel.dataset.irtarget].target = sel.value; renderEvalImport(); });
+  body.querySelectorAll('[data-irpool]').forEach(sel=> sel.onchange = ()=>{ evalImportDraft[+sel.dataset.irpool].pool = sel.value; });
+  body.querySelectorAll('[data-irinfo]').forEach(ch=> ch.onchange = ()=>{ evalImportDraft[+ch.dataset.irinfo].actualizarInfo = ch.checked; });
+  body.querySelectorAll('[data-igname]').forEach(el=>{ const [ri,gi] = el.dataset.igname.split(':').map(Number); el.oninput = ()=>{ evalImportDraft[ri].grupos[gi].nombre = el.value; }; });
+  body.querySelectorAll('[data-igpond]').forEach(el=>{ const [ri,gi] = el.dataset.igpond.split(':').map(Number); el.oninput = ()=>{ evalImportDraft[ri].grupos[gi].ponderacionGrupo = normPondImport(el.value); }; el.onchange = ()=> renderEvalImport(); });
+  body.querySelectorAll('[data-igpeor]').forEach(ch=>{ const [ri,gi] = ch.dataset.igpeor.split(':').map(Number); ch.onchange = ()=>{ evalImportDraft[ri].grupos[gi].eliminarPeorNota = ch.checked; }; });
+  body.querySelectorAll('[data-igrm]').forEach(btn=>{ const [ri,gi] = btn.dataset.igrm.split(':').map(Number); btn.onclick = ()=>{ evalImportDraft[ri].grupos.splice(gi,1); renderEvalImport(); }; });
+  body.querySelectorAll('[data-openpicker="date"]').forEach(f=> f.onclick = ()=> openCalendar(f.querySelector('input')));
+  body.querySelectorAll('[data-openpicker="time"]').forEach(f=> f.onclick = ()=> openTimePicker(f.querySelector('input')));
+}
+
+/* ---------- aplicar: reemplazar / actualizar / agregar ---------- */
+function copiarEvalImport(e){ return { nombre:e.nombre||'', notaRaw:'', ponderacion:Number(e.ponderacion)||0, fecha:e.fecha||'', hora:e.hora||'', sala:e.sala||'' }; }
+function mezclarEval(dest, src){
+  if(src.nombre) dest.nombre = src.nombre;
+  if(src.fecha) dest.fecha = src.fecha;
+  if(src.hora) dest.hora = src.hora;
+  if(src.sala) dest.sala = src.sala;
+  dest.ponderacion = src.ponderacion;
+}
+function aplicarEvaluacionesImportadas(modo){
+  let nEval = 0, nRamos = 0;
+  evalImportDraft.forEach(it=>{
+    if(it.target==='ignorar' || (!it.sueltas.length && !it.grupos.length)) return;
+    let ramo;
+    if(it.target==='nuevo'){
+      ramo = nuevoRamo();
+      const n = it.nombreOriginal;
+      ramo.nombre = n ? (n===n.toUpperCase() ? capitalizarNombre(n) : n) : 'Ramo importado';
+      ramos.push(ramo);
+    } else ramo = ramos.find(r=> String(r.id)===String(it.target));
+    if(!ramo) return;
+    nRamos++;
+    if(it.actualizarInfo){
+      if(it.profesor && !ramo.profesorNombre) ramo.profesorNombre = it.profesor;
+      if(it.correo && !ramo.profesorCorreo) ramo.profesorCorreo = it.correo;
+      if(!ramo.profesorCorreo && ramo.profesorNombre){ const g = generarCorreoDesdeNombre(ramo.profesorNombre, 0); if(g) ramo.profesorCorreo = g; }
+      if(it.codigo && !ramo.codigo) ramo.codigo = it.codigo;
+      if(it.coordinacion && !ramo.coordinacion) ramo.coordinacion = it.coordinacion;
+    }
+    const pool = (it.pool==='laboratorio' && ramoTieneLabDividido(ramo)) ? ramo.poolLaboratorio : ramo.poolCompartido;
+    const nuevasSueltas = it.sueltas.map(copiarEvalImport);
+    const nuevosGrupos = it.grupos.map(g=> ({ nombre:g.nombre||'', ponderacionGrupo:Number(g.ponderacionGrupo)||0, eliminarPeorNota:!!g.eliminarPeorNota, dividirIgual:!!g.dividirIgual, evaluaciones:g.evaluaciones.map(copiarEvalImport) }));
+    [...nuevasSueltas, ...nuevosGrupos.flatMap(g=> g.evaluaciones)].forEach(e=>{ autocompletarSalaSiCoincide(e, ramo.horarios); nEval++; });
+
+    if(modo==='reemplazar'){ pool.sueltas = nuevasSueltas; pool.grupos = nuevosGrupos; }
+    else if(modo==='agregar'){ pool.sueltas.push(...nuevasSueltas); pool.grupos.push(...nuevosGrupos); }
+    else {
+      const buscar = (lista, nombre)=> lista.find(x=> normTxt(x.nombre)===normTxt(nombre));
+      nuevasSueltas.forEach(e=>{
+        const todas = [...pool.sueltas, ...pool.grupos.flatMap(g=> g.evaluaciones)];
+        const ex = e.nombre ? buscar(todas, e.nombre) : null;
+        if(ex) mezclarEval(ex, e); else pool.sueltas.push(e);
+      });
+      // saca una evaluación existente (con su nota) de donde esté en el pool, para moverla
+      const extraerExistente = (nombre, excepto)=>{
+        if(!nombre) return null;
+        let i = pool.sueltas.findIndex(x=> normTxt(x.nombre)===normTxt(nombre));
+        if(i>=0) return pool.sueltas.splice(i,1)[0];
+        for(const gr of pool.grupos){
+          if(gr===excepto) continue;
+          i = gr.evaluaciones.findIndex(x=> normTxt(x.nombre)===normTxt(nombre));
+          if(i>=0) return gr.evaluaciones.splice(i,1)[0];
+        }
+        return null;
+      };
+      nuevosGrupos.forEach(g=>{
+        let exG = g.nombre ? buscar(pool.grupos, g.nombre) : null;
+        if(!exG){
+          exG = { nombre:g.nombre, ponderacionGrupo:g.ponderacionGrupo, eliminarPeorNota:g.eliminarPeorNota, dividirIgual:g.dividirIgual, evaluaciones:[] };
+          pool.grupos.push(exG);
+        } else {
+          if(g.ponderacionGrupo) exG.ponderacionGrupo = g.ponderacionGrupo;
+          exG.eliminarPeorNota = g.eliminarPeorNota;
+          exG.dividirIgual = g.dividirIgual;
+        }
+        g.evaluaciones.forEach(e=>{
+          const enGrupo = e.nombre ? buscar(exG.evaluaciones, e.nombre) : null;
+          if(enGrupo){ mezclarEval(enGrupo, e); return; }
+          const movida = extraerExistente(e.nombre, exG);
+          if(movida){ mezclarEval(movida, e); exG.evaluaciones.push(movida); }
+          else exG.evaluaciones.push(e);
+        });
+      });
+      pool.grupos = pool.grupos.filter(gr=> gr.evaluaciones.length);
+    }
+  });
+  saveRamos();
+  renderRamosList();
+  cerrarEvalImportSheet();
+  showToast(nRamos ? `Se importaron ${nEval} evaluaciones en ${nRamos} ramo${nRamos>1?'s':''}.` : 'No había nada para importar.');
+}
+document.querySelectorAll('[data-evalmode]').forEach(btn=> btn.onclick = ()=> aplicarEvaluacionesImportadas(btn.dataset.evalmode));
 
 renderRamosList();
 renderInicioTab();
