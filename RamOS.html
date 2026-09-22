@@ -299,6 +299,12 @@
   .wheel-fade-top, .wheel-fade-bottom{position:absolute; left:0; right:0; height:70px; pointer-events:none; z-index:2;}
   .wheel-fade-top{top:0; background:linear-gradient(to bottom, var(--surface), rgba(255,255,255,0));}
   .wheel-fade-bottom{bottom:0; background:linear-gradient(to top, var(--surface), rgba(255,255,255,0));}
+  #timeWheelView.collapsed{height:0; overflow:hidden; visibility:hidden;}
+  .preset-table{width:100%; border-collapse:collapse; margin-bottom:14px;}
+  .preset-table th{font-family:var(--font-body); font-weight:800; font-size:11px; color:var(--text-muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--border);}
+  .preset-table td{padding:11px 4px; font-size:13.5px; color:var(--text); border-bottom:1px solid var(--border); cursor:pointer;}
+  .preset-table tr:active td{background:var(--bg);}
+  .preset-table tr:last-child td{color:var(--primary); font-weight:700;}
   .btn-confirm{width:100%; padding:12px; background:var(--primary); color:var(--primary-ink); border:none; border-radius:999px; font-family:var(--font-body); font-weight:700; font-size:14px; cursor:pointer;}
 
   /* grupos de evaluaciones */
@@ -442,15 +448,25 @@
 
   <div class="choice-backdrop" id="timeBackdrop">
     <div class="picker-card">
-      <div class="wheel-wrap">
-        <div class="wheel-fade-top"></div>
-        <div class="wheel-fade-bottom"></div>
-        <div class="wheel-highlight"></div>
-        <div class="wheel-col" id="wheelHour"></div>
-        <div class="wheel-col" id="wheelMinute"></div>
-        <div class="wheel-col wheel-ampm" id="wheelAmpm"></div>
+      <div id="timeWheelView">
+        <div class="wheel-wrap">
+          <div class="wheel-fade-top"></div>
+          <div class="wheel-fade-bottom"></div>
+          <div class="wheel-highlight"></div>
+          <div class="wheel-col" id="wheelHour"></div>
+          <div class="wheel-col" id="wheelMinute"></div>
+          <div class="wheel-col wheel-ampm" id="wheelAmpm"></div>
+        </div>
+        <button type="button" class="mini-btn" id="showPresetsBtn" style="width:100%; margin-bottom:10px; justify-content:center;">Horas predeterminadas</button>
+        <button type="button" class="btn-confirm" id="timeConfirmBtn">Listo</button>
       </div>
-      <button type="button" class="btn-confirm" id="timeConfirmBtn">Listo</button>
+      <div id="timePresetsView" style="display:none;">
+        <table class="preset-table">
+          <thead><tr><th>Bloque</th><th>Hora</th></tr></thead>
+          <tbody id="presetTableBody"></tbody>
+        </table>
+        <button type="button" class="choice-cancel" id="hidePresetsBtn">Volver</button>
+      </div>
     </div>
   </div>
 
@@ -558,7 +574,7 @@ function normalizarRamoCargado(r){
   r.horarios = Array.isArray(r.horarios) ? r.horarios : [];
   r.horarios.forEach(h=>{
     h.dia = h.dia || 'L';
-    h.bloque = h.bloque || 1;
+    h.bloque = Number(h.bloque) || 1;
     h.sala = h.sala || '';
     h.tipo = h.tipo || 'teoria';
     h.dividir = !!h.dividir;
@@ -678,6 +694,34 @@ function normalizarNota(raw){
   if(!s.includes('.') && s.length >= 2) s = s[0] + '.' + s.slice(1);
   const n = parseFloat(s);
   return isNaN(n) ? null : n;
+}
+function autocompletarSalaSiCoincide(evaluacion){
+  if(evaluacion.sala && evaluacion.sala.trim()) return false;
+  if(!evaluacion.fecha || !evaluacion.hora) return false;
+  const m1 = evaluacion.fecha.match(/^(\d{2})-(\d{2})-(\d{2})$/);
+  if(!m1) return false;
+  const fechaObj = new Date(2000+Number(m1[3]), Number(m1[2])-1, Number(m1[1]));
+  const DIA_POR_NUM = {1:'L', 2:'M', 3:'W', 4:'J', 5:'V', 6:'S'};
+  const diaCode = DIA_POR_NUM[fechaObj.getDay()];
+  if(!diaCode) return false;
+
+  const m2 = evaluacion.hora.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(!m2) return false;
+  let h = parseInt(m2[1],10);
+  const min = parseInt(m2[2],10);
+  const ampm = m2[3].toUpperCase();
+  if(ampm==='PM' && h!==12) h += 12;
+  if(ampm==='AM' && h===12) h = 0;
+  const minutosTotal = h*60 + min;
+
+  const bloqueMatch = BLOQUES.find(b=> minutosTotal >= (b.sh*60+b.sm) && minutosTotal < (b.eh*60+b.em));
+  if(!bloqueMatch) return false;
+
+  const horarioMatch = draft.horarios.find(hh=> hh.dia===diaCode && hh.bloque===bloqueMatch.n);
+  if(!horarioMatch || !horarioMatch.sala) return false;
+
+  evaluacion.sala = horarioMatch.sala;
+  return true;
 }
 function getDiscardedIndex(g){
   if(!g.eliminarPeorNota || g.evaluaciones.length<=1) return -1;
@@ -989,6 +1033,9 @@ function attachModalListeners(){
         ? getActivePool().grupos[el.dataset.egroup].evaluaciones[el.dataset.erow]
         : getActivePool().sueltas[el.dataset.erow];
       target[el.dataset.efield] = el.value;
+      if(el.dataset.efield==='fecha' || el.dataset.efield==='hora'){
+        if(autocompletarSalaSiCoincide(target)) renderModal();
+      }
     };
     if(el.dataset.efield==='notaRaw'){
       el.onblur = ()=>{
@@ -1047,6 +1094,7 @@ function attachModalListeners(){
       const h = draft.horarios[el.dataset.h];
       if(el.dataset.hfield==='dividirBool'){ h.dividir = el.checked; renderModal(); return; }
       if(el.dataset.hfield==='tipo'){ h.tipo = el.value; renderModal(); return; }
+      if(el.dataset.hfield==='bloque'){ h.bloque = Number(el.value); return; }
       h[el.dataset.hfield] = el.type==='number' ? Number(el.value) : el.value;
     };
     (el.tagName==='SELECT' || el.type==='checkbox') ? el.onchange = handler : el.oninput = handler;
@@ -1467,6 +1515,17 @@ function buildWheel(el, items, formatFn){
   el.appendChild(spacerBot);
 }
 function scrollWheelToIndex(el, idx, smooth){ el.scrollTo({ top: idx*ITEM_H, behavior: smooth ? 'smooth' : 'auto' }); }
+function setWheelInstant(el, idx){
+  el.style.scrollSnapType = 'none';
+  el.scrollTop = idx*ITEM_H;
+  updateCenteredStyles(el);
+  requestAnimationFrame(()=> requestAnimationFrame(()=>{ el.style.scrollSnapType = ''; updateCenteredStyles(el); }));
+}
+function setWheelsTo(h12, m, ampm){
+  setWheelInstant(wheelHourEl, HOURS.indexOf(h12));
+  setWheelInstant(wheelMinuteEl, MINUTES.indexOf(m));
+  setWheelInstant(wheelAmpmEl, AMPM.indexOf(ampm));
+}
 function centeredIndex(el){ return Math.round(el.scrollTop / ITEM_H); }
 function updateCenteredStyles(el){
   const idx = centeredIndex(el);
@@ -1493,17 +1552,45 @@ attachWheelScroll(wheelHourEl);
 attachWheelScroll(wheelMinuteEl);
 attachWheelScroll(wheelAmpmEl);
 
+const TIME_PRESETS = BLOQUES.slice(0,7).map(b=>({ label:'Bloque '+b.n, h24:b.sh, m:b.sm }));
+TIME_PRESETS.push({ label:'Fin del día', h24:23, m:59, especial:true });
+function horas24a12(h24){
+  let h12 = h24 % 12; if(h12===0) h12=12;
+  return { h12, ampm: h24 < 12 ? 'AM' : 'PM' };
+}
+function mostrarVistaRueda(){
+  document.getElementById('timePresetsView').style.display = 'none';
+  document.getElementById('timeWheelView').classList.remove('collapsed');
+}
+function mostrarVistaPresets(){
+  document.getElementById('timeWheelView').classList.add('collapsed');
+  document.getElementById('timePresetsView').style.display = 'block';
+}
+function renderPresetTable(){
+  const body = document.getElementById('presetTableBody');
+  body.innerHTML = TIME_PRESETS.map((p,i)=>{
+    const { h12, ampm } = horas24a12(p.h24);
+    return `<tr data-presetidx="${i}"><td>${p.label}</td><td>${pad2(h12)}:${pad2(p.m)} ${ampm}</td></tr>`;
+  }).join('');
+  body.querySelectorAll('[data-presetidx]').forEach(tr=>{
+    tr.onclick = ()=>{
+      const p = TIME_PRESETS[Number(tr.dataset.presetidx)];
+      const { h12, ampm } = horas24a12(p.h24);
+      setWheelsTo(h12, p.m, ampm);
+      mostrarVistaRueda();
+    };
+  });
+}
+document.getElementById('showPresetsBtn').onclick = ()=>{
+  renderPresetTable();
+  mostrarVistaPresets();
+};
+document.getElementById('hidePresetsBtn').onclick = ()=> mostrarVistaRueda();
 function openTimePicker(inputEl){
   timeTargetInput = inputEl;
+  mostrarVistaRueda();
   document.getElementById('timeBackdrop').classList.add('active');
-  requestAnimationFrame(()=>{
-    scrollWheelToIndex(wheelHourEl, HOURS.indexOf(12), false);
-    scrollWheelToIndex(wheelMinuteEl, MINUTES.indexOf(0), false);
-    scrollWheelToIndex(wheelAmpmEl, AMPM.indexOf('PM'), false);
-    updateCenteredStyles(wheelHourEl);
-    updateCenteredStyles(wheelMinuteEl);
-    updateCenteredStyles(wheelAmpmEl);
-  });
+  requestAnimationFrame(()=> setWheelsTo(12, 0, 'PM'));
 }
 function closeTimePicker(){ document.getElementById('timeBackdrop').classList.remove('active'); }
 document.getElementById('timeConfirmBtn').onclick = ()=>{
