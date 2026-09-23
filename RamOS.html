@@ -42,7 +42,7 @@
   .title-wrap{box-sizing:border-box; display:inline-block; overflow:hidden; width:44px; padding-left:8px; height:1em; line-height:1;}
   .title-section{display:inline-block; white-space:nowrap; color:var(--primary); line-height:1;}
 
-  .screens{flex:1; overflow-y:auto; padding:0 18px 110px; -webkit-overflow-scrolling:touch; position:relative;}
+  .screens{flex:1; overflow-y:auto; padding:0 18px calc(120px + env(safe-area-inset-bottom)); -webkit-overflow-scrolling:touch; position:relative;}
   .screen{display:none;}
   .screen.active{display:block;}
 
@@ -74,22 +74,29 @@
   .icon-horario{background:rgba(92,134,176,.15);} .icon-horario svg{stroke:var(--primary);}
   .icon-eval{background:rgba(169,196,222,.35);} .icon-eval svg{stroke:#5C86B0;}
 
-  .fab{position:absolute; right:18px; bottom:88px; z-index:5;}
+  .fab{position:absolute; right:18px; bottom:calc(92px + env(safe-area-inset-bottom)); z-index:5;}
 
   .btn{font-family:var(--font-body); font-weight:700; font-size:14px; padding:12px 20px; cursor:pointer; border:2px solid var(--primary); border-radius:999px; box-shadow:0 3px 10px rgba(36,52,74,.16);}
   .btn-primary{background:var(--primary); color:var(--primary-ink);}
   .btn-secondary{background:transparent; color:var(--primary);}
   .btn-block{width:100%;}
 
-  .bottom-nav{position:absolute; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:var(--surface); border-top:1px solid var(--border); display:flex; padding:8px 4px calc(8px + env(safe-area-inset-bottom));}
-  .nav-item{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; cursor:pointer; color:var(--text-muted); padding:6px 0; font-family:var(--font-body);}
-  .nav-item svg{width:22px; height:22px; stroke:var(--text-muted); fill:none; stroke-width:1.8;}
+  .bottom-nav{position:absolute; left:14px; right:14px; bottom:calc(10px + env(safe-area-inset-bottom)); display:flex; align-items:center; padding:6px;
+    background:#FFFFFF; border:1px solid var(--border); border-radius:999px;
+    box-shadow:0 8px 28px rgba(36,52,74,.16), 0 1px 3px rgba(36,52,74,.08); z-index:10; transition:background .25s ease;}
+  .bottom-nav.translucida{background:rgba(255,255,255,.82); -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%);}
+  .nav-pill{position:absolute; top:6px; bottom:6px; left:0; width:0; border-radius:999px; background:rgba(36,52,74,.08); pointer-events:none;
+    transition:transform .32s cubic-bezier(.4,0,.2,1), width .32s cubic-bezier(.4,0,.2,1);}
+  .nav-item{position:relative; z-index:1; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:none; border:none; cursor:pointer; color:var(--text-muted); padding:8px 0; border-radius:999px; font-family:var(--font-body);}
+  .bottom-nav.solo-iconos .nav-lbl{display:none;}
+  .bottom-nav.solo-iconos .nav-item{padding:11px 0;}
+  .nav-item svg{width:23px; height:23px; stroke:var(--text-muted); fill:none; stroke-width:1.8;}
   .nav-icon-slot{height:26px; display:flex; align-items:center; justify-content:center;}
   .tiktok-badge{position:relative; width:30px; height:22px; flex-shrink:0;}
   .tiktok-badge-shadow{position:absolute; inset:0; border-radius:7px; background:var(--secondary); transform:translate(4px,-3px);}
   .tiktok-badge-core{position:absolute; inset:0; border-radius:7px; background:var(--primary); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(36,52,74,.25);}
   .tiktok-badge-core svg{width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round;}
-  .nav-item span{font-size:10.5px; font-weight:700;}
+  .nav-item .nav-lbl{font-size:10px; font-weight:700;}
   .nav-item.active{color:var(--primary);}
   .nav-item.active svg{stroke:var(--primary);}
   .nav-item-main.active .tiktok-badge-core svg{stroke:#fff;}
@@ -108,8 +115,8 @@
 
   .modal-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:19; display:none;}
   .modal-backdrop.active{display:block;}
-  .modal-sheet{position:absolute; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
-  .modal-sheet.active{transform:translateY(0);}
+  .modal-sheet{position:absolute; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:none;}
+  .modal-sheet.active{transform:translateY(0); box-shadow:0 -8px 24px rgba(0,0,0,.18);}
   .modal-drag-zone{padding:9px 0 7px; display:flex; justify-content:center; cursor:grab; touch-action:none; flex-shrink:0;}
   .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px;}
   .modal-header{display:flex; align-items:center; justify-content:space-between; padding:10px 18px 0;}
@@ -391,9 +398,10 @@
   <button class="btn btn-primary fab" id="uploadFabBtn" style="display:none;">Subir horario</button>
   <input type="file" id="pdfInput" accept="application/pdf" style="display:none;">
 
-  <nav class="bottom-nav">
-    <button class="nav-item active" data-tab="inicio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg></span><span>Inicio</span></button>
-    <button class="nav-item" data-tab="horario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></span><span>Horario</span></button>
+  <nav class="bottom-nav solo-iconos" id="bottomNav">
+    <div class="nav-pill" id="navPill"></div>
+    <button class="nav-item active" data-tab="inicio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg></span><span class="nav-lbl">Inicio</span></button>
+    <button class="nav-item" data-tab="horario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></span><span class="nav-lbl">Horario</span></button>
     <button class="nav-item nav-item-main" data-tab="info">
       <span class="nav-icon-slot">
         <span class="tiktok-badge">
@@ -401,10 +409,10 @@
           <span class="tiktok-badge-core"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
         </span>
       </span>
-      <span>Ramos</span>
+      <span class="nav-lbl">Ramos</span>
     </button>
-    <button class="nav-item" data-tab="promedio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg></span><span>Promedio</span></button>
-    <button class="nav-item" data-tab="calendario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg></span><span>Calendario</span></button>
+    <button class="nav-item" data-tab="promedio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg></span><span class="nav-lbl">Promedio</span></button>
+    <button class="nav-item" data-tab="calendario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg></span><span class="nav-lbl">Calendario</span></button>
   </nav>
 
   <div class="choice-backdrop" id="choiceBackdrop">
@@ -475,7 +483,24 @@
       <h3>Configuración</h3>
       <button class="choice-btn" id="descargarDatosBtn">Descargar copia<span>Guarda un archivo con todos tus ramos</span></button>
       <button class="choice-btn" id="abrirImportarBtn">Importar datos<span>Carga un archivo de respaldo guardado antes</span></button>
+      <button class="choice-btn" id="abrirPersonalizarBtn">Personalizar<span>Cambia cómo se ve la app</span></button>
       <button class="choice-cancel" id="settingsCloseBtn">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="choice-backdrop" id="personalizarBackdrop">
+    <div class="choice-card">
+      <h3>Personalizar</h3>
+      <p>Barra de navegación</p>
+      <label class="switch-row">
+        <span class="switch-text">Mostrar nombres</span>
+        <span class="switch"><input type="checkbox" id="prefEtiquetas"><span class="track"><span class="thumb"></span></span></span>
+      </label>
+      <label class="switch-row">
+        <span class="switch-text">Fondo translúcido</span>
+        <span class="switch"><input type="checkbox" id="prefTranslucida"><span class="track"><span class="thumb"></span></span></span>
+      </label>
+      <button class="choice-cancel" id="personalizarCloseBtn" style="margin-top:6px;">Listo</button>
     </div>
   </div>
 
@@ -656,6 +681,7 @@ document.querySelectorAll('.nav-item').forEach(btn=>{
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     btn.classList.add('active');
+    moverPildoraNav(true);
     document.getElementById('screen-'+btn.dataset.tab).classList.add('active');
     document.getElementById('uploadFabBtn').style.display = btn.dataset.tab==='info' ? '' : 'none';
     setTitleSection(TAB_LABELS[btn.dataset.tab]);
@@ -2251,6 +2277,48 @@ function aplicarRamosImportadosJSON(lista, modo){
   saveRamos();
   renderRamosList();
 }
+
+/* ---------- barra flotante: píldora de la pestaña activa ---------- */
+function moverPildoraNav(animar){
+  const nav = document.getElementById('bottomNav');
+  const pill = document.getElementById('navPill');
+  const btn = nav.querySelector('.nav-item.active');
+  if(!btn) return;
+  const n = nav.getBoundingClientRect(), b = btn.getBoundingClientRect();
+  if(!animar) pill.style.transition = 'none';
+  pill.style.width = b.width + 'px';
+  pill.style.transform = `translateX(${b.left - n.left - nav.clientLeft}px)`;
+  if(!animar){ void pill.offsetWidth; pill.style.transition = ''; }
+}
+window.addEventListener('resize', ()=> moverPildoraNav(false));
+if(document.fonts) document.fonts.ready.then(()=> moverPildoraNav(false));
+
+/* ---------- personalizar ---------- */
+const PREFS_KEY = 'ramos_prefs_v1';
+const PREFS_DEFAULT = { navEtiquetas:false, navTranslucida:false };
+function cargarPrefs(){
+  try{ return Object.assign({}, PREFS_DEFAULT, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')); }
+  catch(err){ return Object.assign({}, PREFS_DEFAULT); }
+}
+let prefs = cargarPrefs();
+function guardarPrefs(){ try{ localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); }catch(err){} }
+function aplicarPrefs(){
+  const nav = document.getElementById('bottomNav');
+  nav.classList.toggle('solo-iconos', !prefs.navEtiquetas);
+  nav.classList.toggle('translucida', !!prefs.navTranslucida);
+  requestAnimationFrame(()=> moverPildoraNav(false));
+}
+document.getElementById('abrirPersonalizarBtn').onclick = ()=>{
+  document.getElementById('settingsBackdrop').classList.remove('active');
+  document.getElementById('prefEtiquetas').checked = !!prefs.navEtiquetas;
+  document.getElementById('prefTranslucida').checked = !!prefs.navTranslucida;
+  document.getElementById('personalizarBackdrop').classList.add('active');
+};
+document.getElementById('prefEtiquetas').onchange = (e)=>{ prefs.navEtiquetas = e.target.checked; guardarPrefs(); aplicarPrefs(); };
+document.getElementById('prefTranslucida').onchange = (e)=>{ prefs.navTranslucida = e.target.checked; guardarPrefs(); aplicarPrefs(); };
+document.getElementById('personalizarCloseBtn').onclick = ()=> document.getElementById('personalizarBackdrop').classList.remove('active');
+document.getElementById('personalizarBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='personalizarBackdrop') e.currentTarget.classList.remove('active'); });
+aplicarPrefs();
 
 renderRamosList();
 renderInicioTab();
