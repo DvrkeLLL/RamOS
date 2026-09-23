@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="RamOS.PNG">
 <meta name="apple-mobile-web-app-title" content="RamOS">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiUmFtT1MiLCJzaG9ydF9uYW1lIjoiUmFtT1MiLCJzdGFydF91cmwiOiIuL1JhbU9TLmh0bWwiLCJzY29wZSI6Ii4vIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0YyRjJGMiIsInRoZW1lX2NvbG9yIjoiIzVDODZCMCIsImljb25zIjpbeyJzcmMiOiJSYW1PUy5QTkciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5QTkciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJSYW1PUy5QTkciLCJzaXplcyI6IjE4MHgxODAiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#5C86B0">
@@ -108,8 +108,8 @@
 
   .modal-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:19; display:none;}
   .modal-backdrop.active{display:block;}
-  .modal-sheet{position:fixed; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
-  .modal-sheet.active{transform:translateY(0);}
+  .modal-sheet{position:fixed; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:none;}
+  .modal-sheet.active{transform:translateY(0); box-shadow:0 -8px 24px rgba(0,0,0,.18);}
   .modal-drag-zone{padding:9px 0 7px; display:flex; justify-content:center; cursor:grab; touch-action:none; flex-shrink:0;}
   .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px;}
   .modal-header{display:flex; align-items:center; justify-content:space-between; padding:10px 18px 0;}
@@ -2684,7 +2684,7 @@ function aplicarEvaluacionesImportadas(modo){
 document.querySelectorAll('[data-evalmode]').forEach(btn=> btn.onclick = ()=> aplicarEvaluacionesImportadas(btn.dataset.evalmode));
 
 /* ---------- seguro iOS: la app nunca debe quedar desplazada ---------- */
-const APP_VERSION = '22-09-26 · 3';
+const APP_VERSION = '22-09-26 · 4';
 function estaEscribiendo(){
   const a = document.activeElement;
   return !!a && (a.tagName==='INPUT' || a.tagName==='TEXTAREA' || a.tagName==='SELECT' || a.isContentEditable);
@@ -2716,6 +2716,14 @@ if(window.visualViewport){
 setInterval(volverArriba, 600);   // respaldo: si quedó corrida y no estás escribiendo, se acomoda sola
 
 /* ---------- diagnóstico de pantalla (Configuración) ---------- */
+function medirMargenSeguro(lado){
+  const d = document.createElement('div');
+  d.style.cssText = `position:fixed; visibility:hidden; padding-${lado}:env(safe-area-inset-${lado});`;
+  document.body.appendChild(d);
+  const v = parseFloat(getComputedStyle(d)['padding' + (lado==='top' ? 'Top' : 'Bottom')]) || 0;
+  d.remove();
+  return Math.round(v);
+}
 document.getElementById('diagBtn').onclick = ()=>{
   const vv = window.visualViewport;
   const nav = document.querySelector('.bottom-nav').getBoundingClientRect();
@@ -2724,7 +2732,8 @@ document.getElementById('diagBtn').onclick = ()=>{
     `Pantalla ${screen.width}×${screen.height} · ventana ${window.innerWidth}×${window.innerHeight}`,
     `Área visible ${vv ? Math.round(vv.width)+'×'+Math.round(vv.height) : '—'} · corrida ${vv ? Math.round(vv.offsetTop) : '—'}`,
     `Desplazamiento ${Math.round(window.scrollY)} · alto página ${document.scrollingElement.scrollHeight}`,
-    `App ${Math.round(document.querySelector('.app').getBoundingClientRect().height)} · barra termina en ${Math.round(nav.bottom)}`
+    `App ${Math.round(document.querySelector('.app').getBoundingClientRect().height)} · barra termina en ${Math.round(nav.bottom)}`,
+    `Margen seguro arriba ${medirMargenSeguro('top')} · abajo ${medirMargenSeguro('bottom')}`
   ].join('\n');
   document.getElementById('settingsBackdrop').classList.remove('active');
   const t = document.getElementById('toast');
