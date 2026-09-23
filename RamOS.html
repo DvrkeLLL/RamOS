@@ -108,7 +108,7 @@
 
   .modal-backdrop{position:absolute; inset:0; background:rgba(20,28,38,.4); z-index:19; display:none;}
   .modal-backdrop.active{display:block;}
-  .modal-sheet{position:absolute; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
+  .modal-sheet{position:fixed; left:0; right:0; bottom:0; height:75vh; height:75dvh; background:var(--surface); border-radius:22px 22px 0 0; z-index:20; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .25s ease; max-width:480px; margin:0 auto; box-shadow:0 -8px 24px rgba(0,0,0,.18);}
   .modal-sheet.active{transform:translateY(0);}
   .modal-drag-zone{padding:9px 0 7px; display:flex; justify-content:center; cursor:grab; touch-action:none; flex-shrink:0;}
   .modal-handle{width:36px; height:4px; background:var(--border); border-radius:4px;}
