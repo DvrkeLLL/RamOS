@@ -217,6 +217,31 @@
   .cal-day:not(.other-month):not(.selected):active .cal-day-dot{background:var(--bg);}
 
   /* pantalla Inicio */
+  .split{display:grid; grid-template-columns:1fr 1px 1fr; gap:12px; align-items:start;}
+  .split-line{background:var(--border); align-self:stretch;}
+  .split .half{min-width:0; touch-action:pan-y;}
+  .split .clase-nombre, .split .eval-ramo{font-size:12.5px; line-height:1.25;}
+  .split .clase-sala{font-size:24px;}
+  .split .eval-nombre-pct{font-size:12px; margin-top:6px;}
+  .split .eval-fecha, .split .eval-sala{font-size:11px;}
+  .amigo-row{display:flex; justify-content:space-between; align-items:baseline; gap:6px; padding:7px 0; border-bottom:1px solid var(--border);}
+  .amigo-row:last-child{border-bottom:none;}
+  .amigo-nombre{font-weight:800; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .amigo-sala{font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--primary); white-space:nowrap;}
+  .amigo-bloque{font-family:var(--font-body); font-size:10.5px; font-weight:700; color:var(--text-muted);}
+  .almuerzo-item{font-weight:800; font-size:12.5px; padding:6px 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:6px;}
+  .almuerzo-item:last-child{border-bottom:none;}
+  .almuerzo-item .punto{width:7px; height:7px; border-radius:50%; background:#4F8A5B; flex-shrink:0;}
+  .almuerzo-item.aviso{color:#D9822B;}
+  .almuerzo-item.aviso .punto{background:#D9822B;}
+  .amigos-vacio{font-size:11.5px; color:var(--text-muted); line-height:1.4; margin:0;}
+  .nota-aviso{font-size:9.5px; color:#D9822B; margin-top:8px; line-height:1.3;}
+  .toca-amigos{font-size:9.5px; color:var(--text-muted); text-align:center; margin-top:10px;}
+  .amigos-toggle-row{justify-content:flex-start; gap:12px; padding:10px 12px; margin-bottom:8px; background:var(--bg); border:1.5px solid var(--border); border-radius:12px;}
+  .lista-amigos .item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 2px; border-bottom:1px solid var(--border); font-size:13px;}
+  .lista-amigos .item b{display:block;}
+  .lista-amigos .item small{color:var(--text-muted); font-size:11px;}
+  .lista-amigos .rm{background:none; border:none; color:var(--danger); font-weight:700; font-size:12px; cursor:pointer;}
   .inicio-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); padding:18px; margin-bottom:14px; touch-action:pan-y;}
   .inicio-card-label{font-size:10.5px; font-weight:800; color:var(--text-muted); letter-spacing:.3px; margin-bottom:10px;}
   .clase-nombre{font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px; text-align:center;}
@@ -499,9 +524,26 @@
         <i class="ci-icon"><svg viewBox="0 0 24 24"><path d="M18.5 3.5a2.1 2.1 0 0 1 3 3L12 16l-3.5.5.5-3.5z"/><path d="M8.5 16.5c-2 0-3.5 1.4-3.5 3.2 0 .5-.4.8-1 .8 1 1 2.4 1.5 3.8 1.5 2.3 0 4-1.6 4-3.6"/></svg></i>
         <div class="ci-text">Personalizar<span>Cambia cómo se ve la app</span></div>
       </button>
+      <div class="settings-divider"></div>
+      <label class="switch-row amigos-toggle-row">
+        <i class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c.5-.1 1-.2 1.5-.2 2.2 0 3.9 1.5 4.4 4"/></svg></i>
+        <div class="ci-text" style="font-weight:700; font-size:13px;">Modo amigos</div>
+        <span class="switch"><input type="checkbox" id="modoAmigosSw"><span class="track"><span class="thumb"></span></span></span>
+      </label>
       <button class="choice-cancel" id="settingsCloseBtn">Cerrar</button>
     </div>
   </div>
+
+  <div class="choice-backdrop" id="amigosBackdrop">
+    <div class="choice-card" style="max-height:80vh; overflow-y:auto;">
+      <h3>Amigos</h3>
+      <p>Sube el PDF del horario de cada amigo (el mismo formato que el tuyo). Se van sumando.</p>
+      <div class="lista-amigos" id="listaAmigos"></div>
+      <button type="button" class="btn-confirm" id="subirAmigoBtn" style="margin-top:12px;">Subir horario de un amigo</button>
+      <button class="choice-cancel" id="amigosCloseBtn">Cerrar</button>
+    </div>
+  </div>
+  <input type="file" id="amigoPdfInput" accept="application/pdf" multiple style="display:none;">
 
   <div class="choice-backdrop" id="personalizarBackdrop">
     <div class="choice-card">
@@ -1451,6 +1493,9 @@ async function parseHorarioPdf(file){
     });
     ramosParsed.push({ codigo, nombre: capitalizarNombre(filaT.nombre), coordinacion: filaT.coord||'', horarios });
   });
+  const textoCompleto = items.map(i=> i.text).join(' ').replace(/\s+/g,' ');
+  const mEst = textoCompleto.match(/estudiante\s+(.+?)\s+para el/i);
+  ramosParsed.estudiante = mEst ? mEst[1].trim() : '';
   return ramosParsed;
 }
 
@@ -1833,7 +1878,8 @@ function renderProximaEvalCard(){
   if(proxEvalIndex >= lista.length) proxEvalIndex = lista.length-1;
   if(proxEvalIndex < 0) proxEvalIndex = 0;
   const item = lista[proxEvalIndex];
-  const fechaTxt = item.fecha.toLocaleDateString('es-CL', { weekday:'long', day:'numeric', month:'long' });
+  const compacta = !!card.closest('.split');
+  const fechaTxt = item.fecha.toLocaleDateString('es-CL', compacta ? { weekday:'short', day:'numeric', month:'short' } : { weekday:'long', day:'numeric', month:'long' });
   card.innerHTML = `
     <div class="inicio-card-label">Próxima evaluación</div>
     <div class="eval-ramo">${item.ramo.nombre}</div>
@@ -1882,11 +1928,20 @@ function renderInicioTab(){
   proxClaseIndex = 0;
   proxEvalIndex = 0;
   const wrap = document.getElementById('inicioWrap');
-  wrap.innerHTML = `
-    <div class="inicio-card" id="cardProximaClase"></div>
-    <div class="inicio-card" id="cardProximaEval"></div>
-    <div class="inicio-card" id="cardMiniCal"></div>
-  `;
+  if(prefs.modoAmigos){
+    wrap.innerHTML = `
+      <div class="inicio-card split"><div class="half" id="cardProximaClase"></div><div class="split-line"></div><div class="half" id="cardProximaEval"></div></div>
+      <div class="inicio-card" id="cardAmigos" style="cursor:pointer;"></div>
+      <div class="inicio-card" id="cardMiniCal"></div>
+    `;
+    renderAmigosCard();
+  } else {
+    wrap.innerHTML = `
+      <div class="inicio-card" id="cardProximaClase"></div>
+      <div class="inicio-card" id="cardProximaEval"></div>
+      <div class="inicio-card" id="cardMiniCal"></div>
+    `;
+  }
   renderProximaClaseCard();
   renderProximaEvalCard();
   renderMiniCalCard();
@@ -2310,7 +2365,7 @@ if(document.fonts) document.fonts.ready.then(()=> moverPildoraNav(false));
 
 /* ---------- personalizar ---------- */
 const PREFS_KEY = 'ramos_prefs_v1';
-const PREFS_DEFAULT = { navEtiquetas:false, navTranslucida:false };
+const PREFS_DEFAULT = { navEtiquetas:false, navTranslucida:false, modoAmigos:false };
 function cargarPrefs(){
   try{ return Object.assign({}, PREFS_DEFAULT, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')); }
   catch(err){ return Object.assign({}, PREFS_DEFAULT); }
@@ -2334,6 +2389,95 @@ document.getElementById('prefTranslucida').onchange = (e)=>{ prefs.navTranslucid
 document.getElementById('personalizarCloseBtn').onclick = ()=> document.getElementById('personalizarBackdrop').classList.remove('active');
 document.getElementById('personalizarBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='personalizarBackdrop') e.currentTarget.classList.remove('active'); });
 aplicarPrefs();
+
+/* ============ MODO AMIGOS ============ */
+const AMIGOS_KEY = 'ramos_amigos_v1';
+let amigos = (()=>{ try{ const r = localStorage.getItem(AMIGOS_KEY); const l = r ? JSON.parse(r) : []; return Array.isArray(l) ? l : []; }catch(e){ return []; } })();
+function guardarAmigos(){ try{ localStorage.setItem(AMIGOS_KEY, JSON.stringify(amigos)); }catch(e){ showToast('No se pudo guardar en este navegador.'); } }
+function nombreCortoAmigo(a){
+  const p = (a.nombre||'').trim().split(/\s+/);
+  return p.length > 1 ? `${p[0]} ${p[1].charAt(0).toUpperCase()}` : (p[0] || 'Amigo');
+}
+// siguiente clase del amigo (cuenta como actual hasta 40 min después de empezar, igual que "Próxima clase")
+function proximaClaseAmigo(a, base){
+  const lista = a.horarios.map(h=>{
+    let st = getBloqueStartDate(base, h.dia, h.bloque);
+    if(!st) return null;
+    if(st.getTime() + 40*60000 <= base.getTime()) st = new Date(st.getTime() + 7*864e5);
+    return { h, st };
+  }).filter(Boolean).sort((x,y)=> x.st - y.st);
+  return lista[0] || null;
+}
+// almuerzo: clase en bloque 1-3 y en bloque 4-6. Naranjo si en la mañana solo tiene 1-2 y en la tarde solo el 6
+function estadoAlmuerzo(a, dia){
+  const bl = new Set(a.horarios.filter(h=> h.dia===dia).map(h=> Number(h.bloque)));
+  const manana = [1,2,3].filter(n=> bl.has(n)), tarde = [4,5,6].filter(n=> bl.has(n));
+  if(!manana.length || !tarde.length) return null;
+  return (manana.every(n=> n<=2) && tarde.every(n=> n===6)) ? 'aviso' : 'ok';
+}
+function renderAmigosCard(){
+  const card = document.getElementById('cardAmigos');
+  if(!card) return;
+  const base = new Date();
+  const finde = base.getDay()===0 || base.getDay()===6;
+  const dia = finde ? 'L' : ({1:'L',2:'M',3:'W',4:'J',5:'V'})[base.getDay()];
+
+  let izq, der;
+  if(!amigos.length){
+    izq = `<div class="inicio-card-label">Amigos</div><p class="amigos-vacio">Toca aquí para subir el horario de un amigo.</p>`;
+    der = `<div class="inicio-card-label">${finde ? 'Almuerzo el lunes' : 'Almuerzo hoy'}</div><p class="amigos-vacio">—</p>`;
+  } else {
+    const filas = amigos.map(a=> ({ a, p: proximaClaseAmigo(a, base) })).filter(x=> x.p).sort((x,y)=> x.p.st - y.p.st);
+    izq = `<div class="inicio-card-label">Amigos</div>` + (filas.length ? filas.map(({a,p})=>
+      `<div class="amigo-row"><span class="amigo-nombre">${nombreCortoAmigo(a)}</span><span class="amigo-sala">${p.h.sala || '—'} <span class="amigo-bloque">(${p.h.dia}${p.h.bloque})</span></span></div>`).join('')
+      : `<p class="amigos-vacio">Sin clases cargadas.</p>`);
+    const lista = amigos.map(a=> ({ a, est: estadoAlmuerzo(a, dia) })).filter(x=> x.est).sort((x,y)=> (x.est==='ok'?0:1) - (y.est==='ok'?0:1));
+    der = `<div class="inicio-card-label">${finde ? 'Almuerzo el lunes' : 'Almuerzo hoy'}</div>` + (lista.length
+      ? lista.map(({a,est})=> `<div class="almuerzo-item${est==='aviso'?' aviso':''}"><span class="punto"></span>${nombreCortoAmigo(a)}</div>`).join('') +
+        (lista.some(x=> x.est==='aviso') ? `<div class="nota-aviso">Naranjo: clase temprano y recién al bloque 6; puede que no se quede.</div>` : '')
+      : `<p class="amigos-vacio">Ningún amigo se queda en la U a la hora de almuerzo.</p>`);
+  }
+  card.innerHTML = `<div class="split"><div class="half">${izq}</div><div class="split-line"></div><div class="half">${der}</div></div>
+    <div class="toca-amigos">Toca para agregar o quitar amigos</div>`;
+  card.onclick = abrirAmigos;
+}
+function abrirAmigos(){ renderListaAmigos(); document.getElementById('amigosBackdrop').classList.add('active'); }
+function renderListaAmigos(){
+  const l = document.getElementById('listaAmigos');
+  l.innerHTML = amigos.length ? amigos.map(a=>{
+    const dias = new Set(a.horarios.map(h=> h.dia)).size;
+    return `<div class="item"><div><b>${a.nombre}</b><small>${a.horarios.length} bloques · ${dias} día${dias!==1?'s':''}</small></div><button type="button" class="rm" data-rmamigo="${a.id}">Quitar</button></div>`;
+  }).join('') : '<p class="amigos-vacio">Aún no agregas amigos.</p>';
+  l.querySelectorAll('[data-rmamigo]').forEach(b=> b.onclick = ()=>{
+    amigos = amigos.filter(a=> String(a.id)!==b.dataset.rmamigo);
+    guardarAmigos(); renderListaAmigos(); renderAmigosCard();
+  });
+}
+document.getElementById('amigosCloseBtn').onclick = ()=> document.getElementById('amigosBackdrop').classList.remove('active');
+document.getElementById('amigosBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='amigosBackdrop') e.currentTarget.classList.remove('active'); });
+document.getElementById('subirAmigoBtn').onclick = ()=> document.getElementById('amigoPdfInput').click();
+document.getElementById('amigoPdfInput').onchange = async (e)=>{
+  const files = [...e.target.files]; e.target.value = '';
+  for(const f of files){
+    try{
+      showToast(`Leyendo ${f.name}…`);
+      const parsed = await parseHorarioPdf(f);
+      const partes = (parsed.estudiante || '').split(/\s+/).filter(Boolean);
+      const nombre = partes.length ? capitalizarNombre(partes.length>=3 ? `${partes[0]} ${partes[partes.length-2]}` : partes.join(' ')) : 'Amigo';
+      const horarios = parsed.flatMap(r=> r.horarios.map(h=> ({ dia:h.dia, bloque:Number(h.bloque), sala:h.sala, tipo:h.tipo, ramo:r.nombre })));
+      if(!horarios.length){ showToast(`No encontré clases en "${f.name}".`); continue; }
+      const i = amigos.findIndex(a=> a.nombre.toLowerCase()===nombre.toLowerCase());
+      if(i>=0){ amigos[i].horarios = horarios; showToast(`Horario de ${nombre} actualizado.`); }
+      else { amigos.push({ id: generarId(), nombre, horarios }); showToast(`${nombre} agregado (${horarios.length} bloques).`); }
+    }catch(err){ console.error(err); showToast(`No pude leer "${f.name}".`); }
+  }
+  guardarAmigos(); renderListaAmigos(); renderAmigosCard();
+};
+document.getElementById('settingsBtn').addEventListener('click', ()=>{ document.getElementById('modoAmigosSw').checked = !!prefs.modoAmigos; });
+document.getElementById('modoAmigosSw').onchange = (e)=>{
+  prefs.modoAmigos = e.target.checked; guardarPrefs();
+  renderInicioTab();
+};
 
 renderRamosList();
 renderInicioTab();
