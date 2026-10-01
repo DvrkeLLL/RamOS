@@ -392,6 +392,91 @@
   .hd-row:last-of-type{border-bottom:none;}
   .hd-label{color:var(--text-muted); font-weight:700; flex-shrink:0;}
   .hd-value{color:var(--text); text-align:right;}
+
+  /* ---- Promedio: columna de % ---- */
+  .promedio-eval-valores{display:flex; align-items:center; flex-shrink:0; margin-left:10px;}
+  .promedio-eval-valores .promedio-eval-nota{margin-left:0; min-width:30px; text-align:right;}
+  .promedio-eval-pct{width:44px; flex-shrink:0; text-align:right; font-size:12px; font-weight:700; color:var(--text-muted);}
+  .promedio-eval-row.tachada .promedio-eval-pct{text-decoration:line-through; opacity:.6;}
+
+  /* ---- Promedio: mantener presionado para explicar ---- */
+  .mantener{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none; transition:transform .15s ease;}
+  .mantener.presionando{transform:scale(.96);}
+  .exp-overlay{position:fixed; inset:0; background:rgba(20,28,38,.6); z-index:50; opacity:0; pointer-events:none; transition:opacity .22s ease;}
+  .exp-overlay.show{opacity:1; pointer-events:auto;}
+  .exp-destacado{position:fixed; z-index:51; background:var(--surface); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none; transform:scale(.96); opacity:0; transition:transform .22s cubic-bezier(.3,1.4,.5,1), opacity .18s ease;}
+  .exp-destacado.show{transform:scale(1.04); opacity:1;}
+  .exp-card{position:fixed; z-index:52; left:16px; right:16px; max-width:448px; margin:0 auto; background:var(--surface); border-radius:18px; padding:18px; box-shadow:0 14px 40px rgba(0,0,0,.28); opacity:0; transform:translateY(8px); transition:opacity .22s ease, transform .22s ease; pointer-events:none; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+  .exp-card.show{opacity:1; transform:none; pointer-events:auto;}
+  .exp-card h4{font-family:var(--font-display); font-size:16px; margin:0 0 6px;}
+  .exp-card > p{font-size:13px; line-height:1.45; color:var(--text); margin:0 0 12px;}
+  .exp-cerrar{font-size:10.5px; color:var(--text-muted); text-align:center; margin-top:10px;}
+  .anim{background:var(--bg); border-radius:14px; padding:10px 12px;}
+  .an-fila{display:grid; grid-template-columns:1fr 34px 14px 40px 14px 62px; align-items:center; padding:4px 6px; border-radius:8px; font-size:12px; opacity:0; transform:translateY(6px); transition:opacity .3s ease, transform .3s ease, background .3s ease;}
+  .an-fila.ver{opacity:1; transform:none;}
+  .an-fila.activa{background:rgba(92,134,176,.14);}
+  .an-nom{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .an-nota, .an-pct, .an-aporte{text-align:right; font-weight:800;}
+  .an-op{text-align:center; color:var(--text-muted); font-weight:700;}
+  .an-azul{color:var(--primary);} .an-rojo{color:var(--danger);} .an-gris{color:#A3AEBB;}
+  .an-aporte{opacity:0; transition:opacity .3s ease;} .an-aporte.ver{opacity:1;}
+  .an-fila.ignorada .an-nom, .an-fila.ignorada .an-nota, .an-fila.ignorada .an-pct{text-decoration:line-through; color:#A3AEBB;}
+  .an-pop{display:inline-block; animation:anPop .45s cubic-bezier(.3,1.6,.5,1);}
+  @keyframes anPop{0%{transform:scale(.3); opacity:0;} 100%{transform:scale(1); opacity:1;}}
+  .an-suma{margin-top:8px; border-top:1px dashed #C5CDD6; padding-top:8px; min-height:20px;}
+  .an-linea{font-size:12px; line-height:1.5; font-weight:700; opacity:0; transform:translateY(4px); transition:opacity .3s, transform .3s;}
+  .an-linea.ver{opacity:1; transform:none;}
+  .an-linea small{display:block; font-weight:600; font-size:10.5px; color:var(--text-muted);}
+  .anim-caption{min-height:36px; font-size:12px; line-height:1.4; margin-top:8px; transition:opacity .25s;}
+  .anim-footer{display:flex; align-items:center; justify-content:space-between; margin-top:6px;}
+  .anim-result{font-family:var(--font-display); font-size:20px; font-weight:800; color:var(--secondary); opacity:0; transition:opacity .3s;}
+  .anim-result.show{opacity:1;}
+  .anim-replay{border:1.5px solid var(--primary); background:transparent; color:var(--primary); border-radius:999px; padding:5px 12px; font-family:var(--font-body); font-weight:700; font-size:11.5px; cursor:pointer; opacity:0; transition:opacity .3s;}
+  .anim-replay.show{opacity:1;}
+
+  /* ---- globos de la barra ---- */
+  .nav-icon-slot{position:relative;}
+  .nav-badge{position:absolute; top:-3px; right:-8px; min-width:16px; height:16px; padding:0 4px; border-radius:999px; background:var(--danger); color:#fff; font-family:var(--font-body); font-size:9.5px; font-weight:800; display:flex; align-items:center; justify-content:center; line-height:1;}
+
+  /* ---- Actividades ---- */
+  .ac-resumen{display:flex; gap:10px; margin-bottom:12px;}
+  .ac-resumen div{flex:1; background:var(--surface); border-radius:14px; padding:10px 12px; box-shadow:0 4px 16px rgba(36,52,74,.06);}
+  .ac-resumen b{display:block; font-family:var(--font-display); font-size:20px;}
+  .ac-resumen span{font-size:10.5px; font-weight:800; color:var(--text-muted);}
+  .ac-resumen .ac-atr b{color:var(--danger);}
+  .ac-filtros{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; scrollbar-width:none;}
+  .ac-filtros::-webkit-scrollbar{display:none;}
+  .ac-filtros button{flex-shrink:0; border:1.5px solid var(--border); background:var(--surface); color:var(--text-muted); border-radius:999px; padding:6px 12px; font-family:var(--font-body); font-weight:700; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:6px;}
+  .ac-filtros button.on{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .ac-punto{width:8px; height:8px; border-radius:50%; flex-shrink:0; display:inline-block;}
+  .ac-seccion{font-size:10.5px; font-weight:800; color:var(--text-muted); letter-spacing:.3px; margin:16px 2px 8px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;}
+  .ac-seccion .flecha{transition:transform .25s ease; display:inline-block;}
+  .ac-seccion.cerrada .flecha{transform:rotate(-90deg);}
+  .ac-item{background:var(--surface); border-radius:16px; box-shadow:0 4px 16px rgba(36,52,74,.07); padding:12px 14px; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:opacity .35s ease, transform .35s ease, max-height .35s ease, margin .35s ease, padding .35s ease; max-height:220px; overflow:hidden;}
+  .ac-item.saliendo{opacity:0; transform:translateX(30px); max-height:0; margin-bottom:0; padding-top:0; padding-bottom:0;}
+  .ac-check{width:26px; height:26px; border-radius:50%; border:2px solid #C7CDD4; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff; cursor:pointer; transition:background .2s, border-color .2s, transform .15s; margin-top:1px;}
+  .ac-check svg{width:14px; height:14px; stroke:#fff; stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:24; stroke-dashoffset:24; transition:stroke-dashoffset .3s ease .05s;}
+  .ac-check:active{transform:scale(.9);}
+  .ac-item.hecha .ac-check{background:#4F8A5B; border-color:#4F8A5B;}
+  .ac-item.hecha .ac-check svg{stroke-dashoffset:0;}
+  .ac-cuerpo{flex:1; min-width:0;}
+  .ac-titulo{font-weight:700; font-size:14px; line-height:1.3;}
+  .ac-item.hecha .ac-titulo{color:var(--text-muted); text-decoration:line-through;}
+  .ac-meta{display:flex; align-items:center; gap:8px; margin-top:5px; flex-wrap:wrap; font-size:11.5px; color:var(--text-muted); font-weight:700;}
+  .ac-ramo{display:flex; align-items:center; gap:5px;}
+  .ac-fecha{padding:2px 8px; border-radius:999px; background:var(--bg);}
+  .ac-fecha.hoy{background:rgba(92,134,176,.15); color:var(--primary);}
+  .ac-fecha.atrasada{background:rgba(181,69,58,.12); color:var(--danger);}
+  .ac-nota{font-size:12px; color:var(--text-muted); margin-top:5px; line-height:1.35;}
+  .ac-vacio{text-align:center; color:var(--text-muted); font-size:12.5px; padding:14px 10px;}
+  .ac-chips{display:flex; gap:6px; flex-wrap:wrap;}
+  .ac-chips button{border:1.5px solid var(--border); background:var(--bg); color:var(--text); border-radius:999px; padding:7px 12px; font-family:var(--font-body); font-weight:700; font-size:12px; cursor:pointer;}
+  .ac-chips button.on{background:var(--primary); border-color:var(--primary); color:#fff;}
+  #actSheet textarea{width:100%; font-family:var(--font-body); font-size:14px; padding:10px 11px; color:var(--text); background:var(--surface); border:1.5px solid var(--border); border-radius:8px; outline:none; resize:none; height:64px;}
+  #actSheet textarea:focus{border-color:var(--primary);}
+  .undo-toast{position:absolute; left:16px; right:16px; bottom:calc(84px + env(safe-area-inset-bottom)); background:var(--text); color:#fff; padding:11px 14px; border-radius:12px; font-size:12.5px; z-index:30; display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:0; transform:translateY(8px); transition:all .2s ease; pointer-events:none;}
+  .undo-toast.show{opacity:1; transform:none; pointer-events:auto;}
+  .undo-toast button{background:none; border:none; color:#A9C4DE; font-family:var(--font-body); font-weight:800; font-size:12.5px; cursor:pointer;}
 </style>
 </head>
 <body>
@@ -415,6 +500,10 @@
     <div class="screen" id="screen-info">
       <div id="ramosList"></div>
       <div class="add-frame big" id="addFrame"><div class="plus">+</div><div class="label">Añadir ramo</div></div>
+    </div>
+
+    <div class="screen" id="screen-actividades">
+      <div id="actividadesWrap"></div>
     </div>
 
     <div class="screen" id="screen-promedio">
@@ -441,8 +530,9 @@
       </span>
       <span class="nav-lbl">Ramos</span>
     </button>
+    <button class="nav-item" data-tab="actividades"><span class="nav-icon-slot"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 9.5l1.6 1.6L12.5 8"/><path d="M8 15.5l1.6 1.6 2.9-3.1"/><path d="M14.5 9.5H17M14.5 15.5H17"/></svg><span class="nav-badge" id="actBadge" style="display:none;"></span></span><span class="nav-lbl">Actividades</span></button>
     <button class="nav-item" data-tab="promedio"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><path d="M4 20V11M12 20V4M20 20v-7"/></svg></span><span class="nav-lbl">Promedio</span></button>
-    <button class="nav-item" data-tab="calendario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg></span><span class="nav-lbl">Calendario</span></button>
+    <button class="nav-item" data-tab="calendario"><span class="nav-icon-slot"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/><circle cx="8.5" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg><span class="nav-badge" id="calBadge" style="display:none;"></span></span><span class="nav-lbl">Calendario</span></button>
   </nav>
 
   <div class="choice-backdrop" id="choiceBackdrop">
@@ -590,6 +680,33 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="actBackdrop"></div>
+  <div class="modal-sheet" id="actSheet" style="height:auto; max-height:88%;">
+    <div class="modal-drag-zone"><div class="modal-handle"></div></div>
+    <div class="modal-header"><h2 id="actSheetTitulo">Nueva actividad</h2><button class="close-x" id="actCerrarBtn">✕</button></div>
+    <div class="modal-body" style="padding-top:14px;">
+      <div class="field-group"><label class="field-label">¿Qué hay que hacer?</label><input type="text" id="actTitulo" placeholder="Ej: Guía de ejercicios 3"></div>
+      <div class="field-group"><label class="field-label">Ramo</label><select id="actRamo"></select></div>
+      <div class="field-group">
+        <label class="field-label">Entrega</label>
+        <div class="ac-chips" id="actFechaChips">
+          <button type="button" data-f="hoy">Hoy</button><button type="button" data-f="manana">Mañana</button><button type="button" data-f="semana">En 1 semana</button><button type="button" data-f="elegir" id="actChipElegir">Elegir fecha</button><button type="button" data-f="sin">Sin fecha</button>
+        </div>
+        <input type="text" id="actFechaInput" style="display:none;">
+      </div>
+      <div class="field-group"><label class="field-label">Nota (opcional)</label><textarea id="actNota" placeholder="Ej: Subir al campus virtual en PDF"></textarea></div>
+    </div>
+    <div class="modal-footer" style="display:flex; gap:8px;">
+      <button type="button" class="btn btn-secondary" id="actBorrarBtn" style="display:none; color:var(--danger); border-color:var(--danger);">Borrar</button>
+      <button type="button" class="btn btn-primary" id="actGuardarBtn" style="flex:1;">Guardar</button>
+    </div>
+  </div>
+  <div class="undo-toast" id="undoToast"><span id="undoTxt"></span><button type="button" id="undoBtn">Deshacer</button></div>
+
+  <div class="exp-overlay" id="expOverlay"></div>
+  <div class="exp-destacado" id="expDestacado"></div>
+  <div class="exp-card" id="expCard"></div>
+
   <div class="modal-backdrop" id="modalBackdrop"></div>
   <div class="modal-sheet" id="ramoModal">
     <div class="modal-drag-zone" id="modalDragZone"><div class="modal-handle"></div></div>
@@ -695,11 +812,12 @@ function loadRamos(){
   }catch(err){ return []; }
 }
 function saveRamos(){
+  setTimeout(()=>{ try{ actualizarGlobos(); }catch(e){} }, 0);
   try{ localStorage.setItem('ramos_v1', JSON.stringify(ramos)); }
   catch(err){ showToast('No se pudo guardar en este navegador.'); }
 }
 
-const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Ramos', promedio:'Promedio', calendario:'Calendario' };
+const TAB_LABELS = { inicio:'Inicio', horario:'Horario', info:'Ramos', actividades:'Actividades', promedio:'Promedio', calendario:'Calendario' };
 const titleMeasureCanvas = document.createElement('canvas');
 const titleMeasureCtx = titleMeasureCanvas.getContext('2d');
 function medirAnchoTitulo(text){
@@ -746,6 +864,7 @@ document.querySelectorAll('.nav-item').forEach(btn=>{
     if(btn.dataset.tab==='inicio') renderInicioTab();
     if(btn.dataset.tab==='promedio') renderPromedioTab();
     if(btn.dataset.tab==='calendario') initCalendarioTab();
+    if(btn.dataset.tab==='actividades') renderActividades();
   };
 });
 
@@ -2027,6 +2146,7 @@ function renderPromedioTab(){
   wrap.innerHTML = ramos.map(r=> promedioCardHTML(r)).join('');
   wrap.querySelectorAll('[data-promedioramo]').forEach(header=>{
     header.onclick = ()=>{
+      if(Date.now() - expAbiertaEn < 800) return;   // fue un "mantener presionado", no un toque
       const id = header.dataset.promedioramo;
       promedioExpandido[id] = !promedioExpandido[id];
       const expandido = promedioExpandido[id];
@@ -2044,6 +2164,7 @@ function renderPromedioTab(){
       renderPromedioTab();
     };
   });
+  activarMantener(wrap);
 }
 function promedioCardHTML(ramo){
   const poolKey = promedioPoolActivo[ramo.id] || 'teoria';
@@ -2058,6 +2179,7 @@ function promedioCardHTML(ramo){
     ? `<button type="button" class="mini-btn pool-toggle" data-promedlabtoggle="${ramo.id}">${POOL_STATE_ICONS[nextState]}</button>`
     : '';
 
+  promedioEvalsCache[ramo.id] = evals;
   // agrupar filas por grupo (null = sueltas); en PF se distingue el origen (teoría/laboratorio)
   const grupos = {};
   evals.forEach(e=>{
@@ -2076,7 +2198,7 @@ function promedioCardHTML(ramo){
       let rowClass = '';
       if(e.pendienteCubierta){ rowClass = 'cubierta'; notaTxt = 'En espera'; }
       else if(e.excluida){ rowClass = 'tachada'; }
-      filasHtml += `<div class="promedio-eval-row ${rowClass}"><span class="promedio-eval-nombre">${e.nombre}</span><span class="promedio-eval-nota">${notaTxt}</span></div>`;
+      filasHtml += `<div class="promedio-eval-row ${rowClass}"><span class="promedio-eval-nombre">${e.nombre}</span><span class="promedio-eval-valores"><span class="promedio-eval-nota">${notaTxt}</span><span class="promedio-eval-pct">${formatoPct(e.pond)}</span></span></div>`;
     });
   });
 
@@ -2099,7 +2221,7 @@ function promedioCardHTML(ramo){
   <div class="promedio-card${expandido?' expanded':''}">
     <div class="promedio-header" data-promedioramo="${ramo.id}">
       <div class="promedio-nombre">${ramo.nombre}<span class="sub">Toca para ver el detalle</span></div>
-      <div class="promedio-num-wrap">
+      <div class="promedio-num-wrap mantener" data-exp="ponderado" data-expramo="${ramo.id}">
         <div class="promedio-num ${pasa?'pasa':'no-pasa'}">${stats.ponderado!==null ? stats.ponderado.toFixed(1) : '—'}</div>
         <div class="promedio-num-label">ponderado</div>
       </div>
@@ -2109,8 +2231,8 @@ function promedioCardHTML(ramo){
       ${toggleHTML ? `<div class="pool-toggle-row"><span class="pool-toggle-label">${POOL_STATE_LABELS[poolKey]}</span>${toggleHTML}</div>` : ''}
       ${filasHtml || '<p style="font-size:12.5px;color:var(--text-muted);">Sin evaluaciones cargadas.</p>'}
       <div class="promedio-stats">
-        <div class="promedio-stat"><div class="promedio-stat-num">${stats.real.toFixed(1)}</div><div class="promedio-stat-label">Real</div></div>
-        <div class="promedio-stat"><div class="promedio-stat-num">${stats.acumulado.toFixed(1)}</div><div class="promedio-stat-label">Acumulado</div></div>
+        <div class="promedio-stat mantener" data-exp="real" data-expramo="${ramo.id}"><div class="promedio-stat-num">${stats.real.toFixed(1)}</div><div class="promedio-stat-label">Real</div></div>
+        <div class="promedio-stat mantener" data-exp="acumulado" data-expramo="${ramo.id}"><div class="promedio-stat-num">${stats.acumulado.toFixed(1)}</div><div class="promedio-stat-label">Acumulado</div></div>
       </div>
       ${resultadoHtml}
       </div>
@@ -2478,6 +2600,289 @@ document.getElementById('modoAmigosSw').onchange = (e)=>{
   prefs.modoAmigos = e.target.checked; guardarPrefs();
   renderInicioTab();
 };
+
+
+/* ============ PROMEDIO: explicación al mantener presionado ============ */
+let promedioEvalsCache = {};
+let expAbiertaEn = 0;
+function formatoPct(n){ return (Math.round((Number(n)||0)*10)/10) + '%'; }
+function explicacion(tipo){
+  if(tipo==='ponderado') return { t:'Promedio ponderado', d:'Tu promedio contando solo las evaluaciones que ya tienen nota. Muestra cómo vas rindiendo, como si lo que falta no existiera.' };
+  if(tipo==='real') return { t:'Promedio real', d:'Tu nota final si en todo lo que falta sacaras un 1.0. Es el peor escenario: si igual llega a 3.95, el ramo está aprobado pase lo que pase.' };
+  return { t:'Promedio acumulado', d:'Los puntos de la nota final que ya tienes asegurados. Va creciendo con cada nota hasta convertirse en tu nota final.' };
+}
+function activarMantener(scope){
+  scope.querySelectorAll('.mantener').forEach(el=>{
+    let timer = null, x0 = 0, y0 = 0;
+    const cancelar = ()=>{ clearTimeout(timer); timer = null; el.classList.remove('presionando'); };
+    const empezar = (x,y)=>{ x0 = x; y0 = y; el.classList.add('presionando'); timer = setTimeout(()=>{ el.classList.remove('presionando'); mostrarExplicacion(el); }, 450); };
+    el.ontouchstart = e=> empezar(e.touches[0].clientX, e.touches[0].clientY);
+    el.ontouchmove = e=>{ const t = e.touches[0]; if(Math.hypot(t.clientX-x0, t.clientY-y0) > 10) cancelar(); };
+    el.ontouchend = cancelar; el.ontouchcancel = cancelar;
+    el.onmousedown = e=> empezar(e.clientX, e.clientY);
+    el.onmouseup = cancelar; el.onmouseleave = cancelar;
+    el.oncontextmenu = e=> e.preventDefault();
+  });
+}
+function mostrarExplicacion(el){
+  expAbiertaEn = Date.now();
+  const r = el.getBoundingClientRect();
+  const esStat = el.classList.contains('promedio-stat');
+  const dest = document.getElementById('expDestacado');
+  dest.innerHTML = el.innerHTML;
+  const pad = esStat ? 0 : 8;
+  Object.assign(dest.style, { left:(r.left-pad)+'px', top:(r.top-pad)+'px', width:(r.width+pad*2)+'px', height:(r.height+pad*2)+'px', padding: esStat ? '10px' : '0' });
+  const ex = explicacion(el.dataset.exp);
+  const card = document.getElementById('expCard');
+  card.innerHTML = `<h4>${ex.t}</h4><p>${ex.d}</p>
+    <div class="anim"><div id="anTabla"></div><div class="an-suma" id="anSuma"></div><div class="anim-caption" id="animCaption"></div>
+    <div class="anim-footer"><span class="anim-result" id="animResult"></span><button type="button" class="anim-replay" id="animReplay">↻ Ver de nuevo</button></div></div>
+    <div class="exp-cerrar">Toca fuera de la tarjeta para cerrar</div>`;
+  card.style.top = card.style.bottom = '';
+  const abajo = window.innerHeight - r.bottom, arriba = r.top;
+  if(abajo >= arriba){ card.style.top = (r.bottom + 16) + 'px'; card.style.maxHeight = (abajo - 32) + 'px'; }
+  else { card.style.bottom = (window.innerHeight - r.top + 16) + 'px'; card.style.maxHeight = (arriba - 32) + 'px'; }
+  document.getElementById('expOverlay').classList.add('show');
+  dest.classList.add('show'); card.classList.add('show');
+  reproducirAnimacion(el.dataset.exp, el.dataset.expramo);
+}
+function cerrarExplicacion(){
+  if(Date.now() - expAbiertaEn < 450) return;   // ignora el toque que iOS dispara al soltar el dedo
+  pararAnimacion();
+  ['expOverlay','expDestacado','expCard'].forEach(id=> document.getElementById(id).classList.remove('show'));
+}
+document.getElementById('expOverlay').addEventListener('click', cerrarExplicacion);
+
+let animTimers = [];
+function animEn(ms, fn){ animTimers.push(setTimeout(fn, ms)); }
+function pararAnimacion(){ animTimers.forEach(clearTimeout); animTimers = []; }
+function contarHasta(el, meta, prefijo){
+  const t0 = performance.now();
+  const paso = t=>{ const k = Math.min(1, (t-t0)/800); el.textContent = prefijo + (meta*k).toFixed(1); if(k<1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+}
+function reproducirAnimacion(tipo, ramoId){
+  pararAnimacion();
+  const tabla = document.getElementById('anTabla'), suma = document.getElementById('anSuma');
+  const cap = document.getElementById('animCaption'), res = document.getElementById('animResult'), rep = document.getElementById('animReplay');
+  const evals = (promedioEvalsCache[ramoId] || []).filter(e=> !e.excluida && (Number(e.pond)||0) > 0).map(e=>{
+    const v = (e.notaRaw && e.notaRaw.trim()) ? normalizarNota(e.notaRaw) : null;
+    return { n:e.nombre, p:Math.round(Number(e.pond)*10)/10, v: v===null ? NaN : v };
+  });
+  const f2 = n=> n.toFixed(2), pc = p=> formatoPct(p);
+  tabla.innerHTML = evals.map((e,k)=> `<div class="an-fila" id="af${k}"><span class="an-nom">${e.n}</span>
+      <span class="an-nota ${isNaN(e.v)?'an-gris':'an-azul'}" id="afn${k}">${isNaN(e.v)?'?':e.v.toFixed(1)}</span>
+      <span class="an-op">×</span><span class="an-pct">${pc(e.p)}</span><span class="an-op">=</span><span class="an-aporte" id="afa${k}"></span></div>`).join('');
+  suma.innerHTML = ''; res.classList.remove('show'); rep.classList.remove('show');
+  rep.onclick = ()=> reproducirAnimacion(tipo, ramoId);
+  const fila = k=> document.getElementById('af'+k), aporte = k=> document.getElementById('afa'+k), nota = k=> document.getElementById('afn'+k);
+  const decir = t=>{ cap.style.opacity = 0; animEn(180, ()=>{ cap.innerHTML = t; cap.style.opacity = 1; }); };
+  const linea = html=>{ const d = document.createElement('div'); d.className = 'an-linea'; d.innerHTML = html; suma.appendChild(d); requestAnimationFrame(()=> requestAnimationFrame(()=> d.classList.add('ver'))); };
+  const terminar = (valor, etiqueta)=>{ contarHasta(res, valor, etiqueta + ' '); res.classList.add('show'); rep.classList.add('show'); };
+
+  const tienen = evals.map((e,k)=> ({e,k})).filter(x=> !isNaN(x.e.v));
+  const faltan = evals.map((e,k)=> ({e,k})).filter(x=> isNaN(x.e.v));
+  const sumaNotas = tienen.reduce((a,x)=> a + x.e.v*x.e.p/100, 0);
+  const pesoTienen = tienen.reduce((a,x)=> a + x.e.p, 0);
+  const pesoFalta = faltan.reduce((a,x)=> a + x.e.p, 0);
+  const listaAportes = tienen.map(x=> `<span class="an-azul">${f2(x.e.v*x.e.p/100)}</span>`).join(' + ') || '0';
+
+  evals.forEach((e,k)=> animEn(250 + k*110, ()=> fila(k).classList.add('ver')));
+  if(!evals.length){ decir('Este ramo aún no tiene evaluaciones con porcentaje. Agrégalas en Ramos para ver el cálculo.'); return; }
+  decir('Cada evaluación tiene su <b>nota</b> y su <b>%</b>: lo que vale dentro del ramo. En <span class="an-azul"><b>azul</b></span> las notas que ya tienes.');
+  if(!tienen.length && tipo!=='real'){ animEn(1500, ()=> decir('Aún no tienes notas en este ramo, así que todavía no hay nada que calcular.')); return; }
+
+  let t = 1300 + Math.max(0, evals.length-6)*110;
+  tienen.forEach(({e,k}, idx)=>{
+    animEn(t, ()=>{
+      evals.forEach((_,m)=> fila(m).classList.remove('activa'));
+      fila(k).classList.add('activa');
+      aporte(k).innerHTML = `<span class="an-azul">${f2(e.v*e.p/100)}</span>`; aporte(k).classList.add('ver');
+      if(idx===0) decir(`${e.v.toFixed(1)} × ${pc(e.p)} = <span class="an-azul"><b>${f2(e.v*e.p/100)}</b></span>: esa nota te aporta ${f2(e.v*e.p/100)} puntos de tu nota final.`);
+    });
+    t += tienen.length > 6 ? 330 : 520;
+  });
+  t += 200;
+  animEn(t, ()=> evals.forEach((_,m)=> fila(m).classList.remove('activa')));
+
+  if(tipo==='acumulado'){
+    animEn(t, ()=>{ if(faltan.length){ decir('Lo que aún no rindes vale <b>0</b>: todavía no te aporta puntos.'); faltan.forEach(({k})=>{ fila(k).classList.add('activa'); aporte(k).innerHTML = '<span class="an-gris an-pop">0.00</span>'; aporte(k).classList.add('ver'); }); } });
+    animEn(t+1400, ()=>{ faltan.forEach(({k})=> fila(k).classList.remove('activa')); decir('Se suman todos los aportes: son los puntos que ya tienes asegurados.'); linea(`${listaAportes} = <span class="an-azul">${f2(sumaNotas)}</span>`); });
+    animEn(t+2600, ()=> linea(`<small>Redondeado a un decimal</small>${f2(sumaNotas)} → ${sumaNotas.toFixed(1)}`));
+    animEn(t+3400, ()=> terminar(sumaNotas, 'Acumulado'));
+  } else if(tipo==='ponderado'){
+    const pond = sumaNotas/(pesoTienen/100);
+    animEn(t, ()=>{ if(faltan.length){ decir('Lo que falta <b>no cuenta</b>: se saca del cálculo, junto con su %.'); faltan.forEach(({k})=>{ fila(k).classList.add('ignorada'); aporte(k).innerHTML = '<span class="an-gris an-pop">no cuenta</span>'; aporte(k).classList.add('ver'); }); } });
+    animEn(t+1400, ()=>{ decir('Se suman los aportes de las notas que tienes…'); linea(`<small>Suma de aportes</small>${listaAportes} = <span class="an-azul">${f2(sumaNotas)}</span>`); });
+    animEn(t+2700, ()=>{ decir('…y se divide por el % que ya rendiste, no por el 100%.'); linea(`<small>% que ya rendiste</small>${tienen.map(x=> pc(x.e.p)).join(' + ')} = <b>${pc(pesoTienen)}</b>`); });
+    animEn(t+4000, ()=> linea(`<span class="an-azul">${f2(sumaNotas)}</span> ÷ ${f2(pesoTienen/100)} = <b>${f2(pond)}</b> → ${pond.toFixed(1)}`));
+    animEn(t+4800, ()=> terminar(pond, 'Ponderado'));
+  } else {
+    const real = sumaNotas + pesoFalta/100;
+    animEn(t, ()=>{ if(faltan.length){ decir('Lo que falta se rellena con un <span class="an-rojo"><b>1.0</b></span>, la peor nota posible.'); faltan.forEach(({k})=>{ fila(k).classList.add('activa'); nota(k).className = 'an-nota an-rojo'; nota(k).innerHTML = '<span class="an-pop">1.0</span>'; }); } });
+    animEn(t+1100, ()=> faltan.forEach(({e,k})=>{ aporte(k).innerHTML = `<span class="an-rojo an-pop">${f2(e.p/100)}</span>`; aporte(k).classList.add('ver'); }));
+    animEn(t+2100, ()=>{ faltan.forEach(({k})=> fila(k).classList.remove('activa')); decir('Se suma lo que llevas más lo que darían esos 1.0.'); linea(`<small>Tus notas</small>${listaAportes} = <span class="an-azul">${f2(sumaNotas)}</span>`); });
+    animEn(t+3200, ()=>{ if(faltan.length) linea(`<small>Los 1.0</small>${faltan.map(x=> `<span class="an-rojo">${f2(x.e.p/100)}</span>`).join(' + ')} = <span class="an-rojo">${f2(pesoFalta/100)}</span>`); });
+    animEn(t+4300, ()=>{
+      linea(`<span class="an-azul">${f2(sumaNotas)}</span> + <span class="an-rojo">${f2(pesoFalta/100)}</span> = <b>${f2(real)}</b> → ${real.toFixed(1)}`);
+      decir(real >= NOTA_APROBACION ? 'Aun en el peor caso llegas a 3.95: <b>ramo aprobado</b>.' : 'Queda bajo el <b>3.95</b> para aprobar: todavía necesitas buenas notas en lo que falta.');
+    });
+    animEn(t+5100, ()=> terminar(real, 'Real'));
+  }
+}
+
+/* ============ ACTIVIDADES ============ */
+const ACT_KEY = 'ramos_actividades_v1';
+const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+let actividades = (()=>{ try{ const l = JSON.parse(localStorage.getItem(ACT_KEY) || '[]'); return Array.isArray(l) ? l : []; }catch(e){ return []; } })();
+let actFiltro = 'todos';
+let actHechasAbierta = false;
+function guardarActividades(){ try{ localStorage.setItem(ACT_KEY, JSON.stringify(actividades)); }catch(e){ showToast('No se pudo guardar en este navegador.'); } actualizarGlobos(); }
+function hoy0(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+function masDias(n){ const d = hoy0(); d.setDate(d.getDate()+n); return d; }
+function fechaATexto(d){ return `${pad2(d.getDate())}-${pad2(d.getMonth()+1)}-${String(d.getFullYear()).slice(2)}`; }
+function ramoDeActividad(a){ const i = ramos.findIndex(r=> String(r.id)===String(a.ramoId)); return i>=0 ? { nombre:ramos[i].nombre, color:HORARIO_COLORS[i % HORARIO_COLORS.length] } : { nombre:'Sin ramo', color:'#C7CDD4' }; }
+function etiquetaEntrega(a){
+  const f = parseFechaDDMMYY(a.fecha);
+  if(!f) return { txt:'Sin fecha', cls:'' };
+  const dias = Math.round((f - hoy0()) / 864e5);
+  if(a.hecha || dias >= 7) return { txt:`${f.getDate()} ${MESES_CORTO[f.getMonth()]}`, cls:'' };
+  if(dias < 0) return { txt:`Atrasada ${-dias} día${dias===-1?'':'s'}`, cls:'atrasada' };
+  if(dias === 0) return { txt:'Hoy', cls:'hoy' };
+  if(dias === 1) return { txt:'Mañana', cls:'' };
+  return { txt:`En ${dias} días`, cls:'' };
+}
+function ordenEntrega(a,b){
+  const fa = parseFechaDDMMYY(a.fecha), fb = parseFechaDDMMYY(b.fecha);
+  if(!fa && !fb) return 0; if(!fa) return 1; if(!fb) return -1; return fa - fb;
+}
+function itemActividadHTML(a){
+  const f = etiquetaEntrega(a), r = ramoDeActividad(a);
+  return `<div class="ac-item${a.hecha?' hecha':''}" data-actid="${a.id}">
+    <div class="ac-check" data-actcheck="${a.id}"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <div class="ac-cuerpo"><div class="ac-titulo">${escapeHtmlAct(a.titulo)}</div>
+      <div class="ac-meta"><span class="ac-ramo"><span class="ac-punto" style="background:${r.color}"></span>${r.nombre}</span><span class="ac-fecha ${f.cls}">${f.txt}</span></div>
+      ${a.nota ? `<div class="ac-nota">${escapeHtmlAct(a.nota)}</div>` : ''}</div></div>`;
+}
+function escapeHtmlAct(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderActividades(){
+  const wrap = document.getElementById('actividadesWrap');
+  if(actFiltro!=='todos' && !ramos.some(r=> String(r.id)===actFiltro)) actFiltro = 'todos';
+  const visibles = actividades.filter(a=> actFiltro==='todos' || String(a.ramoId)===actFiltro);
+  const pend = visibles.filter(a=> !a.hecha).sort(ordenEntrega);
+  const hechas = visibles.filter(a=> a.hecha).sort((a,b)=> -ordenEntrega(a,b));
+  const todasPend = actividades.filter(a=> !a.hecha);
+  const atrasadas = todasPend.filter(a=> etiquetaEntrega(a).cls==='atrasada').length;
+  const conAct = ramos.filter(r=> actividades.some(a=> String(a.ramoId)===String(r.id)));
+  wrap.innerHTML = `
+    <div class="ac-resumen"><div><b>${todasPend.length}</b><span>PENDIENTES</span></div><div class="ac-atr"><b>${atrasadas}</b><span>ATRASADAS</span></div><div><b>${actividades.length - todasPend.length}</b><span>HECHAS</span></div></div>
+    ${conAct.length ? `<div class="ac-filtros"><button type="button" data-actfiltro="todos" class="${actFiltro==='todos'?'on':''}">Todos</button>${conAct.map(r=> `<button type="button" data-actfiltro="${r.id}" class="${actFiltro===String(r.id)?'on':''}"><span class="ac-punto" style="background:${HORARIO_COLORS[ramos.indexOf(r) % HORARIO_COLORS.length]}"></span>${r.nombre}</button>`).join('')}</div>` : ''}
+    <div class="add-frame compact" id="actNuevaBtn"><div class="plus">+</div><div class="label">Nueva actividad</div></div>
+    <div>${pend.length ? pend.map(itemActividadHTML).join('') : `<div class="ac-vacio">${actividades.length ? 'Nada pendiente. 🎉' : 'Anota aquí lo que te dejan en clases y márcalo cuando lo termines.'}</div>`}</div>
+    ${hechas.length ? `<div class="ac-seccion${actHechasAbierta?'':' cerrada'}" id="actHechasSec"><span>HECHAS (${hechas.length})</span><span class="flecha">▾</span></div>
+    <div id="actHechasLista" style="${actHechasAbierta?'':'display:none;'}">${hechas.map(itemActividadHTML).join('')}</div>` : ''}`;
+  wrap.querySelectorAll('[data-actfiltro]').forEach(b=> b.onclick = ()=>{ actFiltro = b.dataset.actfiltro; renderActividades(); });
+  document.getElementById('actNuevaBtn').onclick = ()=> abrirActSheet(null);
+  const sec = document.getElementById('actHechasSec');
+  if(sec) sec.onclick = ()=>{ actHechasAbierta = !actHechasAbierta; renderActividades(); };
+  wrap.querySelectorAll('[data-actcheck]').forEach(c=> c.onclick = (e)=>{ e.stopPropagation(); alternarActividad(c.dataset.actcheck); });
+  wrap.querySelectorAll('[data-actid]').forEach(t=> t.onclick = ()=> abrirActSheet(t.dataset.actid));
+}
+function alternarActividad(id){
+  const a = actividades.find(x=> String(x.id)===String(id)); if(!a) return;
+  const el = document.querySelector(`.ac-item[data-actid="${id}"]`);
+  a.hecha = !a.hecha; guardarActividades();
+  if(el){ el.classList.toggle('hecha', a.hecha); setTimeout(()=> el.classList.add('saliendo'), 380); }
+  setTimeout(renderActividades, 760);
+  mostrarDeshacer(a.hecha ? 'Marcada como hecha' : 'Vuelve a pendientes', ()=>{ a.hecha = !a.hecha; guardarActividades(); renderActividades(); });
+}
+let undoTimer = null, undoFn = null;
+function mostrarDeshacer(txt, fn){
+  document.getElementById('undoTxt').textContent = txt; undoFn = fn;
+  const t = document.getElementById('undoToast'); t.classList.add('show');
+  clearTimeout(undoTimer); undoTimer = setTimeout(()=> t.classList.remove('show'), 3500);
+}
+document.getElementById('undoBtn').onclick = ()=>{ if(undoFn) undoFn(); undoFn = null; document.getElementById('undoToast').classList.remove('show'); };
+
+// hoja: nueva / editar
+let actEditId = null, actFechaSel = '';
+function tipoDeEntrega(txt){
+  if(!txt) return 'sin';
+  for(const [k,n] of [['hoy',0],['manana',1],['semana',7]]) if(txt===fechaATexto(masDias(n))) return k;
+  return 'elegir';
+}
+function marcarChipEntrega(){
+  const tipo = tipoDeEntrega(actFechaSel);
+  document.querySelectorAll('#actFechaChips button').forEach(b=> b.classList.toggle('on', b.dataset.f===tipo));
+  document.getElementById('actChipElegir').textContent = tipo==='elegir' ? actFechaSel : 'Elegir fecha';
+}
+function abrirActSheet(id){
+  actEditId = id;
+  const a = id!==null ? actividades.find(x=> String(x.id)===String(id)) : null;
+  document.getElementById('actSheetTitulo').textContent = a ? 'Editar actividad' : 'Nueva actividad';
+  document.getElementById('actTitulo').value = a ? a.titulo : '';
+  document.getElementById('actTitulo').style.borderColor = '';
+  document.getElementById('actRamo').innerHTML = ramos.map(r=> `<option value="${r.id}">${r.nombre}</option>`).join('') + `<option value="">Sin ramo</option>`;
+  document.getElementById('actRamo').value = a ? String(a.ramoId ?? '') : (actFiltro!=='todos' ? actFiltro : (ramos[0] ? String(ramos[0].id) : ''));
+  document.getElementById('actNota').value = a ? (a.nota || '') : '';
+  actFechaSel = a ? (a.fecha || '') : fechaATexto(masDias(1));
+  marcarChipEntrega();
+  document.getElementById('actBorrarBtn').style.display = a ? '' : 'none';
+  document.getElementById('actBackdrop').classList.add('active');
+  document.getElementById('actSheet').classList.add('active');
+}
+function cerrarActSheet(){
+  document.getElementById('actBackdrop').classList.remove('active');
+  document.getElementById('actSheet').classList.remove('active');
+  if(document.activeElement) document.activeElement.blur();
+}
+document.getElementById('actCerrarBtn').onclick = cerrarActSheet;
+document.getElementById('actBackdrop').onclick = cerrarActSheet;
+document.querySelectorAll('#actFechaChips button').forEach(b=> b.onclick = ()=>{
+  const f = b.dataset.f;
+  if(f==='hoy') actFechaSel = fechaATexto(masDias(0));
+  if(f==='manana') actFechaSel = fechaATexto(masDias(1));
+  if(f==='semana') actFechaSel = fechaATexto(masDias(7));
+  if(f==='sin') actFechaSel = '';
+  if(f==='elegir'){
+    const inp = document.getElementById('actFechaInput');
+    const d = parseFechaDDMMYY(actFechaSel);
+    if(d){ inp.dataset.y = d.getFullYear(); inp.dataset.m = d.getMonth(); inp.dataset.d = d.getDate(); }
+    else { delete inp.dataset.y; delete inp.dataset.m; delete inp.dataset.d; }
+    openCalendar(inp);
+    return;
+  }
+  marcarChipEntrega();
+});
+document.getElementById('actFechaInput').addEventListener('input', (e)=>{ actFechaSel = e.target.value; marcarChipEntrega(); });
+document.getElementById('actGuardarBtn').onclick = ()=>{
+  const titulo = document.getElementById('actTitulo').value.trim();
+  if(!titulo){ document.getElementById('actTitulo').style.borderColor = 'var(--danger)'; document.getElementById('actTitulo').focus(); return; }
+  const datos = { titulo, ramoId: document.getElementById('actRamo').value, fecha: actFechaSel, nota: document.getElementById('actNota').value.trim() };
+  if(actEditId!==null){ Object.assign(actividades.find(x=> String(x.id)===String(actEditId)), datos); }
+  else actividades.push({ id: generarId(), hecha:false, ...datos });
+  guardarActividades(); cerrarActSheet(); renderActividades();
+};
+document.getElementById('actBorrarBtn').onclick = ()=>{
+  const idx = actividades.findIndex(x=> String(x.id)===String(actEditId)); if(idx<0) return;
+  const [borrada] = actividades.splice(idx,1); guardarActividades(); cerrarActSheet(); renderActividades();
+  mostrarDeshacer('Actividad borrada', ()=>{ actividades.splice(idx,0,borrada); guardarActividades(); renderActividades(); });
+};
+
+/* ============ globos de la barra ============ */
+function ponerGlobo(id, n){ const g = document.getElementById(id); if(!g) return; g.textContent = n > 99 ? '99+' : n; g.style.display = n > 0 ? '' : 'none'; }
+// Calendario: evaluaciones del mes actual que aún no rindes (desde hoy y sin nota)
+function evaluacionesPendientesDelMes(){
+  const h = hoy0();
+  return getTodasLasEvaluaciones().filter(it=> it.fecha && it.fecha.getFullYear()===h.getFullYear() && it.fecha.getMonth()===h.getMonth()
+    && it.fecha >= h && !(it.e.notaRaw && it.e.notaRaw.trim())).length;
+}
+function actualizarGlobos(){
+  ponerGlobo('actBadge', actividades.filter(a=> !a.hecha).length);
+  ponerGlobo('calBadge', evaluacionesPendientesDelMes());
+}
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ actualizarGlobos(); if(document.getElementById('screen-actividades').classList.contains('active')) renderActividades(); } });
+actualizarGlobos();
 
 renderRamosList();
 renderInicioTab();
