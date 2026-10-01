@@ -477,6 +477,49 @@
   .undo-toast{position:absolute; left:16px; right:16px; bottom:calc(84px + env(safe-area-inset-bottom)); background:var(--text); color:#fff; padding:11px 14px; border-radius:12px; font-size:12.5px; z-index:30; display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:0; transform:translateY(8px); transition:all .2s ease; pointer-events:none;}
   .undo-toast.show{opacity:1; transform:none; pointer-events:auto;}
   .undo-toast button{background:none; border:none; color:#A9C4DE; font-family:var(--font-body); font-weight:800; font-size:12.5px; cursor:pointer;}
+
+  /* ---- Calendario: resumen del mes ---- */
+  .rs-card{background:var(--surface); border-radius:18px; box-shadow:0 4px 16px rgba(36,52,74,.08); overflow:hidden; margin-bottom:14px;}
+  .rs-head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:16px 18px; cursor:pointer; -webkit-user-select:none; user-select:none;}
+  .rs-head:active{background:rgba(92,134,176,.05);}
+  .rs-titulo{font-family:var(--font-display); font-size:15px; font-weight:700;}
+  .rs-titulo span{text-transform:capitalize;}
+  .rs-sub{display:block; font-family:var(--font-body); font-size:11.5px; font-weight:700; color:var(--text-muted); margin-top:2px;}
+  .rs-chevron{width:30px; height:30px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .35s cubic-bezier(.4,0,.2,1);}
+  .rs-chevron svg{width:14px; height:14px; stroke:var(--primary); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round;}
+  .rs-card.abierto .rs-chevron{transform:rotate(180deg);}
+  .rs-body{display:grid; grid-template-rows:0fr; transition:grid-template-rows .38s cubic-bezier(.4,0,.2,1);}
+  .rs-card.abierto .rs-body{grid-template-rows:1fr;}
+  .rs-inner{overflow:hidden;}
+  .rs-contenido{padding:0 18px 18px; opacity:0; transform:translateY(-6px); transition:opacity .3s ease, transform .3s ease;}
+  .rs-card.abierto .rs-contenido{opacity:1; transform:none; transition-delay:.08s;}
+  .rs-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px;}
+  .rs-stat{background:var(--bg); border-radius:12px; padding:10px 6px; text-align:center;}
+  .rs-stat b{display:block; font-family:var(--font-display); font-size:18px; font-weight:800;}
+  .rs-stat span{font-size:9.5px; font-weight:800; color:var(--text-muted);}
+  .rs-stat.azul b{color:var(--primary);}
+  .rs-proxima{display:flex; align-items:center; gap:10px; background:rgba(92,134,176,.1); border-radius:12px; padding:10px 12px; margin-bottom:14px; font-size:12.5px;}
+  .rs-proxima b{color:var(--primary);}
+  .rs-proxima .rs-cuenta{margin-left:auto; font-family:var(--font-display); font-weight:800; color:var(--primary); white-space:nowrap;}
+  .rs-semana{font-size:10.5px; font-weight:800; color:var(--text-muted); letter-spacing:.3px; margin:12px 0 4px; padding-top:10px; border-top:1px dashed var(--border);}
+  .rs-semana.primera{border-top:none; padding-top:0; margin-top:0;}
+  .rs-fila{display:flex; align-items:center; gap:10px; padding:7px 0;}
+  .rs-dia{width:38px; flex-shrink:0; text-align:center; border-radius:10px; padding:4px 0; background:var(--bg);}
+  .rs-dia b{display:block; font-family:var(--font-display); font-size:15px; line-height:1.1;}
+  .rs-dia span{font-size:9px; font-weight:800; color:var(--text-muted); text-transform:uppercase;}
+  .rs-fila.rendida .rs-dia{background:#35597D;} .rs-fila.rendida .rs-dia b, .rs-fila.rendida .rs-dia span{color:#fff;}
+  .rs-fila.es-hoy .rs-dia{background:#20262A;} .rs-fila.es-hoy .rs-dia b, .rs-fila.es-hoy .rs-dia span{color:#fff;}
+  .rs-info{flex:1; min-width:0;}
+  .rs-nom{font-weight:700; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .rs-ramo{display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:var(--text-muted); margin-top:1px;}
+  .rs-punto{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+  .rs-der{text-align:right; flex-shrink:0;}
+  .rs-nota{font-family:var(--font-display); font-weight:800; font-size:15px;}
+  .rs-nota.ok{color:var(--primary);} .rs-nota.mal{color:var(--danger);}
+  .rs-cuando{font-size:11px; font-weight:800; color:var(--primary);}
+  .rs-cuando.gris{color:var(--text-muted);}
+  .rs-pct{display:block; font-size:10.5px; font-weight:700; color:var(--text-muted);}
+  .rs-vacio{font-size:12.5px; color:var(--text-muted); text-align:center; padding:6px 0 2px;}
 </style>
 </head>
 <body>
@@ -2307,7 +2350,20 @@ function renderCalendarioVistaCalendario(){
       <div class="cal-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
       <div class="cal-grid" id="calVistaGrid"></div>
     </div>
+    <div class="rs-card${resumenMesAbierto?' abierto':''}" id="resumenMes">
+      <div class="rs-head" id="resumenMesHead">
+        <div><div class="rs-titulo">Resumen de <span id="rsMes"></span></div><span class="rs-sub" id="rsSub"></span></div>
+        <div class="rs-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="rs-body"><div class="rs-inner"><div class="rs-contenido" id="rsContenido"></div></div></div>
+    </div>
   `;
+  document.getElementById('resumenMesHead').onclick = ()=>{
+    resumenMesAbierto = !resumenMesAbierto;
+    document.getElementById('resumenMes').classList.toggle('abierto', resumenMesAbierto);
+    renderResumenMes();
+    if(resumenMesAbierto) setTimeout(()=>{ const c = document.getElementById('resumenMes'); if(c) c.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 380);
+  };
   document.getElementById('calVistaPrev').onclick = ()=>{ calVistaMonth--; if(calVistaMonth<0){calVistaMonth=11; calVistaYear--;} renderCalVistaGrid(); };
   document.getElementById('calVistaNext').onclick = ()=>{ calVistaMonth++; if(calVistaMonth>11){calVistaMonth=0; calVistaYear++;} renderCalVistaGrid(); };
   renderCalVistaGrid();
@@ -2354,6 +2410,59 @@ function renderCalVistaGrid(){
   grid.querySelectorAll('[data-seldia]').forEach(cell=>{
     cell.onclick = ()=> mostrarDetalleDia(evalsPorDia[cell.dataset.seldia]);
   });
+  renderResumenMes();
+}
+
+/* ---------- resumen del mes (bajo el calendario) ---------- */
+let resumenMesAbierto = false;
+function renderResumenMes(){
+  if(!document.getElementById('resumenMes')) return;
+  const DIAS_C = ['dom','lun','mar','mié','jue','vie','sáb'];
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const delMes = getTodasLasEvaluaciones().filter(it=> it.fecha && it.fecha.getFullYear()===calVistaYear && it.fecha.getMonth()===calVistaMonth)
+                  .sort((a,b)=> a.fecha - b.fecha);
+  const tieneNota = it=> !!(it.e.notaRaw && it.e.notaRaw.trim());
+  const pend = delMes.filter(it=> !tieneNota(it) && it.fecha >= hoy);
+  const rendidas = delMes.filter(tieneNota);
+  const enJuego = pend.reduce((a,it)=> a + (Number(it.e.ponderacion)||0), 0);
+  const cuanto = n=> n===0 ? 'Hoy' : n===1 ? 'Mañana' : `En ${n} días`;
+  const pc = n=> (Math.round((Number(n)||0)*10)/10) + '%';
+
+  document.getElementById('rsMes').textContent = MESES_LARGO[calVistaMonth];
+  document.getElementById('rsSub').textContent = delMes.length
+    ? `${delMes.length} prueba${delMes.length>1?'s':''} · ${pend.length} pendiente${pend.length!==1?'s':''}${resumenMesAbierto ? '' : ' · Toca para ver'}`
+    : 'Sin pruebas este mes';
+  const cont = document.getElementById('rsContenido');
+  if(!delMes.length){ cont.innerHTML = `<div class="rs-vacio">No tienes evaluaciones en ${MESES_LARGO[calVistaMonth]}.</div>`; return; }
+
+  let html = `<div class="rs-stats">
+      <div class="rs-stat azul"><b>${pend.length}</b><span>PENDIENTES</span></div>
+      <div class="rs-stat"><b>${rendidas.length}</b><span>RENDIDAS</span></div>
+      <div class="rs-stat"><b>${pc(enJuego)}</b><span>EN JUEGO</span></div></div>`;
+  if(pend[0]){
+    const p = pend[0];
+    html += `<div class="rs-proxima"><span>Próxima: <b>${p.e.nombre || 'Evaluación'}</b> · ${p.ramo.nombre}</span><span class="rs-cuenta">${cuanto(Math.round((p.fecha - hoy)/864e5))}</span></div>`;
+  }
+  const semanas = {};
+  delMes.forEach(it=>{ const l = new Date(it.fecha); l.setHours(0,0,0,0); l.setDate(l.getDate() - (l.getDay()+6)%7); (semanas[l.getTime()] = semanas[l.getTime()] || []).push(it); });
+  Object.keys(semanas).sort((a,b)=> a-b).forEach((k,iw)=>{
+    const l = new Date(+k);
+    html += `<div class="rs-semana${iw===0?' primera':''}">SEMANA DEL ${l.getDate()} ${MESES_LARGO[l.getMonth()].slice(0,3).toUpperCase()}</div>`;
+    semanas[k].forEach(it=>{
+      const dd = Math.round((it.fecha - hoy)/864e5);
+      const idx = ramos.indexOf(it.ramo);
+      const color = idx>=0 ? HORARIO_COLORS[idx % HORARIO_COLORS.length] : '#C7CDD4';
+      let der;
+      if(tieneNota(it)){ const n = normalizarNota(it.e.notaRaw); der = `<div class="rs-nota ${n>=NOTA_APROBACION?'ok':'mal'}">${n.toFixed(1)}</div>`; }
+      else if(dd >= 0) der = `<div class="rs-cuando">${cuanto(dd)}</div>`;
+      else der = `<div class="rs-cuando gris">Sin nota</div>`;
+      html += `<div class="rs-fila${tieneNota(it)?' rendida':''}${dd===0 && !tieneNota(it)?' es-hoy':''}">
+        <div class="rs-dia"><b>${it.fecha.getDate()}</b><span>${DIAS_C[it.fecha.getDay()]}</span></div>
+        <div class="rs-info"><div class="rs-nom">${it.e.nombre || 'Evaluación'}</div><div class="rs-ramo"><span class="rs-punto" style="background:${color}"></span>${it.ramo.nombre}</div></div>
+        <div class="rs-der">${der}<span class="rs-pct">${pc(it.e.ponderacion)}</span></div></div>`;
+    });
+  });
+  cont.innerHTML = html;
 }
 function mostrarDetalleDia(items){
   if(!items || items.length===0) return;
