@@ -29,9 +29,9 @@
     --font-display:'Poppins',sans-serif; --font-body:'Nunito Sans',sans-serif;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{height:100%;}
+  html,body{height:100%; height:var(--app-h, 100%);}
   body{margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); overflow:hidden;}
-  .app{position:relative; overflow:hidden; overflow:clip; height:100vh; height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
+  .app{position:relative; overflow:hidden; overflow:clip; height:100vh; height:100dvh; height:var(--app-h, 100dvh); display:flex; flex-direction:column; max-width:480px; margin:0 auto; background:var(--bg);}
 
   .topbar{padding:calc(20px + env(safe-area-inset-top)) 18px 12px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; gap:10px;}
   .gear-btn{width:34px; height:34px; border-radius:50%; border:none; background:var(--bg); color:var(--text-muted); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;}
@@ -719,6 +719,19 @@
 </div>
 
 <script>
+/* ---------- iPhone en modo app: iOS informa un alto menor que la pantalla real (le resta la barra de estado).
+   Solo en ese caso se usa el alto físico real, para que la app llegue hasta el borde inferior. ---------- */
+function ajustarAltoReal(){
+  const root = document.documentElement;
+  if(window.navigator.standalone !== true){ root.style.removeProperty('--app-h'); return; }
+  const vertical = window.matchMedia('(orientation: portrait)').matches;
+  const altoFisico = vertical ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
+  if(altoFisico - window.innerHeight > 20) root.style.setProperty('--app-h', altoFisico + 'px');
+  else root.style.removeProperty('--app-h');
+}
+ajustarAltoReal();
+window.addEventListener('orientationchange', ()=> setTimeout(ajustarAltoReal, 300));
+
 const BLOQUES = [
   {n:1, r:'08:15–09:35', sh:8, sm:15, eh:9, em:35}, {n:2, r:'09:50–11:10', sh:9, sm:50, eh:11, em:10}, {n:3, r:'11:25–12:45', sh:11, sm:25, eh:12, em:45},
   {n:4, r:'13:45–15:05', sh:13, sm:45, eh:15, em:5}, {n:5, r:'15:20–16:40', sh:15, sm:20, eh:16, em:40}, {n:6, r:'16:55–18:15', sh:16, sm:55, eh:18, em:15},
